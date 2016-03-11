@@ -1,4 +1,5 @@
 {% extends 'projetofinal/base.html' %}
+{% load crispy_forms_tags %}
 {% load staticfiles %}
 
 <!DOCTYPE html>
@@ -23,11 +24,15 @@
   </head>
   <body>
   {% block content %}
-      <form class="form-horizontal">
-        <div class="form-group">
-          <label for="inputName" class="col-sm-4 control-label">Nome completo</label>
+     <form class="form-horizontal" action="cadastro" method="POST">{% csrf_token %}
+  <div class="container">
+      <div class="row">
+        {{ form|crispy }}
+      </div>
+       <!-- <div class="form-group">
+          <label for="name" class="col-sm-4 control-label">Nome completo</label>
           <div class="col-sm-5">
-            <input type="name" class="form-control" id="inputName" placeholder="Nome">
+            <input name="name" type="name" class="form-control" id="name" placeholder="Nome">
           </div>
         </div>
         <div class="form-group">
@@ -62,13 +67,14 @@
           <div class="col-sm-5">
             <input type="password" class="form-control" id="inputpassword2" placeholder="Confirmar Senha">
           </div>
-        </div>
+        </div> -->
         <div class="form-group">
           <div class="col-sm-offset-4 col-sm-10">
-            <button type="submit" class="btn btn-default">Enviar</button>
+            <button type="submit" value="cadastro" class="btn btn-default">Enviar</button>
           </div>
         </div>
-      </form>  
+      </div>
+      </form>
   {% endblock %}
    
   </body>
