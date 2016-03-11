@@ -30,7 +30,7 @@ body {
   background-color: transparent;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px){
   .navbar-inverse {
     background-color: #87CEFA;
     border-color: #87CEFA;
