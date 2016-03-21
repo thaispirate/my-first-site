@@ -23,6 +23,7 @@ class CadastrarPaciente(FormView):
         paciente.nome = form.cleaned_data['nome']
         paciente.nascimento = form.cleaned_data['nascimento']
         paciente.sexo = form.cleaned_data['sexo']
+        paciente.escolaridade = form.cleaned_data['escolaridade']
         paciente.save()
         return super(CadastrarPaciente, self).form_valid(form)
 

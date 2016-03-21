@@ -15,7 +15,8 @@ class MessageForm(UserCreationForm):
     nome = forms.CharField()
     nascimento = forms.DateField(
         input_formats=["%d/%m/%Y",],
-        widget=forms.DateInput(format='%d/%m/%Y')
+        widget=forms.DateInput(format='%d/%m/%Y'),
+        help_text= "DD/MM/AAAA"
     )
 
     sexo = forms.ChoiceField(
@@ -25,4 +26,16 @@ class MessageForm(UserCreationForm):
         ),
         widget = forms.RadioSelect,
         initial = 'Feminino',
+    )
+
+    escolaridade = forms.ChoiceField(
+        choices = (
+            ('Fundamental', "Fundamental"),
+            ('Básico', "Básico"),
+            ('Técnico', 'Técnico'),
+            ('Superior', 'Superior'),
+            ('Pós-graduado','Pós-graduado')
+        ),
+        widget = forms.RadioSelect,
+        initial = 'Fundamental',
     )

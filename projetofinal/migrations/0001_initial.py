@@ -15,8 +15,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Paciente',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', serialize=False, auto_created=True)),
-                ('email', models.CharField(max_length=50, default=' ')),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('email', models.EmailField(max_length=254)),
+                ('nome', models.CharField(null=True, max_length=50)),
+                ('nascimento', models.DateField(null=True)),
+                ('sexo', models.CharField(null=True, max_length=10)),
+                ('escolaridade', models.CharField(null=True, max_length=15)),
                 ('usuario', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
         ),

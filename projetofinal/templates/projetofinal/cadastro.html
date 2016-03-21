@@ -1,7 +1,5 @@
-{% extends 'projetofinal/base.html' %}
 {% load crispy_forms_tags %}
 {% load staticfiles %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
@@ -12,8 +10,8 @@
     <title>Projeto Final</title>
 
     <!-- Bootstrap -->
-    <link href="/projetofinal/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/projetofinal/css/projetofinal.css" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/projetofinal.css' %}" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -23,49 +21,34 @@
     <![endif]-->
   </head>
   <body>
-  {% block content %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+          </button>
+          <a class="navbar-brand" href="#">Project name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+      </div>
+      </div>
+    </nav>
+     <div class="masthead">
+       <img src="{% static 'image/psicologia.jpg' %}" class="img-responsive" alt="Responsive image"/>
+        <nav>
+          <ul class="nav nav-justified">
+            <li class="active"><a href="{% url 'projetofinal.views.home' %}">Home</a></li>
+            <li><a href="#">Projects</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
      <form class="form-horizontal" action="cadastro" method="POST">{% csrf_token %}
   <div class="container">
         {{ form|crispy }}
-       <!-- <div class="form-group">
-          <label for="name" class="col-sm-4 control-label">Nome completo</label>
-          <div class="col-sm-5">
-            <input name="name" type="name" class="form-control" id="name" placeholder="Nome">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="inputBirthday" class="col-sm-4 control-label">Data de nascimento</label>
-          <div class="col-sm-5">
-            <input type="date" class="form-control" id="inputBirthday" placeholder="Data de Nascimento">
-          </div>
-        </div>
-        <div class="form-group">
-         <label for="inputSex" class="col-sm-4 control-label" >Sexo</label>
-          <label class="radio-inline">
-            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="female"> Feminino
-          </label>
-          <label class="radio-inline">
-            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="male"> Masculino
-          </label>
-        </div>  
-        <div class="form-group">
-          <label for="inputEmail" class="col-sm-4 control-label">Email</label>
-          <div class="col-sm-5">
-            <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="inputPassword" class="col-sm-4 control-label">Senha</label>
-          <div class="col-sm-5">
-            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="inputPassword2" class="col-sm-4 control-label">Confirmar Senha</label>
-          <div class="col-sm-5">
-            <input type="password" class="form-control" id="inputpassword2" placeholder="Confirmar Senha">
-          </div>
-        </div> -->
         <div class="form-group">
           <div class="col-sm-offset-4 col-sm-10">
             <button type="submit" value="cadastro" class="btn btn-default">Enviar</button>
@@ -73,7 +56,12 @@
         </div>
       </div>
       </form>
-  {% endblock %}
-   
+      <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'assets/javascript/ajaxgoogleapis.js' %}"></script>
+    <script src="{% static 'assets/javascript/jquery.js' %}"></script>
+    <script src="{% static 'assets/javascript/bootstrap.js' %}"></script>
+
   </body>
 </html>

@@ -11,12 +11,8 @@ class Paciente(models.Model):
     email = models.EmailField()
     nome = models.CharField(max_length=50,null=True)
     nascimento = models.DateField(null=True)
-    SEXO = (
-        ('F','Feminino'),
-        ('M','Masculino')
-    )
     sexo = models.CharField(max_length=10,null=True)
-
+    escolaridade = models.CharField(max_length=15, null=True)
 
     def __str__(self):
         return self.usuario.username
