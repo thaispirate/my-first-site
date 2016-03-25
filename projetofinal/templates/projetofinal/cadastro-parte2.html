@@ -1,3 +1,4 @@
+{% load crispy_forms_tags %}
 {% load staticfiles %}
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -20,24 +21,14 @@
     <![endif]-->
   </head>
   <body>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-          </button>
           <a class="navbar-brand" href="#">Project name</a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right">
-            <a type="submit" href="login" class="btn btn-primary">Entrar</a>
-            <a type="submit" href="cadastro" class="btn btn-primary" >Cadastrar-se</a>
-          </form>
-        </div><!--/.navbar-collapse -->
       </div>
     </nav>
-      <div class="masthead">
+     <div class="masthead">
        <img src="{% static 'image/psicologia.jpg' %}" class="img-responsive" alt="Responsive image"/>
         <nav>
           <ul class="nav nav-justified">
@@ -49,18 +40,23 @@
           </ul>
         </nav>
       </div>
-  {% block content %}
-  {% endblock %} 
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-      
-
-    <!-- Bootstrap core JavaScript
+     <form class="form-horizontal" action="cadastro-parte2" method="POST">{% csrf_token %}
+  <div class="container">
+        {{ form|crispy }}
+        <div class="form-group">
+          <div class="col-sm-offset-4 col-sm-10">
+            <button type="submit" value="cadastro-parte1" class="btn btn-default">Voltar</button>
+            <button type="submit" value="cadastro-parte2" class="btn btn-default">Avançar</button>
+          </div>
+        </div>
+      </div>
+      </form>
+      <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="{% static 'assets/javascript/ajaxgoogleapis.js' %}"></script>
     <script src="{% static 'assets/javascript/jquery.js' %}"></script>
     <script src="{% static 'assets/javascript/bootstrap.js' %}"></script>
-  
+
   </body>
 </html>
