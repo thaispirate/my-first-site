@@ -1,0 +1,2 @@
+django-crispy-forms==1.6.0
+django-formtools==1.0
