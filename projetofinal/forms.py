@@ -120,7 +120,7 @@ class Cadastro1Form(UserCreationForm):
     )
 
 class Cadastro2Form(forms.Form):
-    nomeConjuge = forms.CharField(required=False,label="Nome do Cônjuge")
+    nomeConjuge = forms.CharField(required=False,label="Primeiro nome do Cônjuge")
     nascimentoConjuge = forms.DateField(
         label="Data de Nascimento do Cônjuge",
         required=False,
