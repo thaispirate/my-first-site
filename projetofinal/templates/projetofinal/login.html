@@ -34,7 +34,7 @@
          {% if user.is_authenticated %}
           <form class="navbar-form navbar-right">
             Bem vindo, {{user.username|capfirst}}
-          <a type="submit" href="editar" class="btn btn-primary">Editar Perfil</a>
+          <a type="submit" href="/cadastro/editar/{{ user.id }}" class="btn btn-primary">Editar Perfil</a>
           <a type="submit" href="sair" class="btn btn-primary">Sair</a>
           </form>
          {% elif form.errors %}

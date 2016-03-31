@@ -7,16 +7,20 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from formtools.wizard.views import SessionWizardView
+from django.http import Http404
+from django.template import RequestContext
 
 
 # Create your views here.
 def home(request):
     return render(request, 'projetofinal/home.html', {})
 
+def erro404(request):
+    return render(request,'404.html')
 
 class CadastroWizard(SessionWizardView):
     template_name = "projetofinal/cadastro.html"
@@ -69,31 +73,30 @@ class CadastroRealizado(TemplateView):
     template_name = "projetofinal/cadastrado.html"
 
 
+class PacienteNaoExiste(TemplateView):
+    template_name = "projetofinal/paciente_invalido.html"
+
 class EditarCadastro(SessionWizardView):
     template_name = "projetofinal/editar.html"
 
-    def get_form_initial(self, step, **kwargs):
-        print(kwargs)
-        if 'id' in self.kwargs:
-            id = self.kwargs['id']
-            print(1)
-            project = Paciente.objects.get(id=id)
-            print (project)
+    def get_form_initial(self, step):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+            try:
+                paciente = Paciente.objects.get(usuario_id=paciente_id)
+            except Paciente.DoesNotExist:
+                raise Http404("Paciente não existe")
+
             from django.forms.models import model_to_dict
-            project_dict = model_to_dict(project)
+            project_dict = model_to_dict(paciente)
             return project_dict
         else:
-            print(2)
             return self.initial_dict.get(step, {})
 
     def done(self, form_list, form_dict, **kwargs):
+        paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
         form_data= [form.cleaned_data for form in form_list]
-        user = User()
-        user.username = form_data[0]['username']
-        user.set_password(form_data[0]['password1'])
-        user.save()
-        paciente = Paciente()
-        paciente.usuario = user
         paciente.email = form_data[0]['email']
         paciente.nome = form_data[0]['nome']
         paciente.nascimento = form_data[0]['nascimento']
