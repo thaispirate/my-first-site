@@ -20,12 +20,16 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.45-b02, mixed mode)
 
 
 Parte xxx - Git
+Eu segui esse tutorial : http://tutorial.djangogirls.org/pt/deploy/index.html
+
 sudo apt-get install git
 Na pasta onde está que contém o projeto: git init
+git remote add origin https://github.com/thaispirate/my-first-site.git
+git pull origin master
 
 
 ###### Devolver ao git
-Eu adiciono o código no git através da linha de comando
+Eu adiciono o código no git através da linha de comando, dentro da pasta VinvuloVida
 -git add -A
 -git commit -m "qual mudança foi feita"
 -git pull
@@ -121,7 +125,7 @@ python manage.py migrate
 
 
 
-cd ~/VinculoVida/my-first-site-master
+cd ~/VinculoVida/
 source ~/VinculoVida/django/myvenv/bin/activate
 python manage.py runserver
 

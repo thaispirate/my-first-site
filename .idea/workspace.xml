@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0d3c98d-2848-4315-955c-a855b3257328" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/django.iml" afterPath="$PROJECT_DIR$/.idea/django.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/forms.py" afterPath="$PROJECT_DIR$/projetofinal/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastro.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastro.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/install.txt" afterPath="$PROJECT_DIR$/install.txt" />
     </list>
     <ignored path="django.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,7 +38,7 @@
       <file leaf-file-name="forms.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projetofinal/forms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.0625">
+            <state vertical-scroll-proportion="0.0">
               <caret line="299" column="65" selection-start-line="299" selection-start-column="65" selection-end-line="299" selection-end-column="65" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
@@ -54,7 +50,7 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/projetofinal/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6616541">
+            <state vertical-scroll-proportion="0.0">
               <caret line="57" column="53" selection-start-line="57" selection-start-column="53" selection-end-line="57" selection-end-column="53" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
@@ -66,7 +62,7 @@
       <file leaf-file-name="cadastro.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastro.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.916667">
+            <state vertical-scroll-proportion="0.0">
               <caret line="62" column="86" selection-start-line="62" selection-start-column="86" selection-end-line="62" selection-end-column="86" />
               <folding />
             </state>
@@ -128,8 +124,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="69" />
     <option name="y" value="27" />
-    <option name="width" value="1297" />
-    <option name="height" value="644" />
+    <option name="width" value="1291" />
+    <option name="height" value="741" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -389,7 +385,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="69" y="27" width="1297" height="644" extended-state="6" />
+    <frame x="69" y="27" width="1291" height="741" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21202776" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -754,7 +750,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.02819549">
           <caret line="1" column="21" selection-start-line="1" selection-start-column="21" selection-end-line="1" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -768,7 +763,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/forms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.0625">
+        <state vertical-scroll-proportion="0.0">
           <caret line="299" column="65" selection-start-line="299" selection-start-column="65" selection-end-line="299" selection-end-column="65" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
@@ -780,7 +775,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="25" selection-start-line="0" selection-start-column="25" selection-end-line="0" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -788,7 +782,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.02952756">
           <caret line="32" column="49" selection-start-line="32" selection-start-column="49" selection-end-line="32" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -796,7 +789,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.02952756">
           <caret line="35" column="22" selection-start-line="35" selection-start-column="22" selection-end-line="35" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -804,7 +796,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.21052632">
           <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -832,7 +823,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.37992126">
           <caret line="45" column="10" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="49" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -840,13 +830,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.2834646">
           <caret line="55" column="48" selection-start-line="55" selection-start-column="48" selection-end-line="55" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastro.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.916667">
+        <state vertical-scroll-proportion="0.0">
           <caret line="62" column="86" selection-start-line="62" selection-start-column="86" selection-end-line="62" selection-end-column="86" />
           <folding />
         </state>
@@ -854,7 +843,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6616541">
+        <state vertical-scroll-proportion="0.0">
           <caret line="57" column="53" selection-start-line="57" selection-start-column="53" selection-end-line="57" selection-end-column="53" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
