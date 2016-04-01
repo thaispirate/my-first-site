@@ -324,3 +324,38 @@ class Cadastro8Form(forms.Form):
         widget = forms.RadioSelect,
         initial = 'Fundamental',
     )
+
+class Cadastro9Form(forms.Form):
+
+    email = forms.EmailField(label="Email",error_messages={'required':'Este campo é obrigatório'})
+    nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório'})
+    nascimento = forms.DateField(
+        label="Data de Nascimento",
+        input_formats=["%d/%m/%Y",],
+        widget=forms.DateInput(format='%d/%m/%Y'),
+        help_text= "DD/MM/AAAA",
+        error_messages={'required':'Este campo é obrigatório'}
+    )
+
+    sexo = forms.ChoiceField(
+        label="Sexo",
+        choices = (
+            ('Feminino', "Feminino"),
+            ('Masculino', "Masculino")
+        ),
+        widget = forms.RadioSelect,
+        initial = 'Feminino',
+    )
+
+    escolaridade = forms.ChoiceField(
+        label="Escolaridade",
+        choices = (
+            ('Fundamental', "Fundamental"),
+            ('Básico', "Básico"),
+            ('Técnico', 'Técnico'),
+            ('Superior', 'Superior'),
+            ('Pós-graduado','Pós-graduado')
+        ),
+        widget = forms.RadioSelect,
+        initial = 'Fundamental',
+    )
