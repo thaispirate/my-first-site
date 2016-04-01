@@ -19,11 +19,13 @@ Java(TM) SE Runtime Environment (build 1.8.0_45-b14)
 Java HotSpot(TM) 64-Bit Server VM (build 25.45-b02, mixed mode)
 
 
-Parte xxx - Git
+Parte 2 - Git
 Eu segui esse tutorial : http://tutorial.djangogirls.org/pt/deploy/index.html
 
 sudo apt-get install git
-Na pasta onde está que contém o projeto: git init
+
+Na pasta onde está o conteúdo do projeto ~/VinvculoVida:
+git init
 git remote add origin https://github.com/thaispirate/my-first-site.git
 git pull origin master
 
@@ -32,15 +34,13 @@ git pull origin master
 Eu adiciono o código no git através da linha de comando, dentro da pasta VinvuloVida
 git add -A
 git commit -m "qual mudança foi feita"
-
-O username é thaispirate, e a password ta151092
 git push
-
+O username é thaispirate, e a password ta151092
 #######
 
 
 
-Parte 2 - pip e virtualenv
+Parte 3 - pip e virtualenv
 
 O PyCharm usa o pip para baixar módulos/bibliotecas/extensões (como quiser chamar) do python, e o virtualenv para criar os queridos ambientes virtuais que mantém a sanidade dos programadores python. Então, para tirar proveito dessas funcionalidades, é bom garantir que estejam instalados também. 
 
@@ -126,11 +126,13 @@ python manage.py migrate
 
 
 
-
+Parte 7 - Indo ao trabalho
 
 cd ~/VinculoVida/
 source ~/VinculoVida/django/myvenv/bin/activate
 python manage.py runserver
+
+O site está em http://127.0.0.1:8000/
 
 login:thais senha:jb
 login:fmello senha:fmello
