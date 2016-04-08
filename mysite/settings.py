@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'crispy_forms',
     'formtools',
+    'password_reset',
     'projetofinal',
 )
 
@@ -109,3 +110,20 @@ from django.core.urlresolvers import reverse_lazy
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('logout')
+
+#EMAIL_USE_TLS = False
+#EMAIL_HOST = 'localhost'
+#EMAIL_PORT = 1025
+#EMAIL_HOST_USER = ''
+#EMAIL_HOST_PASSWORD = ''
+#DEFAULT_FROM_EMAIL = 'webmaster@localhost'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'thais.potc@gmail.com'
+EMAIL_HOST_PASSWORD = 'ta151092'
+DEFAULT_FROM_EMAIL = 'thais.potc@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
