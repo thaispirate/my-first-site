@@ -18,10 +18,10 @@ class UserCreationForm(forms.ModelForm):
     }
     username = forms.RegexField(label=_("Usuario"), max_length=30,
         regex=r'^[\w.@+-]+$',
-        help_text=_("Ate 30 caracteres que podem ser letras, numeros ou "
+        help_text=_("Até 30 caracteres que podem ser letras, números ou "
                     "@/./+/-/_"),
         error_messages={
-            'invalid': _("Este campo só deve conter letras,numeros e os seguintes caracteres "
+            'invalid': _("Este campo só deve conter letras, números e os seguintes caracteres "
                          "@/./+/-/_"),
             'required': _("Este campo é obrigatório")
         })

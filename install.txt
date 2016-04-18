@@ -91,7 +91,7 @@ For the selected project, choose SDK from the list of available Python interpret
 
 
 
-Parte 6 - Instalando o Django
+Parte 6 - Instalando o Django e demais pacotes correlatos
 
 mkdir django
 cd django
@@ -124,6 +124,18 @@ python manage.py makemigrations
 python manage.py migrate
 
 
+
+baixar django-password-reset-0.8.2.tar.gz: https://pypi.python.org/pypi/django-password-reset
+
+descompactar django-password-reset-0.8.2.tar.gz
+
+cd django-password-reset-0.8.2
+
+sudo cp -R password_reset/ ~/VinculoVida/django/myvenv/lib/python3.4/site-packages/
+
+
+cd ~/VinculoVida/
+python manage.py createsuperuser
 
 
 Parte 7 - Indo ao trabalho
