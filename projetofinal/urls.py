@@ -14,5 +14,10 @@ urlpatterns = [
     url(r'^paciente_invalido$', PacienteNaoExiste.as_view(), name="paciente_invalido"),
     url(r'^login$', 'django.contrib.auth.views.login', {'template_name':'projetofinal/login.html'}, name='login'),
     url(r'^cadastro/editar/(?P<paciente_id>\d+)/$', EditarCadastro.as_view([Cadastro9Form,Cadastro2Form,Cadastro3Form,Cadastro4Form,Cadastro5Form,Cadastro6Form,Cadastro7Form,Cadastro8Form]), name="editar"),
-    url(r'^sair/$', 'django.contrib.auth.views.logout_then_login', name='logout')
+    url(r'^sair/$', 'django.contrib.auth.views.logout_then_login', name='logout'),
+    url(r'^password_reset$', 'django.contrib.auth.views.password_reset',  {'post_reset_redirect' : 'password/reset/done/'}, name='password_reset'),
+    url(r'^password/reset/done/$','django.contrib.auth.views.password_reset_done'),
+    url(r'^password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$','django.contrib.auth.views.password_reset_confirm',{'post_reset_redirect' : 'password/done/'}),
+    url(r'^password/done/$','django.contrib.auth.views.password_reset_complete'),
+
 ]

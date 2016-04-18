@@ -13,6 +13,7 @@ from django.utils.translation import ugettext as _
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404
 from django.template import RequestContext
+from django.contrib.auth.views import password_reset
 
 
 # Create your views here.
@@ -132,3 +133,4 @@ class EditarCadastro(SessionWizardView):
         paciente.escolaridadeAvoMaterna = form_data[7]['escolaridadeAvoMaterna']
         paciente.save()
         return render_to_response('projetofinal/cadastrado.html')
+
