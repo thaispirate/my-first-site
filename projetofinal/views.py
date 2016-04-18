@@ -31,12 +31,6 @@ from .utils import get_user_model, get_username
 def home(request):
     return render(request, 'projetofinal/home.html', {})
 
-def handler404(request):
-    response = render_to_response('404.html', {},
-                                  context_instance=RequestContext(request))
-    response.status_code = 404
-    return response
-
 def erro404(request):
     return render(request,'404.html')
 

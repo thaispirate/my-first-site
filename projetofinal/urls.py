@@ -1,8 +1,9 @@
 from django.conf.urls import include, url, patterns, handler404
-from django.conf import settings
 from . import views
 from .forms import Cadastro1Form, Cadastro2Form, Cadastro3Form, Cadastro4Form, Cadastro5Form, Cadastro6Form, Cadastro7Form, Cadastro8Form, Cadastro9Form
 from .views import CadastroRealizado,CadastroWizard, EditarCadastro, PacienteNaoExiste
+
+handler404="views.erro404"
 
 urlpatterns = [
     url(r'^$', views.home),
