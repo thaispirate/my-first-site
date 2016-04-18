@@ -1,0 +1,9 @@
+{% load i18n %}{% blocktrans %}Querido {{ username }},{% endblocktrans %}
+
+{% blocktrans with domain=site.domain %}Você -- ou alguém se passando por você -- pediu uma nova senha em {{ domain }}.{% endblocktrans %}
+
+{% trans "Você pode escolher uma nova senha através desse link:" %}
+
+http{% if secure %}s{% endif %}://{{ site.domain }}{% url "password_reset_reset" token %}
+
+{% trans "Se você não deseja trocar sua senha, ignore este email e sua senha permanecerá a mesma." %}

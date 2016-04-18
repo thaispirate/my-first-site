@@ -1,0 +1,10 @@
+{% extends "password_reset/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Password recovery sent" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+	<p>{% blocktrans with ago=timestamp|timesince %}Um email foi enviado para <strong>{{ email }}</strong>. Use o link enviado para mudar a senha.{% endblocktrans %}</p>
+</div>
+{% endblock %}
