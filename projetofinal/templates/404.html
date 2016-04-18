@@ -1,8 +1,6 @@
-{% extends 'projetofinal/base.html' %}
 {% load staticfiles %}
-
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" xmlns="http://www.w3.org/1999/html">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,8 +9,8 @@
     <title>Projeto Final</title>
 
     <!-- Bootstrap -->
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="/projetofinal/css/projetofinal.css" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/projetofinal.css' %}" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -22,11 +20,27 @@
     <![endif]-->
   </head>
   <body>
-  {% block content %}
-    <div class="container">
-      <h2>Paciente não exite!</h2>
-    </div>
-  {% endblock %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Project name</a>
+        </div>
+      </div>
+    </nav>
+     <div class="masthead">
+       <img src="{% static 'image/psicologia.jpg' %}" class="img-responsive" alt="Responsive image"/>
+        <nav>
+          <ul class="nav nav-justified">
+            <li class="active"><a href="{% url 'projetofinal.views.home' %}">Home</a></li>
+            <li><a href="#">Projects</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+
+    <h2> Paciente não existe!</h2>
+
   </body>
 </html>
-
