@@ -1,0 +1,45 @@
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+.navbar-form .navbar-right h2{
+
+  color:white;
+
+}
+
+.QuestionsTitle {
+  color: red;
+  font-size: 30px;
+  font-family: Times;
+  margin-bottom: 30px;
+
+}
+
+.navbar-inverse {
+  background-color: #87CEFA;
+  border-color: #87CEFA;
+}
+.navbar-inverse .navbar-brand {
+  color: #FFFFFF;
+}
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+  color: #0000FF;
+  background-color: transparent;
+}
+
+.navbar-text{
+    color: #FFFFFF;
+}
+
+@media (max-width: 768px){
+  .navbar-inverse {
+    background-color: #87CEFA;
+    border-color: #87CEFA;
+  }
+  .glyphicon{
+    color: white;
+  }
+}

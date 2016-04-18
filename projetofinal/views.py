@@ -1,28 +1,16 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from .models import Paciente,User
-from .forms import Cadastro1Form
-from django.shortcuts import render_to_response
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseForbidden, HttpResponseRedirect
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, get_object_or_404, redirect
-from django.template import RequestContext
-from django.utils.translation import ugettext as _
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404
 from django.template import RequestContext
-from django.contrib.auth.views import password_reset
-
 import datetime
-
 from django.conf import settings
 from django.core import signing
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import loader
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -42,6 +30,12 @@ from .utils import get_user_model, get_username
 # Create your views here.
 def home(request):
     return render(request, 'projetofinal/home.html', {})
+
+def handler404(request):
+    response = render_to_response('404.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
 
 def erro404(request):
     return render(request,'404.html')
@@ -157,6 +151,9 @@ class EditarCadastro(SessionWizardView):
         paciente.escolaridadeAvoMaterna = form_data[7]['escolaridadeAvoMaterna']
         paciente.save()
         return render_to_response('projetofinal/cadastrado.html')
+
+
+#Classes do password-reset(esqueci a senha)
 
 class SaltMixin(object):
     salt = 'password_recovery'

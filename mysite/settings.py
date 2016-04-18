@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'f*ab=)yx@!ck_7_18k@5r4u4ywe%=_pm7j*!o(98iw$oa3)wrb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['thaispirate.pythonanywhere.com']
 
 
 # Application definition
@@ -111,6 +111,8 @@ LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('logout')
 
+#Password-reset send email configuration
+
 # EMAIL_USE_TLS = False
 # EMAIL_HOST = 'localhost'
 # EMAIL_PORT = 1025
@@ -118,7 +120,6 @@ LOGOUT_URL = reverse_lazy('logout')
 # EMAIL_HOST_PASSWORD = ''
 # DEFAULT_FROM_EMAIL = 'webmaster@localhost.com'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
