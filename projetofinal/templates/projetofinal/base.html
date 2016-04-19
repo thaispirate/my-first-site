@@ -20,46 +20,97 @@
     <![endif]-->
   </head>
   <body>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-          </button>
-          <a class="navbar-brand" href="#">Vínculo Vida</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
           {% if user.is_authenticated %}
+         <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="{% url 'projetofinal.views.home' %}">Vínculo Vida</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+            </div>
+         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
-            Bem vindo, {{user.username|capfirst}}
-          <a type="submit" href="/cadastro/editar/{{ user.id }}" class="btn btn-primary">Editar Perfil</a>
-          <a type="submit" href="sair" class="btn btn-primary">Sair</a>
+            Bem vindo, {{user.first_name|capfirst}}
           </form>
+          </div>
+          </div>
+          </nav>
+
+            <nav class="navbar navbar-inverse sidebar" role="navigation">
+                <div class="container-fluid">
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                        <div class="desktop-hide">
+                            Bem vindo, {{user.first_name|capfirst}}
+                        </div>
+                            <li class="active"><a href="{% url 'projetofinal.views.home' %}">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                            <li ><a href="/cadastro/editar/{{ user.id }}">Editar Perfil<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+                            <li ><a href="sair">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
+                                <ul class="dropdown-menu forAnimate" role="menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">One more separated link</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                            <li ><a href="#">Profile<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+                            <li ><a href="#">Messages<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
+                                <ul class="dropdown-menu forAnimate" role="menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">One more separated link</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="main">
+            <!-- Content Here -->
+            </div>
           {% else %}
+           <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              </button>
+              <a class="navbar-brand" href="{% url 'projetofinal.views.home' %}">Vínculo Vida</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+
           <form class="navbar-form navbar-right">
             <a type="submit" href="login" class="btn btn-primary">Entrar</a>
             <a type="submit" href="cadastro" class="btn btn-primary" >Cadastrar-se</a>
           </form>
+          </div>
+          </div>
+         </nav>
           {% endif %}
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
-      <div class="masthead">
        <img src="{% static 'image/psicologia.jpg' %}" class="img-responsive" alt="Responsive image"/>
-        <nav>
-          <ul class="nav nav-justified">
-            <li class="active"><a href="{% url 'projetofinal.views.home' %}">Home</a></li>
-            <li><a href="#">Projects</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-          </ul>
-        </nav>
-      </div>
-      <div class="container">
-        <hr class="featurette-divider">
-      </div>
+
   {% block content %}
   {% endblock %} 
 

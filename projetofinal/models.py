@@ -43,4 +43,4 @@ class Paciente(models.Model):
     escolaridadeAvoMaterno = models.CharField(max_length=15, null=True)
 
     def __str__(self):
-        return self.usuario.username
+        return self.usuario.first_name

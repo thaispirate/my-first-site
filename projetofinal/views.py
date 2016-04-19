@@ -25,11 +25,16 @@ except ImportError:
 from .forms import PasswordRecoveryForm, PasswordResetForm
 from .signals import user_recovers_password
 from .utils import get_user_model, get_username
-
+from django.contrib.auth import logout
 
 # Create your views here.
 def home(request):
     return render(request, 'projetofinal/home.html', {})
+
+def logout_view(request):
+    logout(request)
+    return render(request, 'projetofinal/home.html', {})
+
 
 def erro404(request):
     return render(request,'404.html')
@@ -42,11 +47,12 @@ class CadastroWizard(SessionWizardView):
         user = User()
         user.username = form_data[0]['username']
         user.set_password(form_data[0]['password1'])
-        user.email = form_data[0]['email']
+        user.email = form_data[0]['username']
+        user.first_name = form_data[0]['nome']
         user.save()
         paciente = Paciente()
         paciente.usuario = user
-        paciente.email = form_data[0]['email']
+        paciente.email = form_data[0]['username']
         paciente.nome = form_data[0]['nome']
         paciente.nascimento = form_data[0]['nascimento']
         paciente.sexo = form_data[0]['sexo']

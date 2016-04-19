@@ -6,6 +6,10 @@ from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 from django import forms
 from django.utils.translation import ugettext, ugettext_lazy as _
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+from django.forms import ValidationError
 
 
 from django import forms
@@ -26,10 +30,7 @@ class UserCreationForm(forms.ModelForm):
         'duplicate_username': _("Já existe um usuário com este nome."),
         'password_mismatch': _("As senhas precisam ser iguais"),
     }
-    username = forms.RegexField(label=_("Usuario"), max_length=30,
-        regex=r'^[\w.@+-]+$',
-        help_text=_("Até 30 caracteres que podem ser letras, números ou "
-                    "@/./+/-/_"),
+    username = forms.EmailField(label=_("Email"),
         error_messages={
             'invalid': _("Este campo só deve conter letras,números e os seguintes caracteres "
                          "@/./+/-/_"),
@@ -96,7 +97,6 @@ class Cadastro1Form(UserCreationForm):
          }
 
 
-    email = forms.EmailField(label="Email",error_messages={'required':'Este campo é obrigatório'})
     nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório'})
     nascimento = forms.DateField(
         label="Data de Nascimento",
@@ -493,3 +493,17 @@ class PasswordResetForm(forms.Form):
                 password=self.user.password,
             )
         return self.user
+
+class EmailAuthenticationForm(AuthenticationForm):
+    def clean_username(self):
+        username = self.data['username']
+        if '@' in username:
+            try:
+                username = User.objects.get(email=username).username
+            except ObjectDoesNotExist:
+                raise ValidationError(
+                    self.error_messages['invalid_login'],
+                    code='invalid_login',
+                    params={'username':self.username_field.verbose_name},
+                )
+        return username
