@@ -25,7 +25,7 @@ SECRET_KEY = 'f*ab=)yx@!ck_7_18k@5r4u4ywe%=_pm7j*!o(98iw$oa3)wrb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['thaispirate.pythonanywhere.com', "127.0.0.1"]
+ALLOWED_HOSTS = ['thaispirate.pythonanywhere.com', '127.0.0.1']
 
 
 # Application definition
