@@ -16,6 +16,7 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.debug import sensitive_post_parameters
+from django.http import HttpResponseRedirect
 
 try:
     from django.contrib.sites.shortcuts import get_current_site
@@ -86,14 +87,13 @@ class CadastroWizard(SessionWizardView):
         paciente.falecimentoAvoMaterna = form_data[7]['falecimentoAvoMaterna']
         paciente.escolaridadeAvoMaterna = form_data[7]['escolaridadeAvoMaterna']
         paciente.save()
-        return render_to_response('projetofinal/cadastrado.html')
+        return redirect(CadastroRealizado)
 
-class CadastroRealizado(TemplateView):
-    template_name = "projetofinal/cadastrado.html"
+def CadastroRealizado(request):
+    return render(request, 'projetofinal/cadastrado.html', {})
 
-
-class PacienteNaoExiste(TemplateView):
-    template_name = "projetofinal/paciente_invalido.html"
+def EdicaoRealizada(request):
+    return render(request, 'projetofinal/editado.html', {})
 
 class EditarCadastro(SessionWizardView):
     template_name = "projetofinal/editar.html"
@@ -116,7 +116,6 @@ class EditarCadastro(SessionWizardView):
         paciente_id = self.kwargs['paciente_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         form_data= [form.cleaned_data for form in form_list]
-        paciente.email = form_data[0]['email']
         paciente.nome = form_data[0]['nome']
         paciente.nascimento = form_data[0]['nascimento']
         paciente.sexo = form_data[0]['sexo']
@@ -150,7 +149,7 @@ class EditarCadastro(SessionWizardView):
         paciente.falecimentoAvoMaterna = form_data[7]['falecimentoAvoMaterna']
         paciente.escolaridadeAvoMaterna = form_data[7]['escolaridadeAvoMaterna']
         paciente.save()
-        return render_to_response('projetofinal/cadastrado.html')
+        return redirect(EdicaoRealizada)
 
 
 #Classes do password-reset(esqueci a senha)

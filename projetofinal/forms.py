@@ -337,7 +337,6 @@ class Cadastro8Form(forms.Form):
 
 class Cadastro9Form(forms.Form):
 
-    email = forms.EmailField(label="Email",error_messages={'required':'Este campo é obrigatório'})
     nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório'})
     nascimento = forms.DateField(
         label="Data de Nascimento",

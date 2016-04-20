@@ -106,15 +106,12 @@
           </div>
          </nav>
           {% endif %}
-        </div><!--/.navbar-collapse -->
-      </div>
-    </nav>
        <img src="{% static 'image/psicologia.jpg' %}" class="img-responsive" alt="Responsive image"/>
       <div class="container">
         <hr class="featurette-divider">
+            {% block content %}
+             {% endblock %}
       </div>
-  {% block content %}
-  {% endblock %} 
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
       

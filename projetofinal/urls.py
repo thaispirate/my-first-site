@@ -1,8 +1,7 @@
 from django.conf.urls import include, url, patterns, handler404
 from . import views
 from .forms import Cadastro1Form, Cadastro2Form, Cadastro3Form, Cadastro4Form, Cadastro5Form, Cadastro6Form, Cadastro7Form, Cadastro8Form, Cadastro9Form, EmailAuthenticationForm
-from .views import CadastroRealizado,CadastroWizard, EditarCadastro, PacienteNaoExiste
-
+from .views import CadastroWizard, EditarCadastro
 
 handler404="views.erro404"
 
@@ -12,8 +11,8 @@ urlpatterns = [
     url(r'^sair$', views.logout_view),
     url(r'^erro404$', views.erro404),
     url(r'^cadastro$', CadastroWizard.as_view([Cadastro1Form,Cadastro2Form,Cadastro3Form,Cadastro4Form,Cadastro5Form,Cadastro6Form,Cadastro7Form,Cadastro8Form]), name="cadastro"),
-    url(r'^cadastrado$', CadastroRealizado.as_view(), name="cadastro_realizado"),
-    url(r'^paciente_invalido$', PacienteNaoExiste.as_view(), name="paciente_invalido"),
+    url(r'^cadastrado$', views.CadastroRealizado),
+    url(r'^editado$', views.EdicaoRealizada),
     url(r'^login$', 'django.contrib.auth.views.login', {'template_name':'projetofinal/login.html','authentication_form': EmailAuthenticationForm}, name='login'),
     url(r'^cadastro/editar/(?P<paciente_id>\d+)/$', EditarCadastro.as_view([Cadastro9Form,Cadastro2Form,Cadastro3Form,Cadastro4Form,Cadastro5Form,Cadastro6Form,Cadastro7Form,Cadastro8Form]), name="editar"),
     url(r'^recover/(?P<signature>.+)/$', views.recover_done,
