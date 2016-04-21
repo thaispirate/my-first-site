@@ -20,6 +20,7 @@ body {
 .navbar-inverse {
   background-color: #87CEFA;
   border-color: #87CEFA;
+  position:absolute;
 }
 .navbar-inverse .navbar-brand {
   color: #FFFFFF;
@@ -60,6 +61,7 @@ body,html{
 
 nav.sidebar.navbar {
     border-radius: 0px;
+    position:relative;
 }
 
 nav.sidebar, .main{
@@ -101,6 +103,7 @@ nav.sidebar, .main{
         text-align: center;
         width: 100%;
         margin-left: 0px;
+        position:relative;
     }
 
     /*Center Icons*/
@@ -198,7 +201,12 @@ section{
     padding-left: 15px;
 }
 
-
+@media only screen and (max-width: 400px) {
+.mobile-hide{ display: none !important; }
+}
+@media only screen and (max-width: 400px) {
+.mobile{ display: inline !important; }
+}
 @media only screen and (min-width: 500px) {
 .desktop-hide{ display: none !important; }
 }
