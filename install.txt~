@@ -144,7 +144,5 @@ python manage.py runserver
 
 O site está em http://127.0.0.1:8000/
 
-login:thais senha:jb  (inclusive do Django)
+login:thais senha:jb
 login:fmello senha:fmello
-
-
