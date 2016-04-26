@@ -495,7 +495,7 @@ class PasswordResetForm(forms.Form):
 
 class EmailAuthenticationForm(AuthenticationForm):
     def clean_username(self):
-        username = self.data['username']
+        username = self.data['username'].lower()
         if '@' in username:
             try:
                 username = User.objects.get(email=username).username

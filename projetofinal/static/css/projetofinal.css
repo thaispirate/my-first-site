@@ -142,6 +142,10 @@ nav.sidebar, .main{
     .navbar-inverse .navbar-nav .open .dropdown-menu>li>a {
         color: #777;
     }
+    .navbar-inverse .navbar-nav .open .dropdown-menu>li>a:hover,
+    .navbar-inverse .navbar-nav .open .dropdown-menu>li>a:focus {
+        color: #FFFFFF;
+    }
 
     /*gives sidebar width/height*/
     nav.sidebar{
@@ -190,7 +194,7 @@ nav.sidebar, .main{
 }
 
 nav.sidebar .navbar-nav .open .dropdown-menu>li>a:hover, nav.sidebar .navbar-nav .open .dropdown-menu>li>a:focus {
-    color: #CCC;
+    color: #FFFFFF;
     background-color: transparent;
 }
 

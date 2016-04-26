@@ -24,7 +24,7 @@
          <nav class="navbar navbar-inverse navbar-fixed-top">
           <div class="container">
             <div class="navbar-header">
-              <a class="navbar-brand" href="{% url 'projetofinal.views.home' %}">Vínculo Vida</a>
+              <a class="navbar-brand" href="{% url 'projetofinal.views.Home' %}">Vínculo Vida</a>
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
                   <span class="sr-only">Toggle navigation</span>
                   <span class="icon-bar"></span>
@@ -34,7 +34,7 @@
             </div>
          <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
-            Bem vindo, {{user.first_name|capfirst}}
+            Olá, {{user.first_name|capfirst}}
           </form>
           </div>
           </div>
@@ -47,42 +47,26 @@
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                         <div class="desktop-hide">
-                            Bem vindo, {{user.first_name|capfirst}}
+                            Olá, {{user.first_name|capfirst}}
                         </div>
-                            <li class="active"><a href="{% url 'projetofinal.views.home' %}">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-                            <li ><a href="/cadastro/editar/{{ user.id }}">Editar Perfil<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
-                            <li ><a href="sair">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
+                            <li class="active"><a href="{% url 'projetofinal.views.Home' %}">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                            <li ><a href="/cadastro/editar/{{ user.id }}">Editar Cadastro<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Análise<span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-edit"></span></a>
                                 <ul class="dropdown-menu forAnimate" role="menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">One more separated link</a></li>
+                                    <li><a href="#">Inserir</a></li>
+                                    <li><a href="#">Prosseguir</a></li>
+                                    <li><a href="#">Consultar</a></li>
+                                    <li><a href="#">Remover</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-                            <li ><a href="#">Profile<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
-                            <li ><a href="#">Messages<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
-                                <ul class="dropdown-menu forAnimate" role="menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something else here</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">One more separated link</a></li>
-                                </ul>
-                            </li>
+                            <li><a href="#">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
+                            <li ><a href="{% url 'projetofinal.views.LogoutView' %}">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
                         </ul>
                     </div>
                 </div>
             </nav>
+
             <div class="main">
             <!-- Content Here -->
             </div>
@@ -94,7 +78,7 @@
                 <span class="sr-only">Toggle navigation</span>
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
               </button>
-              <a class="navbar-brand" href="{% url 'projetofinal.views.home' %}">Vínculo Vida</a>
+              <a class="navbar-brand" href="{% url 'projetofinal.views.Home' %}">Vínculo Vida</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
 

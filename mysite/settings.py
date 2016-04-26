@@ -128,3 +128,5 @@ EMAIL_HOST_USER = 'thais.potc@gmail.com'
 EMAIL_HOST_PASSWORD = 'ta151092'
 DEFAULT_FROM_EMAIL = 'thais.potc@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE=True
