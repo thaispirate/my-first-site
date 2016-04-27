@@ -506,3 +506,20 @@ class EmailAuthenticationForm(AuthenticationForm):
                     params={'username':self.username_field.verbose_name},
                 )
         return username
+
+class CadastroPsicologoForm(UserCreationForm):
+
+    class Meta():
+        model = User
+        fields=['username','password1','password2']
+        error_messages = {
+            'password1': {
+                'required': "Please enter your first password",
+            },
+             'password2': {
+                 'required': "Please enter your second password.",
+            },
+         }
+
+
+    nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório'})

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User, Group
-from .models import Paciente,User
+from .models import Paciente,User, Psicologo
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404, HttpResponseRedirect
 from django.template import RequestContext
@@ -91,6 +91,7 @@ class CadastroWizard(SessionWizardView):
         paciente.escolaridadeAvoMaterna = form_data[7]['escolaridadeAvoMaterna']
         paciente.save()
         return redirect(CadastroRealizado)
+
 
 def CadastroRealizado(request):
     return render(request, 'projetofinal/cadastrado.html', {})
@@ -303,6 +304,8 @@ class ResetDone(generic.TemplateView):
 
 reset_done = ResetDone.as_view()
 
+def PsicologoAdministracao(request):
+    return render(request, 'projetofinal/psicologo/administracao.html', {})
 
 def LoginPsicologo(request):
     username = password = ''
@@ -316,20 +319,39 @@ def LoginPsicologo(request):
             if user.is_active and user.groups.filter(name='psicologo').exists():
                 login(request, user)
                 state = "You're successfully logged in!"
-                return HttpResponseRedirect('psicologo')
+                return HttpResponseRedirect('home')
             else:
                 state = 1
         else:
             state = 2
-    return render_to_response('projetofinal/administracao.html', {'state':state, 'username': username},context_instance=RequestContext(request))
+    return render_to_response('projetofinal/psicologo/login.html', {'state':state, 'username': username},context_instance=RequestContext(request))
 
+class CadastroPsicologoWizard(SessionWizardView):
+    template_name = "projetofinal/psicologo/cadastro.html"
 
-def Psicologo(request):
+    def done(self, form_list, form_dict, **kwargs):
+        form_data= [form.cleaned_data for form in form_list]
+        user = User()
+        user.username = form_data[0]['username']
+        user.set_password(form_data[0]['password1'])
+        user.email = form_data[0]['username']
+        user.first_name = form_data[0]['nome']
+        user.save()
+        group = Group.objects.get(name='psicologo')
+        user.groups.add(group)
+        psicologo = Psicologo()
+        psicologo.usuario = user
+        psicologo.email = form_data[0]['username']
+        psicologo.nome = form_data[0]['nome']
+        psicologo.save()
+        return redirect(CadastroRealizado)
+
+def PsicologoHome(request):
     paciente = Paciente.objects.all()
-    return render(request, 'projetofinal/psicologo.html', {'pacientes':paciente})
+    return render(request, 'projetofinal/psicologo/home.html', {'pacientes':paciente})
 
 class PsicologoPaciente(TemplateView):
-    template_name="projetofinal/psicologoPaciente.html"
+    template_name="projetofinal/psicologo/paciente.html"
     def get_form_initial(self, step):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
@@ -339,3 +361,6 @@ class PsicologoPaciente(TemplateView):
                 raise Http404("Paciente não existe")
         return paciente
 
+def LogoutPsicologo(request):
+    logout(request)
+    return render(request, 'projetofinal/psicologo/administracao.html', {})

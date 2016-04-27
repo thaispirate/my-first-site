@@ -44,3 +44,12 @@ class Paciente(models.Model):
 
     def __str__(self):
         return self.usuario.first_name
+
+
+class Psicologo(models.Model):
+    usuario = models.OneToOneField(User)
+    email = models.EmailField()
+    nome = models.CharField(max_length=50,null=True)
+
+    def __str__(self):
+        return self.usuario.first_name
