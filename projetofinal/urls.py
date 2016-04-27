@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^psicologo/login$', views.LoginPsicologo),
     url(r'^psicologo/home$', views.PsicologoHome),
     url(r'^psicologo/cadastro$', CadastroPsicologoWizard.as_view([CadastroPsicologoForm]), name="cadastroPsicologo"),
+    url(r'^psicologo/cadastrado$', views.CadastroPsicologoRealizado),
     url(r'^psicologo/paciente/(?P<paciente_id>\d+)/$', PsicologoPaciente.as_view()),
     url(r'^psicologo/sair$', views.LogoutPsicologo),
 ]

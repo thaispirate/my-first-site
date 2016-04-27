@@ -344,7 +344,10 @@ class CadastroPsicologoWizard(SessionWizardView):
         psicologo.email = form_data[0]['username']
         psicologo.nome = form_data[0]['nome']
         psicologo.save()
-        return redirect(CadastroRealizado)
+        return redirect(CadastroPsicologoRealizado)
+
+def CadastroPsicologoRealizado(request):
+    return render(request, 'projetofinal/psicologo/cadastrado.html', {})
 
 def PsicologoHome(request):
     paciente = Paciente.objects.all()
