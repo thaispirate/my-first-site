@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User, Group
@@ -6,7 +7,8 @@ from formtools.wizard.views import SessionWizardView
 from django.http import Http404, HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login
-import datetime
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.core import signing
 from django.core.mail import send_mail
@@ -15,7 +17,6 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render_to_response
 from django.template import loader
 from django.utils import timezone
-from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.decorators.debug import sensitive_post_parameters
 
@@ -33,6 +34,26 @@ from django.contrib.auth import logout
 # Create your views here.
 def Home(request):
     return render(request, 'projetofinal/home.html', {})
+
+def LoginPaciente(request):
+    username = password = ''
+    state="please log in"
+    if request.POST:
+        username = request.POST['username'].lower()
+        password = request.POST['password']
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active and user.groups.filter(name='paciente').exists():
+                login(request, user)
+                state = "You're successfully logged in!"
+                return HttpResponseRedirect('home')
+            else:
+                state = 1
+        else:
+            state = 2
+    return render_to_response('projetofinal/psicologo/login.html', {'state':state, 'username': username},context_instance=RequestContext(request))
+
 
 def LogoutView(request):
     logout(request)
@@ -101,6 +122,10 @@ def EdicaoRealizada(request):
 
 class EditarCadastro(SessionWizardView):
     template_name = "projetofinal/editar.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EditarCadastro, self).dispatch(*args, **kwargs)
 
     def get_form_initial(self, step):
         if 'paciente_id' in self.kwargs:
@@ -355,6 +380,11 @@ def PsicologoHome(request):
 
 class PsicologoPaciente(TemplateView):
     template_name="projetofinal/psicologo/paciente.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PsicologoPaciente, self).dispatch(*args, **kwargs)
+
     def get_form_initial(self, step):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']

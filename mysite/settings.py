@@ -106,10 +106,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-from django.core.urlresolvers import reverse_lazy
-LOGIN_URL = reverse_lazy('login')
-LOGIN_REDIRECT_URL = reverse_lazy('login')
-LOGOUT_URL = reverse_lazy('logout')
+
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL= '/login'
 
 #Password-reset send email configuration
 

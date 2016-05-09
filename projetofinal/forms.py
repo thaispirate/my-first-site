@@ -493,19 +493,6 @@ class PasswordResetForm(forms.Form):
             )
         return self.user
 
-class EmailAuthenticationForm(AuthenticationForm):
-    def clean_username(self):
-        username = self.data['username'].lower()
-        if '@' in username:
-            try:
-                username = User.objects.get(email=username).username
-            except ObjectDoesNotExist:
-                raise ValidationError(
-                    self.error_messages['invalid_login'],
-                    code='invalid_login',
-                    params={'username':self.username_field.verbose_name},
-                )
-        return username
 
 class CadastroPsicologoForm(UserCreationForm):
 
