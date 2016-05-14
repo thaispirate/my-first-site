@@ -2,7 +2,7 @@ import datetime
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User, Group
-from .models import Paciente,User, Psicologo
+from .models import Paciente,User, Psicologo, AreaAfetiva, Anamnesia
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404, HttpResponseRedirect
 from django.template import RequestContext
@@ -328,6 +328,47 @@ class ResetDone(generic.TemplateView):
 
 
 reset_done = ResetDone.as_view()
+
+
+class InserirAnalise(SessionWizardView):
+    template_name = "projetofinal/analise/inserir.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(InserirAnalise, self).dispatch(*args, **kwargs)
+
+
+    def done(self, form_list, form_dict, **kwargs):
+        paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        form_data= [form.cleaned_data for form in form_list]
+        print (form_data[0])
+        anamnesia = Anamnesia()
+        areaAfetiva = AreaAfetiva()
+        areaAfetiva.paciente = paciente
+        anamnesia.paciente = paciente
+
+        areaAfetiva.afetivoRelacional= (float(form_data[0]['A1'])+float(form_data[0]['A2'])+float(form_data[0]['A4'])+float(form_data[0]['A6'])+
+                                        float(form_data[0]['A9'])+float(form_data[0]['A13'])+float(form_data[0]['A15'])+float(form_data[0]['A17'])+
+                                        float(form_data[0]['A19'])+float(form_data[0]['A20'])+float(form_data[0]['A21'])+float(form_data[0]['A22'])+
+                                        float(form_data[0]['A23'])+float(form_data[0]['A25'])+float(form_data[0]['A28']))/(15*0.8)
+        areaAfetiva.produtividade = (float(form_data[0]['A5'])+float(form_data[0]['A16'])+float(form_data[0]['A20'])+float(form_data[0]['A22'])+float(form_data[0]['A23']))/5.0
+        areaAfetiva.organico = (float(form_data[0]['A7'])+float(form_data[0]['A12'])+float(form_data[0]['A14'])+float(form_data[0]['A27'])+float(form_data[0]['A29']))/5.0
+        areaAfetiva.espiritual = (float(form_data[0]['A3'])+float(form_data[0]['A11'])+float(form_data[0]['A18'])+float(form_data[0]['A24'])+float(form_data[0]['A26']))/5.0
+        areaAfetiva.socioCultural = (float(form_data[0]['A8'])+float(form_data[0]['A10'])+float(form_data[0]['A20'])+float(form_data[0]['A22'])+float(form_data[0]['A23']))/5.0
+        areaAfetiva.save()
+        anamnesia.area= "Espiritual"
+        if areaAfetiva.socioCultural >= areaAfetiva.espiritual:
+            anamnesia.area= "Socio-Cultural"
+        if areaAfetiva.afetivoRelacional >= areaAfetiva.socioCultural and anamnesia.area=="Socio-Cultural":
+                anamnesia.area= "Afetivo-Relacional"
+        if areaAfetiva.produtividade >= areaAfetiva.afetivoRelacional and anamnesia.area=="Afetivo-Relacional":
+            anamnesia.area= "Produtividade"
+        if areaAfetiva.organico >= areaAfetiva.produtividade and anamnesia.area=="Produtividade":
+            anamnesia.area="Orgânico"
+        anamnesia.inicio=timezone.now()
+        anamnesia.save()
+        return redirect(EdicaoRealizada)
 
 def PsicologoAdministracao(request):
     return render(request, 'projetofinal/psicologo/administracao.html', {})

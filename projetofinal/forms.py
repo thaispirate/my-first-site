@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, QuestionarioAreaAfetiva
 from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
@@ -510,3 +510,31 @@ class CadastroPsicologoForm(UserCreationForm):
 
 
     nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório'})
+
+class AreaAfetiva(forms.Form):
+
+    def __init__(self,*args,**kwargs):
+        super(AreaAfetiva, self).__init__(*args,**kwargs)
+        questionario = QuestionarioAreaAfetiva.objects.all()
+        for contador in range(29):
+            RESPOSTAS = [
+                        (questionario[contador].valorA, questionario[contador].respostaA),
+                        (questionario[contador].valorB, questionario[contador].respostaB),
+                        (questionario[contador].valorC, questionario[contador].respostaC),
+            ]
+            if questionario[contador].respostaD:
+                RESPOSTAS.append((questionario[contador].valorD, questionario[contador].respostaD))
+            if questionario[contador].respostaE:
+                RESPOSTAS.append((questionario[contador].valorE, questionario[contador].respostaE))
+            if questionario[contador].respostaF:
+                RESPOSTAS.append((questionario[contador].valorF, questionario[contador].respostaF))
+            if questionario[contador].respostaG:
+                RESPOSTAS.append((questionario[contador].valorG, questionario[contador].respostaG))
+
+            self.fields['A%d' % (contador+1)] = forms.ChoiceField(
+                label= questionario[contador].numero + ". " + questionario[contador].pergunta,
+                choices = RESPOSTAS,
+                required=False,
+                widget = forms.RadioSelect,
+            )
+
