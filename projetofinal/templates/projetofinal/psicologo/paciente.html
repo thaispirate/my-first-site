@@ -21,7 +21,6 @@
     <![endif]-->
   </head>
   <body>
-         {% if user.is_authenticated %}
          <nav class="navbar navbar-inverse navbar-fixed-top">
           <div class="container">
             <div class="navbar-header">
@@ -64,45 +63,7 @@
             <div class="main">
             <!-- Content Here -->
             </div>
-         {% elif form.errors %}
-         <nav class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-              </button>
-              <a class="navbar-brand" href="{% url 'projetofinal.views.PsicologoAdministracao' %}">Vínculo Vida</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
 
-          <form class="navbar-form navbar-right" method="POST">{% csrf_token %}
-            Usuario invalido
-            <div class="form-group">
-              <input name="username" type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input name="password" type="password" placeholder="Password" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-primary">Entrar</button>
-            <a type="submit" href="cadastro" class="btn btn-primary" >Cadastrar-se</a>
-             <a href="recover">Esqueceu a senha?</a>
-          </form>
-          </div>
-          </div>
-          </nav>
-         {% else %}
-         <nav class="navbar navbar-inverse navbar-fixed-top">
-              <div class="container">
-                <div class="navbar-header">
-                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                  </button>
-                  <a class="navbar-brand" href="{% url 'projetofinal.views.PsicologoAdministracao' %}">Vínculo Vida</a>
-                </div>
-         </nav>
-         {% endif %}
        <img src="{% static 'image/psicologia.jpg' %}" class="img-responsive" alt="Responsive image"/>
       <div class="container">
         <hr class="featurette-divider">

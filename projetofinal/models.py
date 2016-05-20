@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django import forms
 from django.utils import timezone
@@ -54,45 +55,37 @@ class Psicologo(models.Model):
     def __str__(self):
         return self.usuario.first_name
 
-class QuestionarioAreaAfetiva(models.Model):
+class PerguntaAreaAfetiva(models.Model):
     numero = models.CharField(max_length=10,null=True)
     pergunta = models.TextField(null=True)
-    respostaA = models.TextField(null=True,blank=True)
-    respostaB = models.TextField(null=True,blank=True)
-    respostaC = models.TextField(null=True,blank=True)
-    respostaD = models.TextField(null=True,blank=True)
-    respostaE = models.TextField(null=True,blank=True)
-    respostaF = models.TextField(null=True,blank=True)
-    respostaG = models.TextField(null=True,blank=True)
-    valorA = models.FloatField(null=True,blank=True)
-    valorB = models.FloatField(null=True,blank=True)
-    valorC = models.FloatField(null=True,blank=True)
-    valorD = models.FloatField(null=True,blank=True)
-    valorE = models.FloatField(null=True,blank=True)
-    valorF = models.FloatField(null=True,blank=True)
-    valorG = models.FloatField(null=True,blank=True)
 
     def __str__(self):
         return self.numero
 
-class AreaAfetiva(models.Model):
-    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
-    afetivoRelacional = models.FloatField(null=True)
-    produtividade = models.FloatField(null=True)
-    socioCultural = models.FloatField(null=True)
-    organico = models.FloatField(null=True)
-    espiritual = models.FloatField(null=True)
+class RespostaAreaAfetiva(models.Model):
+    pergunta =  models.ForeignKey(PerguntaAreaAfetiva, on_delete=models.CASCADE,null=True)
+    letra = models.CharField(max_length=1,null=True)
+    resposta = models.TextField(null=True)
+    valor = models.FloatField(null=True)
 
     def __str__(self):
-        return self.paciente.nome
+        return self.pergunta.numero+"-"+self.letra
+
+class AreaAfetiva(models.Model):
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
+    resposta = models.ForeignKey(RespostaAreaAfetiva, on_delete=models.CASCADE,null=True)
+
+    def __str__(self):
+        return self.paciente.nome+" "+self.resposta.pergunta.numero+"-"+self.resposta.letra
 
 class Anamnesia(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
-    area = models.CharField(max_length=50,null=True,blank=True)
-    inicio = models.DateField(null=True)
-    fim = models.DateField(null=True,blank=True)
+    areaAfetiva = models.CharField(max_length=20,null=True)
+    inicio = models.DateTimeField(null=True)
+    fim = models.DateTimeField(null=True,blank=True)
     retornos = models.IntegerField(null=True, blank=True)
     GrauDiferenciacao = models.IntegerField(null=True, blank=True)
 
+
     def __str__(self):
-        return self.paciente.nome
+        return self.paciente.nome+" "+(self.inicio.strftime("%Y-%m-%d %H:%M:%S"))

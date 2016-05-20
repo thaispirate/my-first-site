@@ -28,7 +28,7 @@
                 <span class="sr-only">Toggle navigation</span>
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
               </button>
-              <a class="navbar-brand" href="{% url 'projetofinal.views.PsicologoHome' %}">Vínculo Vida</a>
+              <a class="navbar-brand" href="{% url 'projetofinal.views.Home' %}">Vínculo Vida</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
 
@@ -47,12 +47,12 @@
           <table class="table table-bordered">
             <tr>
                 <th>#</th>
-                <th>Paciente</th>
+                <th>Análises</th>
             </tr>
-            {% for paciente in pacientes %}
+            {% for analise in view.anamnesia %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="/psicologo/paciente/{{ paciente.usuario_id }}">{{paciente.nome}}</a></td>
+                <td><a href="/analise/consultar/{{user.id}}/{{ analise.id }}">{{analise.inicio}}</a></td>
             </tr>
             {% endfor %}
           </table>

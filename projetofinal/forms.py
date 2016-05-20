@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, QuestionarioAreaAfetiva
+from .models import User, PerguntaAreaAfetiva, RespostaAreaAfetiva
 from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
@@ -515,26 +515,16 @@ class AreaAfetiva(forms.Form):
 
     def __init__(self,*args,**kwargs):
         super(AreaAfetiva, self).__init__(*args,**kwargs)
-        questionario = QuestionarioAreaAfetiva.objects.all()
-        for contador in range(29):
-            RESPOSTAS = [
-                        (questionario[contador].valorA, questionario[contador].respostaA),
-                        (questionario[contador].valorB, questionario[contador].respostaB),
-                        (questionario[contador].valorC, questionario[contador].respostaC),
-            ]
-            if questionario[contador].respostaD:
-                RESPOSTAS.append((questionario[contador].valorD, questionario[contador].respostaD))
-            if questionario[contador].respostaE:
-                RESPOSTAS.append((questionario[contador].valorE, questionario[contador].respostaE))
-            if questionario[contador].respostaF:
-                RESPOSTAS.append((questionario[contador].valorF, questionario[contador].respostaF))
-            if questionario[contador].respostaG:
-                RESPOSTAS.append((questionario[contador].valorG, questionario[contador].respostaG))
-
-            self.fields['A%d' % (contador+1)] = forms.ChoiceField(
-                label= questionario[contador].numero + ". " + questionario[contador].pergunta,
+        pergunta = PerguntaAreaAfetiva.objects.all()
+        for item in pergunta:
+            resposta = RespostaAreaAfetiva.objects.filter(pergunta_id=item.id)
+            RESPOSTAS = []
+            for resp in resposta:
+                RESPOSTAS.append((resp.letra, resp.resposta))
+            self.fields[item.id] = forms.ChoiceField(
+                label= item.numero + ". " + item.pergunta,
                 choices = RESPOSTAS,
-                required=False,
+                error_messages={'required':'Você esqueceu de marcar'},
                 widget = forms.RadioSelect,
             )
 
