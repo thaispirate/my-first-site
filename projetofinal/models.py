@@ -71,12 +71,6 @@ class RespostaAreaAfetiva(models.Model):
     def __str__(self):
         return self.pergunta.numero+"-"+self.letra
 
-class AreaAfetiva(models.Model):
-    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
-    resposta = models.ForeignKey(RespostaAreaAfetiva, on_delete=models.CASCADE,null=True)
-
-    def __str__(self):
-        return self.paciente.nome+" "+self.resposta.pergunta.numero+"-"+self.resposta.letra
 
 class Anamnesia(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
@@ -89,3 +83,11 @@ class Anamnesia(models.Model):
 
     def __str__(self):
         return self.paciente.nome+" "+(self.inicio.strftime("%Y-%m-%d %H:%M:%S"))
+
+class AreaAfetiva(models.Model):
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
+    resposta = models.ForeignKey(RespostaAreaAfetiva, on_delete=models.CASCADE,null=True)
+    anamnesia = models.ForeignKey(Anamnesia, on_delete=models.CASCADE,null=True)
+
+    def __str__(self):
+        return self.paciente.nome+" "+self.resposta.pergunta.numero+"-"+self.resposta.letra+" "+self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")

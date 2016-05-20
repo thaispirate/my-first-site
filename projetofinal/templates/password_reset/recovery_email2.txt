@@ -1,4 +1,4 @@
-{% load i18n %}{% blocktrans %}Querido {{ username }},{% endblocktrans %}
+{% load i18n %}{% blocktrans %}Prezado(a) {{ username }},{% endblocktrans %}
 
 {% blocktrans with domain=site.domain %}Você -- ou alguém se passando por você -- pediu uma nova senha em {{ domain }}.{% endblocktrans %}
 

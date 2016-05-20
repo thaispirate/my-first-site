@@ -350,10 +350,6 @@ class InserirAnalise(SessionWizardView):
         for item in form_data[0]:
             resposta = RespostaAreaAfetiva.objects.get(pergunta_id=int(item),letra=form_data[0][item])
             A.append(resposta.valor)
-            areaAfetiva = AreaAfetiva()
-            areaAfetiva.paciente = paciente
-            areaAfetiva.resposta = resposta
-            areaAfetiva.save()
 
         afetivoRelacional=(A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8)
         produtividade=(A[5]+A[16]+A[20]+A[22]+A[23])/5
@@ -373,6 +369,15 @@ class InserirAnalise(SessionWizardView):
 
         anamnesia.inicio=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         anamnesia.save()
+
+        for item in form_data[0]:
+            resposta = RespostaAreaAfetiva.objects.get(pergunta_id=int(item),letra=form_data[0][item])
+            areaAfetiva = AreaAfetiva()
+            areaAfetiva.paciente = paciente
+            areaAfetiva.resposta = resposta
+            areaAfetiva.anamnesia = anamnesia
+            areaAfetiva.save()
+
         return redirect(EdicaoRealizada)
 
 class ConsultarAnalise(TemplateView):
