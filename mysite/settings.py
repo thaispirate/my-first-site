@@ -43,7 +43,6 @@ INSTALLED_APPS = (
     'password_reset',
     'jquery',
     'highcharts',
-    'chartkick',
     'projetofinal',
 )
 
@@ -108,11 +107,6 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-import chartkick
-STATICFILES_DIRS = (
-    chartkick.js(),
-)
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL= '/login'
