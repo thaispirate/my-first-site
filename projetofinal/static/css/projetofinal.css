@@ -19,15 +19,15 @@ body {
 
 .navbar-inverse {
   background-color: #87CEFA;
-  border-color: #87CEFA;
-  position:absolute;
+  border-color: #FFFFF;
+  position:fixed;
 }
 .navbar-inverse .navbar-brand {
   color: #FFFFFF;
 }
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
-  color: #0000FF;
+  color: #000FF;
   background-color: transparent;
 }
 
@@ -61,7 +61,7 @@ body,html{
 
 nav.sidebar.navbar {
     border-radius: 0px;
-    position:relative;
+    position:fixed;
 }
 
 nav.sidebar, .main{

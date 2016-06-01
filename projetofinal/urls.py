@@ -5,7 +5,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from .forms import Cadastro1Form, Cadastro2Form, Cadastro3Form, Cadastro4Form, Cadastro5Form, Cadastro6Form, \
     Cadastro7Form, Cadastro8Form, Cadastro9Form, CadastroPsicologoForm, IniciarAreaAfetiva, ConsultarAreaAfetiva
-from .views import CadastroWizard, EditarCadastro, PsicologoPaciente, CadastroPsicologoWizard,InserirAnalise, ConsultarAnalise, ConsultandoAnalise
+from .views import CadastroWizard, EditarCadastro, PsicologoPaciente, CadastroPsicologoWizard,\
+    InserirAnalise, ConsultarAnalise, ConsultandoAnalise,AnalisePaciente, ConsultandoAnalisePaciente
 
 handler404="views.erro404"
 
@@ -28,6 +29,7 @@ urlpatterns = [
     url(r'^reset/(?P<token>[\w:-]+)/$', views.reset,
         name='password_reset_reset'),
     url(r'^analise/inserir/(?P<paciente_id>\d+)/$', InserirAnalise.as_view([IniciarAreaAfetiva])),
+    url(r'^analise/iniciada$', views.AnaliseIniciada),
     url(r'^analise/consultar/(?P<paciente_id>\d+)/$', view=ConsultarAnalise.as_view()),
     url(r'^analise/consultar/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ConsultandoAnalise.as_view([ConsultarAreaAfetiva]), name="consultar"),
 
@@ -39,6 +41,7 @@ urlpatterns = [
     url(r'^psicologo/cadastrado$', views.CadastroPsicologoRealizado),
     url(r'^psicologo/paciente/(?P<paciente_id>\d+)/$', PsicologoPaciente.as_view()),
     url(r'^psicologo/sair$', views.LogoutPsicologo),
-
+    url(r'^psicologo/paciente/(?P<paciente_id>\d+)/analise$', view=AnalisePaciente.as_view()),
+    url(r'^psicologo/paciente/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ConsultandoAnalisePaciente.as_view([ConsultarAreaAfetiva]), name="consultar")
 
 ]
