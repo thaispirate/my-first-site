@@ -20,7 +20,6 @@ from django.template import loader
 from django.utils import timezone
 from django.views import generic
 from django.views.decorators.debug import sensitive_post_parameters
-from chartit import DataPool, Chart
 import simplejson
 from .forms import ConsultarAreaAfetiva
 
