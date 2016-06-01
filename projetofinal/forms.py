@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, PerguntaAreaAfetiva, RespostaAreaAfetiva
+from .models import User, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva
 from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
@@ -511,10 +511,10 @@ class CadastroPsicologoForm(UserCreationForm):
 
     nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório'})
 
-class AreaAfetiva(forms.Form):
+class IniciarAreaAfetiva(forms.Form):
 
     def __init__(self,*args,**kwargs):
-        super(AreaAfetiva, self).__init__(*args,**kwargs)
+        super(IniciarAreaAfetiva, self).__init__(*args,**kwargs)
         pergunta = PerguntaAreaAfetiva.objects.all()
         for item in pergunta:
             resposta = RespostaAreaAfetiva.objects.filter(pergunta_id=item.id)
@@ -528,3 +528,23 @@ class AreaAfetiva(forms.Form):
                 widget = forms.RadioSelect,
             )
 
+class ConsultarAreaAfetiva(forms.Form):
+
+    def __init__(self,*args,**kwargs):
+        analise_id = kwargs.pop('analise_id', None)
+        super(ConsultarAreaAfetiva, self).__init__(*args,**kwargs)
+        pergunta = PerguntaAreaAfetiva.objects.all()
+        pacienteResposta = AreaAfetiva.objects.filter(anamnesia_id=analise_id)
+        for item,resposta in zip(pergunta,pacienteResposta):
+            respostas = RespostaAreaAfetiva.objects.filter(pergunta_id=item.id)
+            RESPOSTAS = []
+            for resp in respostas:
+                RESPOSTAS.append((resp.letra, resp.resposta))
+            escolhida = RespostaAreaAfetiva.objects.get(id=resposta.resposta_id)
+            self.fields[item.id] = forms.ChoiceField(
+                label= item.numero + ". " + item.pergunta,
+                choices = RESPOSTAS,
+                error_messages={'required':'Você esqueceu de marcar'},
+                widget = forms.RadioSelect(attrs={'disabled': 'disabled'}),
+                initial= escolhida.letra,
+            )

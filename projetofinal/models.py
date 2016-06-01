@@ -91,3 +91,5 @@ class AreaAfetiva(models.Model):
 
     def __str__(self):
         return self.paciente.nome+" "+self.resposta.pergunta.numero+"-"+self.resposta.letra+" "+self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")
+
+

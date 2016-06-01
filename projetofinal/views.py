@@ -1,10 +1,11 @@
 from datetime import datetime
+import json
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User, Group
 from .models import Paciente,User, Psicologo, AreaAfetiva, Anamnesia, RespostaAreaAfetiva, PerguntaAreaAfetiva
 from formtools.wizard.views import SessionWizardView
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -19,7 +20,9 @@ from django.template import loader
 from django.utils import timezone
 from django.views import generic
 from django.views.decorators.debug import sensitive_post_parameters
-
+from chartit import DataPool, Chart
+import simplejson
+from .forms import ConsultarAreaAfetiva
 
 try:
     from django.contrib.sites.shortcuts import get_current_site
@@ -383,6 +386,7 @@ class InserirAnalise(SessionWizardView):
 class ConsultarAnalise(TemplateView):
     template_name="projetofinal/analise/consultar.html"
 
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(ConsultarAnalise, self).dispatch(*args, **kwargs)
@@ -395,6 +399,68 @@ class ConsultarAnalise(TemplateView):
         anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
         return anamnesia
 
+    def grafico(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = {
+        }
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
+        for analise in anamnesia:
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id)
+            A=[0]
+            for respostas in area:
+                resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
+                A.append(resposta.valor)
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8))*10
+            produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)*10
+            organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)*10
+            espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)*10
+            socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)*10
+            dados[str(analise.inicio)] = [afetivoRelacional]
+            dados[str(analise.inicio)].append(produtividade)
+            dados[str(analise.inicio)].append(organico)
+            dados[str(analise.inicio)].append(espiritual)
+            dados[str(analise.inicio)].append(socioCultural)
+
+
+        grafico = simplejson.dumps(dados)
+        return grafico
+
+class ConsultandoAnalise(SessionWizardView):
+    template_name = "projetofinal/analise/consultando.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ConsultandoAnalise, self).dispatch(*args, **kwargs)
+
+    def get_form(self, step=None, data=None, files=None):
+        form = super(ConsultandoAnalise, self).get_form(step, data, files)
+
+        # determine the step if not given
+        if step is None:
+            step = self.steps.current
+
+        if step == "0":
+            if 'paciente_id' in self.kwargs:
+                paciente_id = self.kwargs['paciente_id']
+                try:
+                    paciente = Paciente.objects.get(usuario_id=paciente_id)
+                except Paciente.DoesNotExist:
+                    raise Http404("Paciente não existe")
+                if 'analise_id' in self.kwargs:
+                    analise_id = self.kwargs['analise_id']
+                try:
+                    analise = AreaAfetiva.objects.filter(anamnesia_id=analise_id)
+                except Anamnesia.DoesNotExist:
+                    raise Http404("Análise não existe")
+            form = ConsultarAreaAfetiva(analise_id=analise_id, data=data)
+
+        return form
+
+
+    def done(self, form_list, form_dict, **kwargs):
+        return redirect(EdicaoRealizada)
 
 #Views do Psicólogo
 def PsicologoAdministracao(request):

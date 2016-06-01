@@ -104,33 +104,39 @@ pip install django-formtools
 
 pip install -r requirements.txt
 
+-crispy-forms
 baixar django-crispy-forms-1.6.0.tar.gz :https://pypi.python.org/pypi/django-crispy-forms/1.6.0
-
 descompactar django-crispy-forms-1.6.0.tar.gz
-
 cd django-crispy-forms-1.6.0
+sudo cp -R crispy_forms/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
 
-sudo cp -R crispy_forms/ ~/VinculoVida/django/myvenv/lib/python3.4/site-packages/
-
+-formtools
 baixar django-formtools-1.0.tar.gz :https://pypi.python.org/pypi/django-formtools
-
 descompactar django-formtools-1.0.tar.gz
-
 cd django-formtools-1.0
+sudo cp -R formtools/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
 
-sudo cp -R formtools/ ~/VinculoVida/django/myvenv/lib/python3.4/site-packages/
+-password-reset
+baixar django-password-reset-0.8.2.tar.gz :https://pypi.python.org/pypi/django-password-reset
+descompactar django-password-reset-0.8.2.tar.gz
+cd django-password-reset-0.8.2
+sudo cp -R password_reset/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
+
+-jquery
+baixar django-jquery-1.12.2.tar.gz :https://pypi.python.org/pypi/django-jquery
+descompactar django-jquery-1.12.2.tar.gz
+cd django-jquery-1.12.2
+sudo cp -R jquery/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
+
+-highcharts
+baixar django-highcharts-0.1.7.tar.gz :https://pypi.python.org/pypi/django-highcharts/
+descompactar django-highcharts-0.1.7.tar.gz
+cd django-highcharts-0.1.7
+sudo cp -R highcharts/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
 
 
 python manage.py makemigrations
 python manage.py migrate
-
-baixar django-password-reset-0.8.2.tar.gz: https://pypi.python.org/pypi/django-password-reset
-
-descompactar django-password-reset-0.8.2.tar.gz
-
-cd django-password-reset-0.8.2
-
-sudo cp -R password_reset/ ~/VinculoVida/django/myvenv/lib/python3.4/site-packages/
 
 cd ~/VinculoVida/
 python manage.py createsuperuser
