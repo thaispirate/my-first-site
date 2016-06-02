@@ -41,6 +41,7 @@
                       <span class="icon-bar"></span>
                   </button>
                 </div>
+
              <div id="navbar" class="navbar-collapse collapse">
               <form class="navbar-form navbar-right">
                 Olá, {{user.first_name|capfirst}}
@@ -48,7 +49,6 @@
               </div>
               </div>
          </nav>
-
         <nav class="navbar navbar-inverse sidebar" role="navigation">
             <div class="container-fluid">
 
@@ -56,7 +56,7 @@
                 <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                     <div class="desktop-hide">
-                        Olá, {{user.first_name|capfirst}
+                        Olá, {{user.first_name|capfirst}}
                     </div>
                         <li><a href="{% url 'projetofinal.views.Home' %}">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                         <li ><a href="/cadastro/editar/{{ user.id }}">Editar Cadastro<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
@@ -66,7 +66,6 @@
                                 <li><a href="/analise/inserir/{{ user.id }}">Inserir</a></li>
                                 <li><a href="#">Prosseguir</a></li>
                                 <li><a href="/analise/consultar/{{user.id}}">Consultar</a></li>
-                                <li><a href="#">Remover</a></li>
                             </ul>
                         </li>
                         <li><a href="#">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
@@ -79,19 +78,26 @@
        <div class="container">
           <hr class="featurette-divider">
           <div class="col-md-10">
-          <table class="table table-bordered">
+          <form action="remover" method="POST">{% csrf_token %}
+          <table class="table">
             <tr>
-                <th>#</th>
+                <th></th>
                 <th>Análises</th>
             </tr>
             {% for analise in view.anamnesia %}
             <tr>
-                <td>{{ forloop.counter }}</td>
+                <td class="col-sm-1">
+                      <label>
+                        <input type="checkbox" name="analise" value="{{analise.id}}">
+                      </label>
+                </td>
                 <td><a href="/analise/consultar/{{user.id}}/{{ analise.id }}">{{analise.inicio}}</a>
                 </td>
             </tr>
             {% endfor %}
           </table>
+              <button type="submit" class="btn btn-defaul">Remover</button>
+          </form>
               <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
           </div>
        </div>

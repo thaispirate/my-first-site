@@ -393,7 +393,6 @@ class ConsultarAnalise(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(ConsultarAnalise, self).dispatch(*args, **kwargs)
 
-
     def anamnesia(self):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
@@ -459,6 +458,19 @@ class ConsultandoAnalise(SessionWizardView):
             form = ConsultarAreaAfetiva(analise_id=analise_id, data=data)
 
         return form
+
+
+@login_required()
+def RemoverAnalise(request, paciente_id):
+
+    if request.POST:
+        analise = request.POST['analise']
+    Anamnesia.objects.filter(id=analise).delete()
+    AreaAfetiva.objects.filter(anamnesia_id=analise).delete()
+    return render(request,"projetofinal/analise/removida.html")
+
+
+
 
 #Views do Psicólogo
 def PsicologoAdministracao(request):

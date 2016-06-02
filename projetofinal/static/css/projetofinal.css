@@ -20,7 +20,7 @@ body {
 .navbar-inverse {
   background-color: #87CEFA;
   border-color: #FFFFF;
-  position:fixed;
+  position:absolute;
 }
 .navbar-inverse .navbar-brand {
   color: #FFFFFF;
@@ -36,12 +36,12 @@ body {
 }
 
 @media (max-width: 768px){
-  .navbar-inverse {
-    background-color: #87CEFA;
-    border-color: #87CEFA;
-  }
   .glyphicon{
     color: white;
+  }
+  .navbar-inverse {
+        background-color: #87CEFA;
+        border-color: #87CEFA;
   }
 }
 
@@ -61,7 +61,7 @@ body,html{
 
 nav.sidebar.navbar {
     border-radius: 0px;
-    position:fixed;
+    position:relative;
 }
 
 nav.sidebar, .main{
@@ -103,7 +103,7 @@ nav.sidebar, .main{
         text-align: center;
         width: 100%;
         margin-left: 0px;
-        position:relative;
+        position:absolute;
     }
 
     /*Center Icons*/
@@ -171,6 +171,7 @@ nav.sidebar, .main{
         opacity: 0;
     }
 }
+
 
 /* .....NavBar: Fully showing nav bar..... */
 

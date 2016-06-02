@@ -57,7 +57,6 @@
                                     <li><a href="/analise/inserir/{{ user.id }}">Iniciar</a></li>
                                     <li><a href="#">Prosseguir</a></li>
                                     <li><a href="/analise/consultar/{{user.id}}">Consultar</a></li>
-                                    <li><a href="#">Remover</a></li>
                                 </ul>
                             </li>
                             <li><a href="#">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
@@ -89,11 +88,12 @@
           </div>
          </nav>
           {% endif %}
-       <img src="{% static 'image/psicologia.jpg' %}" class="img-responsive" alt="Responsive image"/>
+          <img src="{% static 'image/psicologia.jpg' %}" class="img-responsive" alt="Responsive image"/>
       <div class="container">
         <hr class="featurette-divider">
             {% block content %}
              {% endblock %}
+      </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
       

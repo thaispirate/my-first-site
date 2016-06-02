@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from .forms import Cadastro1Form, Cadastro2Form, Cadastro3Form, Cadastro4Form, Cadastro5Form, Cadastro6Form, \
     Cadastro7Form, Cadastro8Form, Cadastro9Form, CadastroPsicologoForm, IniciarAreaAfetiva, ConsultarAreaAfetiva
 from .views import CadastroWizard, EditarCadastro, PsicologoPaciente, CadastroPsicologoWizard,\
-    InserirAnalise, ConsultarAnalise, ConsultandoAnalise,AnalisePaciente, ConsultandoAnalisePaciente
+    InserirAnalise, ConsultarAnalise, ConsultandoAnalise,AnalisePaciente, ConsultandoAnalisePaciente, RemoverAnalise
 
 handler404="views.erro404"
 
@@ -30,8 +30,9 @@ urlpatterns = [
         name='password_reset_reset'),
     url(r'^analise/inserir/(?P<paciente_id>\d+)/$', InserirAnalise.as_view([IniciarAreaAfetiva])),
     url(r'^analise/iniciada$', views.AnaliseIniciada),
-    url(r'^analise/consultar/(?P<paciente_id>\d+)/$', view=ConsultarAnalise.as_view()),
-    url(r'^analise/consultar/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ConsultandoAnalise.as_view([ConsultarAreaAfetiva]), name="consultar"),
+    url(r'^analise/consultar/(?P<paciente_id>\d+)/$', ConsultarAnalise.as_view(), name="consultar"),
+    url(r'^analise/consultar/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ConsultandoAnalise.as_view([ConsultarAreaAfetiva]), name="consultando"),
+    url(r'^analise/consultar/(?P<paciente_id>\d+)/remover$', views.RemoverAnalise, name="remover"),
 
     #Psicólogo
     url(r'^psicologo/administracao$', views.PsicologoAdministracao),

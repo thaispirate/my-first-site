@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva
+from .models import User, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva, Anamnesia
 from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field

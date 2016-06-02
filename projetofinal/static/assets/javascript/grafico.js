@@ -1,6 +1,6 @@
     $(document).ready(function () {
         var options = {
-            colors: ["#7cb5ec", "#f7a35c"],
+            colors: ["#7cb5ec", "#f7a35c", "#ff095c"],
             chart: {
                 type: 'column',
                 renderTo:'container'
