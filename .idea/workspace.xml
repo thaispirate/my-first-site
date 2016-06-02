@@ -2,19 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ca5a1301-4982-49aa-9407-4d7d63347a4a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/removida.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/forms.py" afterPath="$PROJECT_DIR$/projetofinal/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/static/assets/javascript/grafico.js" afterPath="$PROJECT_DIR$/projetofinal/static/assets/javascript/grafico.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/static/css/projetofinal.css" afterPath="$PROJECT_DIR$/projetofinal/static/css/projetofinal.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultando.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultando.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserida.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserida.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserir.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserir.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/editado.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/editado.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/editar.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/editar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/urls.py" afterPath="$PROJECT_DIR$/projetofinal/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/views.py" afterPath="$PROJECT_DIR$/projetofinal/views.py" />
     </list>
     <ignored path="django.iws" />
@@ -36,12 +23,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="projetofinal.css" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/projetofinal/static/css/projetofinal.css">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/projetofinal/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.102349">
-              <caret line="105" column="24" selection-start-line="105" selection-start-column="24" selection-end-line="105" selection-end-column="24" />
-              <folding />
+            <state vertical-scroll-proportion="0.47818792">
+              <caret line="468" column="42" selection-start-line="468" selection-start-column="42" selection-end-line="468" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -49,7 +38,7 @@
       <file leaf-file-name="consultar.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.5">
+            <state vertical-scroll-proportion="9.375">
               <caret line="55" column="4" selection-start-line="55" selection-start-column="4" selection-end-line="55" selection-end-column="88" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -101,7 +90,6 @@
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/removida.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/editado.html" />
         <option value="$PROJECT_DIR$/projetofinal/urls.py" />
-        <option value="$PROJECT_DIR$/projetofinal/views.py" />
         <option value="$PROJECT_DIR$/projetofinal/static/assets/javascript/grafico.js" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultando.html" />
@@ -109,6 +97,7 @@
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/editar.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html" />
         <option value="$PROJECT_DIR$/projetofinal/static/css/projetofinal.css" />
+        <option value="$PROJECT_DIR$/projetofinal/views.py" />
       </list>
     </option>
   </component>
@@ -825,16 +814,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="468" column="15" selection-start-line="468" selection-start-column="15" selection-end-line="468" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/static/assets/javascript/grafico.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -915,9 +894,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/static/css/projetofinal.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.102349">
+          <caret line="105" column="24" selection-start-line="105" selection-start-column="24" selection-end-line="105" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.5">
+        <state vertical-scroll-proportion="9.375">
           <caret line="55" column="4" selection-start-line="55" selection-start-column="4" selection-end-line="55" selection-end-column="88" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -925,11 +912,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/static/css/projetofinal.css">
+    <entry file="file://$PROJECT_DIR$/projetofinal/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.102349">
-          <caret line="105" column="24" selection-start-line="105" selection-start-column="24" selection-end-line="105" selection-end-column="24" />
-          <folding />
+        <state vertical-scroll-proportion="0.47818792">
+          <caret line="468" column="42" selection-start-line="468" selection-start-column="42" selection-end-line="468" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

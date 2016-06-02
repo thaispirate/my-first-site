@@ -464,9 +464,10 @@ class ConsultandoAnalise(SessionWizardView):
 def RemoverAnalise(request, paciente_id):
 
     if request.POST:
-        analise = request.POST['analise']
-    Anamnesia.objects.filter(id=analise).delete()
-    AreaAfetiva.objects.filter(anamnesia_id=analise).delete()
+        analises = request.POST.getlist("analise")
+    for analise in analises:
+        Anamnesia.objects.filter(id=analise).delete()
+        AreaAfetiva.objects.filter(anamnesia_id=analise).delete()
     return render(request,"projetofinal/analise/removida.html")
 
 
