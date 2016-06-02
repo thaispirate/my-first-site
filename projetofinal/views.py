@@ -398,6 +398,7 @@ class ConsultarAnalise(TemplateView):
             paciente_id = self.kwargs['paciente_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
+
         return anamnesia
 
     def grafico(self):

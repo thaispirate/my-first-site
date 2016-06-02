@@ -79,6 +79,9 @@
           <hr class="featurette-divider">
           <div class="col-md-10">
           <form action="remover" method="POST">{% csrf_token %}
+            {% if not view.anamnesia %}
+              <h2>Não existem análises</h2>
+            {% else %}
           <table class="table">
             <tr>
                 <th></th>
@@ -100,6 +103,7 @@
           </form>
               <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
           </div>
+          {% endif %}
        </div>
        </div>
 
