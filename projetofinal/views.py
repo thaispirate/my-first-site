@@ -3,12 +3,18 @@ import json
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User, Group
-from .models import Paciente,User, Psicologo, AreaAfetiva, Anamnesia, RespostaAreaAfetiva, PerguntaAreaAfetiva
+from .forms import ConsultarAreaAfetiva,CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,\
+    CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna,EdicaoPaciente, IniciarAreaAfetiva,\
+    RelacionamentoAvosMaternos, RelacionamentoAvoMaternoAntes, RelacionamentoAvoMaternaAntes, RelacionamentoAvosMaternosDepois,\
+    RelacionamentoAvosPaternos, RelacionamentoAvoPaternoAntes, RelacionamentoAvoPaternaAntes, RelacionamentoAvosPaternosDepois,\
+    RelacionamentoPais, RelacionamentoPaiAntes,RelacionamentoMaeAntes,RelacionamentoPaisDepois, RelacionamentoPaciente,\
+    RelacionamentoPacienteAntes, RelacionamentoConjugeAntes, RelacionamentoPacienteDepois
+from .models import Paciente,User,Familia, Psicologo, AreaAfetiva, Anamnesia, RespostaAreaAfetiva, PerguntaAreaAfetiva
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.core import signing
@@ -21,8 +27,7 @@ from django.utils import timezone
 from django.views import generic
 from django.views.decorators.debug import sensitive_post_parameters
 import simplejson
-from .forms import ConsultarAreaAfetiva
-
+from collections import OrderedDict
 try:
     from django.contrib.sites.shortcuts import get_current_site
 except ImportError:
@@ -36,6 +41,11 @@ from django.contrib.auth import logout
 # Create your views here.
 
 #Views Paciente
+
+def is_member(user):
+    return user.groups.filter(name='paciente').exists()
+
+@user_passes_test(is_member)
 def Home(request):
     return render(request, 'projetofinal/home.html', {})
 
@@ -86,35 +96,64 @@ class CadastroWizard(SessionWizardView):
         paciente.nascimento = form_data[0]['nascimento']
         paciente.sexo = form_data[0]['sexo']
         paciente.escolaridade = form_data[0]['escolaridade']
-        paciente.nomeConjuge = form_data[1]['nomeConjuge']
-        paciente.nascimentoConjuge = form_data[1]['nascimentoConjuge']
-        paciente.sexoConjuge = form_data[1]['sexoConjuge']
-        paciente.escolaridadeConjuge = form_data[1]['escolaridadeConjuge']
-        paciente.nomePai = form_data[2]['nomePai']
-        paciente.nascimentoPai = form_data[2]['nascimentoPai']
-        paciente.falecimentoPai = form_data[2]['falecimentoPai']
-        paciente.escolaridadePai = form_data[2]['escolaridadePai']
-        paciente.nomeMae = form_data[3]['nomeMae']
-        paciente.nascimentoMae = form_data[3]['nascimentoMae']
-        paciente.falecimentoMae = form_data[3]['falecimentoMae']
-        paciente.escolaridadeMae = form_data[3]['escolaridadeMae']
-        paciente.nomeAvoPaterno = form_data[4]['nomeAvoPaterno']
-        paciente.nascimentoAvoPaterno = form_data[4]['nascimentoAvoPaterno']
-        paciente.falecimentoAvoPaterno = form_data[4]['falecimentoAvoPaterno']
-        paciente.escolaridadeAvoPaterno = form_data[4]['escolaridadeAvoPaterno']
-        paciente.nomeAvoPaterna = form_data[5]['nomeAvoPaterna']
-        paciente.nascimentoAvoPaterna = form_data[5]['nascimentoAvoPaterna']
-        paciente.falecimentoAvoPaterna = form_data[5]['falecimentoAvoPaterna']
-        paciente.escolaridadeAvoPaterna = form_data[5]['escolaridadeAvoPaterna']
-        paciente.nomeAvoMaterno = form_data[6]['nomeAvoMaterno']
-        paciente.nascimentoAvoMaterno = form_data[6]['nascimentoAvoMaterno']
-        paciente.falecimentoAvoMaterno = form_data[6]['falecimentoAvoMaterno']
-        paciente.escolaridadeAvoMaterno = form_data[6]['escolaridadeAvoMaterno']
-        paciente.nomeAvoMaterna = form_data[7]['nomeAvoMaterna']
-        paciente.nascimentoAvoMaterna = form_data[7]['nascimentoAvoMaterna']
-        paciente.falecimentoAvoMaterna = form_data[7]['falecimentoAvoMaterna']
-        paciente.escolaridadeAvoMaterna = form_data[7]['escolaridadeAvoMaterna']
         paciente.save()
+        familia = Familia()
+        familia.usuario = paciente
+        familia.parente = "conjuge"
+        familia.nome = form_data[1]['nomeConjuge']
+        familia.nascimento = form_data[1]['nascimentoConjuge']
+        familia.sexo = form_data[1]['sexoConjuge']
+        familia.escolaridade = form_data[1]['escolaridadeConjuge']
+        familia.save()
+        familia = Familia()
+        familia.usuario = paciente
+        familia.parente = "pai"
+        familia.nome = form_data[2]['nomePai']
+        familia.nascimento = form_data[2]['nascimentoPai']
+        familia.falecimento = form_data[2]['falecimentoPai']
+        familia.escolaridade = form_data[2]['escolaridadePai']
+        familia.save()
+        familia = Familia()
+        familia.usuario = paciente
+        familia.parente = "mae"
+        familia.nome = form_data[3]['nomeMae']
+        familia.nascimento = form_data[3]['nascimentoMae']
+        familia.falecimento = form_data[3]['falecimentoMae']
+        familia.escolaridade = form_data[3]['escolaridadeMae']
+        familia.save()
+        familia = Familia()
+        familia.usuario = paciente
+        familia.parente = "avoPaterno"
+        familia.nome = form_data[4]['nomeAvoPaterno']
+        familia.nascimento = form_data[4]['nascimentoAvoPaterno']
+        familia.falecimento = form_data[4]['falecimentoAvoPaterno']
+        familia.escolaridade = form_data[4]['escolaridadeAvoPaterno']
+        familia.save()
+        familia = Familia()
+        familia.usuario = paciente
+        familia.parente = "avoPaterna"
+        familia.nome = form_data[5]['nomeAvoPaterna']
+        familia.nascimento = form_data[5]['nascimentoAvoPaterna']
+        familia.falecimento = form_data[5]['falecimentoAvoPaterna']
+        familia.escolaridade = form_data[5]['escolaridadeAvoPaterna']
+        familia.save()
+        familia = Familia()
+        familia.usuario = paciente
+        familia.parente = "avoMaterno"
+        familia.nome = form_data[6]['nomeAvoMaterno']
+        familia.nascimento = form_data[6]['nascimentoAvoMaterno']
+        familia.falecimento = form_data[6]['falecimentoAvoMaterno']
+        familia.escolaridade = form_data[6]['escolaridadeAvoMaterno']
+        familia.save()
+        familia = Familia()
+        familia.usuario = paciente
+        familia.parente = "avoMaterna"
+        familia.nome = form_data[7]['nomeAvoMaterna']
+        familia.nascimento = form_data[7]['nascimentoAvoMaterna']
+        familia.falecimento = form_data[7]['falecimentoAvoMaterna']
+        familia.escolaridade = form_data[7]['escolaridadeAvoMaterna']
+        familia.save()
+
         return redirect(CadastroRealizado)
 
 
@@ -131,19 +170,57 @@ class EditarCadastro(SessionWizardView):
     def dispatch(self, *args, **kwargs):
         return super(EditarCadastro, self).dispatch(*args, **kwargs)
 
-    def get_form_initial(self, step):
-        if 'paciente_id' in self.kwargs:
-            paciente_id = self.kwargs['paciente_id']
-            try:
-                paciente = Paciente.objects.get(usuario_id=paciente_id)
-            except Paciente.DoesNotExist:
-                raise Http404("Paciente não existe")
+    def get_form(self, step=None, data=None, files=None):
 
-            from django.forms.models import model_to_dict
-            project_dict = model_to_dict(paciente)
-            return project_dict
-        else:
-            return self.initial_dict.get(step, {})
+        if 'paciente_id' in self.kwargs:
+                paciente_id = self.kwargs['paciente_id']
+                try:
+                    paciente = Paciente.objects.get(usuario_id=paciente_id)
+                except Paciente.DoesNotExist:
+                    raise Http404("Paciente não existe")
+        # determine the step if not given
+        if step is None:
+            step = self.steps.current
+
+        if step == "0":
+            form = EdicaoPaciente(paciente_id=paciente_id, data=data)
+            return form
+        if step == "1":
+            familia = Familia.objects.get(usuario_id=paciente.id,parente="conjuge")
+            form = CadastroConjuge(data= data,initial = { "nomeConjuge":familia.nome,"nascimentoConjuge":familia.nascimento,
+                                             "sexoConjuge":familia.sexo,"escolaridadeConjuge":familia.escolaridade})
+            return form
+        if step == "2":
+            familia = Familia.objects.get(usuario_id=paciente.id,parente="pai")
+            form = CadastroPai(data=data,initial = { "nomePai":familia.nome,"nascimentoPai":familia.nascimento,
+                                             "falecimentoPai":familia.falecimento,"escolaridadePai":familia.escolaridade})
+            return form
+        if step == "3":
+            familia = Familia.objects.get(usuario_id=paciente.id,parente="mae")
+            form = CadastroMae(data=data,initial = { "nomeMae":familia.nome,"nascimentoMae":familia.nascimento,
+                                             "falecimentoMae":familia.falecimento,"escolaridadeMae":familia.escolaridade})
+            return form
+        if step == "4":
+            familia = Familia.objects.get(usuario_id=paciente.id,parente="avoPaterno")
+            form = CadastroAvoPaterno(data=data,initial = { "nomeAvoPaterno":familia.nome,"nascimentoAvoPaterno":familia.nascimento,
+                                             "falecimentoAvoPaterno":familia.falecimento,"escolaridadeAvoPaterno":familia.escolaridade})
+            return form
+        if step == "5":
+            familia = Familia.objects.get(usuario_id=paciente.id,parente="avoPaterna")
+            form = CadastroAvoPaterna(data=data,initial = { "nomeAvoPaterna":familia.nome,"nascimentoAvoPaterna":familia.nascimento,
+                                             "falecimentoAvoPaterna":familia.falecimento,"escolaridadeAvoPaterna":familia.escolaridade})
+            return form
+        if step == "6":
+            familia = Familia.objects.get(usuario_id=paciente.id,parente="avoMaterno")
+            form = CadastroAvoMaterno(data=data,initial = { "nomeAvoMaterno":familia.nome,"nascimentoAvoMaterno":familia.nascimento,
+                                             "falecimentoAvoMaterno":familia.falecimento,"escolaridadeAvoMaterno":familia.escolaridade})
+            return form
+        if step == "7":
+            familia = Familia.objects.get(usuario_id=paciente.id,parente="avoMaterna")
+            form = CadastroAvoMaterna(data=data,initial = { "nomeAvoMaterna":familia.nome,"nascimentoAvoMaterna":familia.nascimento,
+                                             "falecimentoAvoMaterna":familia.falecimento,"escolaridadeAvoMaterna":familia.escolaridade})
+            return form
+
 
     def done(self, form_list, form_dict, **kwargs):
         paciente_id = self.kwargs['paciente_id']
@@ -153,35 +230,49 @@ class EditarCadastro(SessionWizardView):
         paciente.nascimento = form_data[0]['nascimento']
         paciente.sexo = form_data[0]['sexo']
         paciente.escolaridade = form_data[0]['escolaridade']
-        paciente.nomeConjuge = form_data[1]['nomeConjuge']
-        paciente.nascimentoConjuge = form_data[1]['nascimentoConjuge']
-        paciente.sexoConjuge = form_data[1]['sexoConjuge']
-        paciente.escolaridadeConjuge = form_data[1]['escolaridadeConjuge']
-        paciente.nomePai = form_data[2]['nomePai']
-        paciente.nascimentoPai = form_data[2]['nascimentoPai']
-        paciente.falecimentoPai = form_data[2]['falecimentoPai']
-        paciente.escolaridadePai = form_data[2]['escolaridadePai']
-        paciente.nomeMae = form_data[3]['nomeMae']
-        paciente.nascimentoMae = form_data[3]['nascimentoMae']
-        paciente.falecimentoMae = form_data[3]['falecimentoMae']
-        paciente.escolaridadeMae = form_data[3]['escolaridadeMae']
-        paciente.nomeAvoPaterno = form_data[4]['nomeAvoPaterno']
-        paciente.nascimentoAvoPaterno = form_data[4]['nascimentoAvoPaterno']
-        paciente.falecimentoAvoPaterno = form_data[4]['falecimentoAvoPaterno']
-        paciente.escolaridadeAvoPaterno = form_data[4]['escolaridadeAvoPaterno']
-        paciente.nomeAvoPaterna = form_data[5]['nomeAvoPaterna']
-        paciente.nascimentoAvoPaterna = form_data[5]['nascimentoAvoPaterna']
-        paciente.falecimentoAvoPaterna = form_data[5]['falecimentoAvoPaterna']
-        paciente.escolaridadeAvoPaterna = form_data[5]['escolaridadeAvoPaterna']
-        paciente.nomeAvoMaterno = form_data[6]['nomeAvoMaterno']
-        paciente.nascimentoAvoMaterno = form_data[6]['nascimentoAvoMaterno']
-        paciente.falecimentoAvoMaterno = form_data[6]['falecimentoAvoMaterno']
-        paciente.escolaridadeAvoMaterno = form_data[6]['escolaridadeAvoMaterno']
-        paciente.nomeAvoMaterna = form_data[7]['nomeAvoMaterna']
-        paciente.nascimentoAvoMaterna = form_data[7]['nascimentoAvoMaterna']
-        paciente.falecimentoAvoMaterna = form_data[7]['falecimentoAvoMaterna']
-        paciente.escolaridadeAvoMaterna = form_data[7]['escolaridadeAvoMaterna']
         paciente.save()
+        familia = Familia.objects.get(usuario_id=paciente.id,parente="conjuge")
+        familia.nome = form_data[1]['nomeConjuge']
+        familia.nascimento = form_data[1]['nascimentoConjuge']
+        familia.sexo = form_data[1]['sexoConjuge']
+        familia.escolaridade = form_data[1]['escolaridadeConjuge']
+        familia.save()
+        familia = Familia.objects.get(usuario_id=paciente.id,parente="pai")
+        familia.nome = form_data[2]['nomePai']
+        familia.nascimento = form_data[2]['nascimentoPai']
+        familia.falecimento = form_data[2]['falecimentoPai']
+        familia.escolaridade = form_data[2]['escolaridadePai']
+        familia.save()
+        familia = Familia.objects.get(usuario_id=paciente.id,parente="mae")
+        familia.nome = form_data[3]['nomeMae']
+        familia.nascimento = form_data[3]['nascimentoMae']
+        familia.falecimento = form_data[3]['falecimentoMae']
+        familia.escolaridade = form_data[3]['escolaridadeMae']
+        familia.save()
+        familia = Familia.objects.get(usuario_id=paciente.id,parente="avoPaterno")
+        familia.nome = form_data[4]['nomeAvoPaterno']
+        familia.nascimento = form_data[4]['nascimentoAvoPaterno']
+        familia.falecimento = form_data[4]['falecimentoAvoPaterno']
+        familia.escolaridade = form_data[4]['escolaridadeAvoPaterno']
+        familia.save()
+        familia = Familia.objects.get(usuario_id=paciente.id,parente="avoPaterna")
+        familia.nome = form_data[5]['nomeAvoPaterna']
+        familia.nascimento = form_data[5]['nascimentoAvoPaterna']
+        familia.falecimento = form_data[5]['falecimentoAvoPaterna']
+        familia.escolaridade = form_data[5]['escolaridadeAvoPaterna']
+        familia.save()
+        familia = Familia.objects.get(usuario_id=paciente.id,parente="avoMaterno")
+        familia.nome = form_data[6]['nomeAvoMaterno']
+        familia.nascimento = form_data[6]['nascimentoAvoMaterno']
+        familia.falecimento = form_data[6]['falecimentoAvoMaterno']
+        familia.escolaridade = form_data[6]['escolaridadeAvoMaterno']
+        familia.save()
+        familia = Familia.objects.get(usuario_id=paciente.id,parente="avoMaterna")
+        familia.nome = form_data[7]['nomeAvoMaterna']
+        familia.nascimento = form_data[7]['nascimentoAvoMaterna']
+        familia.falecimento = form_data[7]['falecimentoAvoMaterna']
+        familia.escolaridade = form_data[7]['escolaridadeAvoMaterna']
+        familia.save()
         return redirect(EdicaoRealizada)
 
 
@@ -336,11 +427,74 @@ reset_done = ResetDone.as_view()
 #Views da Análise
 class InserirAnalise(SessionWizardView):
     template_name = "projetofinal/analise/inserir.html"
+    form_list = [IniciarAreaAfetiva,
+                 RelacionamentoAvosMaternos,RelacionamentoAvoMaternoAntes,
+                 RelacionamentoAvoMaternaAntes,RelacionamentoAvosMaternosDepois,
+                 RelacionamentoAvosPaternos,RelacionamentoAvoPaternoAntes,
+                 RelacionamentoAvoPaternaAntes,RelacionamentoAvosPaternosDepois,
+                 RelacionamentoPais,RelacionamentoPaiAntes,RelacionamentoMaeAntes,
+                 RelacionamentoPaisDepois,RelacionamentoPaciente,
+                 RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
+                 RelacionamentoPacienteDepois]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(InserirAnalise, self).dispatch(*args, **kwargs)
 
+    def get_form_step_data(self, form):
+        if form.data['inserir_analise-current_step'] == '1':
+            if form.data['1-relacaoAvoMaternoAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvoMaternoAntes:
+                        self.form_list.pop(key)
+            if form.data['1-relacaoAvoMaternaAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvoMaternaAntes:
+                        self.form_list.pop(key)
+            if (form.data['1-relacao'] == "Casados") or (form.data['1-relacao'] == "Moram junto"):
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvosMaternosDepois:
+                        self.form_list.pop(key)
+        if form.data['inserir_analise-current_step'] == '5':
+            if form.data['5-relacaoAvoPaternoAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvoPaternoAntes:
+                        self.form_list.pop(key)
+            if form.data['5-relacaoAvoPaternaAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvoPaternaAntes:
+                        self.form_list.pop(key)
+            if (form.data['5-relacao'] == "Casados") or (form.data['5-relacao'] == "Moram junto"):
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvosPaternosDepois:
+                        self.form_list.pop(key)
+        if form.data['inserir_analise-current_step'] == '9':
+            if form.data['9-relacaoPaiAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPaiAntes:
+                        self.form_list.pop(key)
+            if form.data['9-relacaoMaeAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoMaeAntes:
+                        self.form_list.pop(key)
+            if (form.data['9-relacao'] == "Casados") or (form.data['9-relacao'] == "Moram junto"):
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPaisDepois:
+                        self.form_list.pop(key)
+        if form.data['inserir_analise-current_step'] == '13':
+            if form.data['13-relacaoPacienteAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPacienteAntes:
+                        self.form_list.pop(key)
+            if form.data['13-relacaoConjugeAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoConjugeAntes:
+                        self.form_list.pop(key)
+            if (form.data['13-relacao'] == "Casados") or (form.data['13-relacao'] == "Mora junto") or (form.data['13-relacao'] == "Não se aplica"):
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPacienteDepois:
+                        self.form_list.pop(key)
+        return form.data
 
     def done(self, form_list, form_dict, **kwargs):
         paciente_id = self.kwargs['paciente_id']

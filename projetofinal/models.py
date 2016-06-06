@@ -14,37 +14,22 @@ class Paciente(models.Model):
     nascimento = models.DateField(null=True)
     sexo = models.CharField(max_length=10,null=True)
     escolaridade = models.CharField(max_length=15, null=True)
-    nomeConjuge = models.CharField(max_length=50,null=True,blank=True)
-    nascimentoConjuge = models.DateField(null=True,blank=True)
-    sexoConjuge = models.CharField(max_length=10,null=True,blank=True)
-    escolaridadeConjuge = models.CharField(max_length=15, null=True,blank=True)
-    nomePai = models.CharField(max_length=50,null=True)
-    nascimentoPai = models.DateField(null=True)
-    falecimentoPai = models.DateField(null=True,blank=True)
-    escolaridadePai = models.CharField(max_length=15, null=True)
-    nomeMae = models.CharField(max_length=50,null=True)
-    nascimentoMae = models.DateField(null=True)
-    falecimentoMae = models.DateField(null=True, blank=True)
-    escolaridadeMae = models.CharField(max_length=15, null=True)
-    nomeAvoPaterna = models.CharField(max_length=50,null=True)
-    nascimentoAvoPaterna = models.DateField(null=True)
-    falecimentoAvoPaterna = models.DateField(null=True,blank=True)
-    escolaridadeAvoPaterna = models.CharField(max_length=15, null=True)
-    nomeAvoPaterno = models.CharField(max_length=50,null=True)
-    nascimentoAvoPaterno = models.DateField(null=True)
-    falecimentoAvoPaterno = models.DateField(null=True,blank=True)
-    escolaridadeAvoPaterno = models.CharField(max_length=15, null=True)
-    nomeAvoMaterna = models.CharField(max_length=50,null=True)
-    nascimentoAvoMaterna = models.DateField(null=True)
-    falecimentoAvoMaterna = models.DateField(null=True,blank=True)
-    escolaridadeAvoMaterna = models.CharField(max_length=15, null=True)
-    nomeAvoMaterno = models.CharField(max_length=50,null=True)
-    nascimentoAvoMaterno = models.DateField(null=True)
-    falecimentoAvoMaterno = models.DateField(null=True,blank=True)
-    escolaridadeAvoMaterno = models.CharField(max_length=15, null=True)
 
     def __str__(self):
         return self.usuario.first_name
+
+
+class Familia(models.Model):
+    usuario = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
+    parente = models.CharField(max_length=10,null=True)
+    nome = models.CharField(max_length=50,null=True)
+    nascimento = models.DateField(null=True)
+    falecimento = models.DateField(null=True,blank=True)
+    sexo = models.CharField(max_length=10,null=True,blank=True)
+    escolaridade = models.CharField(max_length=15, null=True,blank=True)
+
+    def __str__(self):
+        return self.usuario.nome + "-" + self.parente
 
 
 class Psicologo(models.Model):
@@ -93,3 +78,18 @@ class AreaAfetiva(models.Model):
         return self.paciente.nome+" "+self.resposta.pergunta.numero+"-"+self.resposta.letra+" "+self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")
 
 
+class Relacionamento(models.Model):
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
+    parente = models.CharField(max_length=10,null=True)
+    relacao = models.CharField(max_length=20,null=True)
+    filhos = models.IntegerField(null=True, blank=True)
+    filhas = models.IntegerField(null=True, blank=True)
+    relacaoAntes = models.CharField(max_length=20,null=True)
+    filhosAntes = models.IntegerField(null=True, blank=True)
+    filhasAntes = models.IntegerField(null=True, blank=True)
+    filhosDepois = models.IntegerField(null=True, blank=True)
+    filhasDepois = models.IntegerField(null=True, blank=True)
+
+
+    def __str__(self):
+        return self.paciente.nome + " " + self.parente
