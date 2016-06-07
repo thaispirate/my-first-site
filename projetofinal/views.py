@@ -603,6 +603,9 @@ class InserirAnalise(SessionWizardView):
                 relacionamento.save()
 
         indice = 0
+        adaptativo = 0
+        reativo = 0
+        criativo = 0
         for item in form_data:
             if "grauIndiferenciacao" in item:
                 respostasIndiferenciacao = form_data[indice]["grauIndiferenciacao"]
@@ -612,10 +615,14 @@ class InserirAnalise(SessionWizardView):
             indiferenciacao = GrauIndiferenciacaoPaciente()
             indiferenciacao.paciente=paciente
             indiferenciacao.anamnesia=anamnesia
-            indiferenciacao.resposta = GrauIndiferenciacao(id=int(item))
+            indiferenciacao.resposta = GrauIndiferenciacao.objects.get(id=int(item))
+            if indiferenciacao.resposta.padrao == "adaptativo":
+                adaptativo = adaptativo+1
+            if indiferenciacao.resposta.padrao == "reativo":
+                reativo = reativo+1
+            if indiferenciacao.resposta.padrao == "criativo":
+                criativo = criativo+1
             indiferenciacao.save()
-
-
 
         return redirect(AnaliseIniciada)
 

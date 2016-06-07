@@ -68,12 +68,18 @@ class RespostaAreaAfetiva(models.Model):
 
 
 class Anamnesia(models.Model):
+    PADRAO = (
+        ("adaptativo","Adaptativo"),
+        ("reativo","Reativo"),
+        ("criativo","Criativo")
+
+    )
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
     areaAfetiva = models.CharField(max_length=20,null=True)
     inicio = models.DateTimeField(null=True)
     fim = models.DateTimeField(null=True,blank=True)
     retornos = models.PositiveIntegerField(null=True, blank=True)
-    GrauDiferenciacao = models.IntegerField(null=True, blank=True)
+    padrao = models.CharField(max_length=20,choices=PADRAO,null=True, blank=True)
 
 
     def __str__(self):
