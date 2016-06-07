@@ -952,6 +952,7 @@ def RemoverAnalise(request, paciente_id):
         Anamnesia.objects.filter(id=analise).delete()
         AreaAfetiva.objects.filter(anamnesia_id=analise).delete()
         Relacionamento.objects.filter(anamnesia_id=analise).delete()
+        GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise).delete()
     return render(request,"projetofinal/analise/removida.html")
 
 
