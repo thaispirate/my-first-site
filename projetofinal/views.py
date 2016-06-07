@@ -937,9 +937,9 @@ class ConsultandoAnalise(SessionWizardView):
             for item in indiferenciacao:
                 selecionadas.append(str(item.id))
             form = GrauDeIndeferenciacao(data=data,initial= {"grauIndiferenciacao":selecionadas})
-            form.fields["grauIndiferenciacao"].widget.attrs['disabled'] = True
-            form.fields["grauIndiferenciacao"].required = False
-            print("aqui")
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
             return form
 
 
