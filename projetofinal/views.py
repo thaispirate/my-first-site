@@ -935,7 +935,7 @@ class ConsultandoAnalise(SessionWizardView):
             indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(paciente_id=paciente.id,anamnesia_id=analise_id)
             selecionadas = []
             for item in indiferenciacao:
-                selecionadas.append(str(item.id))
+                selecionadas.append(str(item.resposta.id))
             form = GrauDeIndeferenciacao(data=data,initial= {"grauIndiferenciacao":selecionadas})
             for field in form.fields:
                 form.fields[field].widget.attrs['disabled'] = True
