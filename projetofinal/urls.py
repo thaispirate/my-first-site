@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^analise/inserir/(?P<paciente_id>\d+)/$', InserirAnalise.as_view()),
     url(r'^analise/iniciada$', views.AnaliseIniciada),
     url(r'^analise/consultar/(?P<paciente_id>\d+)/$', ConsultarAnalise.as_view(), name="consultar"),
-    url(r'^analise/consultar/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ConsultandoAnalise.as_view([ConsultarAreaAfetiva]), name="consultando"),
+    url(r'^analise/consultar/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ConsultandoAnalise.as_view(), name="consultando"),
     url(r'^analise/consultar/(?P<paciente_id>\d+)/remover$', views.RemoverAnalise, name="remover"),
 
     #Psicólogo

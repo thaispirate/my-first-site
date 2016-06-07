@@ -95,6 +95,7 @@
     <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}" class="btn btn-default">{% trans "Passo 1" %}</button>
     <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" class="btn btn-default">{% trans "Anterior" %}</button>
     {% endif %}
+        <button name= "wizard_goto_step" type="submit" class="btn btn-default" value="{{wizard.steps.next}}">Próximo</button>
     </div>
     </div>
     </form>

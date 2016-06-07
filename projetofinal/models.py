@@ -20,8 +20,18 @@ class Paciente(models.Model):
 
 
 class Familia(models.Model):
+    parentes = (
+        ("pai", "Pai"),
+        ("mae", "Mãe"),
+        ("avoPaterno", "Avô Paterno"),
+        ("avoPaterna","Avó Paterna"),
+        ("avoMaterno","Avô Materno"),
+        ("avoMaterna","Avó Materna"),
+        ("conjuge","Cônjuge"),
+
+    )
     usuario = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
-    parente = models.CharField(max_length=10,null=True)
+    parente = models.CharField(max_length=10,choices=parentes,null=True)
     nome = models.CharField(max_length=50,null=True)
     nascimento = models.DateField(null=True)
     falecimento = models.DateField(null=True,blank=True)
@@ -79,11 +89,24 @@ class AreaAfetiva(models.Model):
 
 
 class Relacionamento(models.Model):
+    parentes = (
+        ("Pai", "Pai"),
+        ("Mae", "Mãe"),
+        ("AvoPaterno", "Avô Paterno"),
+        ("AvoPaterna","Avó Paterna"),
+        ("AvoMaterno","Avô Materno"),
+        ("AvoMaterna","Avó Materna"),
+        ("Paciente","Paciente"),
+        ("Conjuge","Cônjuge"),
+
+    )
+
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
-    parente = models.CharField(max_length=10,null=True)
+    anamnesia = models.ForeignKey(Anamnesia, on_delete=models.CASCADE,null=True)
+    parente = models.CharField(max_length=10, choices=parentes,null=True)
     relacao = models.CharField(max_length=20,null=True)
-    filhos = models.IntegerField(null=True, blank=True)
-    filhas = models.IntegerField(null=True, blank=True)
+    filhos = models.IntegerField(null=True)
+    filhas = models.IntegerField(null=True)
     relacaoAntes = models.CharField(max_length=20,null=True)
     filhosAntes = models.IntegerField(null=True, blank=True)
     filhasAntes = models.IntegerField(null=True, blank=True)
@@ -92,4 +115,5 @@ class Relacionamento(models.Model):
 
 
     def __str__(self):
-        return self.paciente.nome + " " + self.parente
+        return self.paciente.nome + "-" + self.parente + " " + self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")
+
