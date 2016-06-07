@@ -1,5 +1,6 @@
+import random
 from django import forms
-from .models import User,Paciente, Familia, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva, Anamnesia
+from .models import User,Paciente, Familia, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva, Anamnesia, GrauIndiferenciacao
 from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
@@ -568,8 +569,8 @@ class RelacionamentoAvosMaternos(forms.Form):
         widget = forms.RadioSelect,
         error_messages={'required':'Este campo é obrigatório'}
     )
-    filhos = forms.IntegerField(label="Seus avós maternos tiveram quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
-    filhas = forms.IntegerField(label="Seus avós maternos tiveram quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
+    filhos = forms.IntegerField(min_value=0,label="Seus avós maternos tiveram quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
+    filhas = forms.IntegerField(min_value=0,label="Seus avós maternos tiveram quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
     relacaoAvoMaternoAntes = forms.ChoiceField(
         label="Seu avô materno era separado/divorciado quando se relacionava com sua avó?",
         choices = (
@@ -591,29 +592,29 @@ class RelacionamentoAvosMaternos(forms.Form):
 
 class RelacionamentoAvoMaternoAntes(forms.Form):
 
-    filhosAvoMaternoAntes = forms.IntegerField(label="Seu avô materno teve quantos filhos homens no relacionamento anterior à relação com sua avó?",
+    filhosAvoMaternoAntes = forms.IntegerField(min_value=0,label="Seu avô materno teve quantos filhos homens no relacionamento anterior à relação com sua avó?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasAvoMaternoAntes = forms.IntegerField(label="Seu avô materno teve quantas filhas mulheres no relacionamento anterior à relação com sua avó?",
+    filhasAvoMaternoAntes = forms.IntegerField(min_value=0,label="Seu avô materno teve quantas filhas mulheres no relacionamento anterior à relação com sua avó?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
 
 class RelacionamentoAvoMaternaAntes(forms.Form):
 
-    filhosAvoMaternaAntes = forms.IntegerField(label="Sua avó materna teve quantos filhos homens no relacionamento anterior à relação com seu avô?",
+    filhosAvoMaternaAntes = forms.IntegerField(min_value=0,label="Sua avó materna teve quantos filhos homens no relacionamento anterior à relação com seu avô?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasAvoMaternaAntes = forms.IntegerField(label="Sua avó materna teve quantas filhas mulheres no relacionamento anterior à relação com seu avô?",
+    filhasAvoMaternaAntes = forms.IntegerField(min_value=0,label="Sua avó materna teve quantas filhas mulheres no relacionamento anterior à relação com seu avô?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
 class RelacionamentoAvosMaternosDepois(forms.Form):
 
-    filhosAvoMaterno = forms.IntegerField(label="Seu avô materno teve quantos filhos homens no relacionamento posterior à relação com sua avó?",
+    filhosAvoMaterno = forms.IntegerField(min_value=0,label="Seu avô materno teve quantos filhos homens no relacionamento posterior à relação com sua avó?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasAvoMaterno = forms.IntegerField(label="Seu avô materno teve quantas filhas mulheres no relacionamento posterior à relação com sua avó?",
+    filhasAvoMaterno = forms.IntegerField(min_value=0,label="Seu avô materno teve quantas filhas mulheres no relacionamento posterior à relação com sua avó?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
-    filhosAvoMaterna = forms.IntegerField(label="Sua avó materna teve quantos filhos homens no relacionamento posterior à relação com seu avô?",
+    filhosAvoMaterna = forms.IntegerField(min_value=0,label="Sua avó materna teve quantos filhos homens no relacionamento posterior à relação com seu avô?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasAvoMaterna = forms.IntegerField(label="Sua avó materna teve quantas filhas mulheres no relacionamento posterior à relação com seu avô?",
+    filhasAvoMaterna = forms.IntegerField(min_value=0,label="Sua avó materna teve quantas filhas mulheres no relacionamento posterior à relação com seu avô?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
 class RelacionamentoAvosPaternos(forms.Form):
@@ -629,8 +630,8 @@ class RelacionamentoAvosPaternos(forms.Form):
         widget = forms.RadioSelect,
         error_messages={'required':'Este campo é obrigatório'}
     )
-    filhos = forms.IntegerField(label="Seus avós paternos tiveram quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
-    filhas = forms.IntegerField(label="Seus avós paternos tiveram quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
+    filhos = forms.IntegerField(min_value=0,label="Seus avós paternos tiveram quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
+    filhas = forms.IntegerField(min_value=0,label="Seus avós paternos tiveram quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
     relacaoAvoPaternoAntes = forms.ChoiceField(
         label="Seu avô paterno era separado/divorciado quando se relacionava com sua avó?",
         choices = (
@@ -652,29 +653,29 @@ class RelacionamentoAvosPaternos(forms.Form):
 
 class RelacionamentoAvoPaternoAntes(forms.Form):
 
-    filhosAvoPaternoAntes = forms.IntegerField(label="Seu avô paterno teve quantos filhos homens no relacionamento anterior à relação com sua avó?",
+    filhosAvoPaternoAntes = forms.IntegerField(min_value=0,label="Seu avô paterno teve quantos filhos homens no relacionamento anterior à relação com sua avó?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasAvoPaternoAntes = forms.IntegerField(label="Seu avô paterno teve quantas filhas mulheres no relacionamento anterior à relação com sua avó?",
+    filhasAvoPaternoAntes = forms.IntegerField(min_value=0,label="Seu avô paterno teve quantas filhas mulheres no relacionamento anterior à relação com sua avó?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
 
 class RelacionamentoAvoPaternaAntes(forms.Form):
 
-    filhosAvoPaternaAntes = forms.IntegerField(label="Sua avó paterna teve quantos filhos homens no relacionamento anterior à relação com seu avô?",
+    filhosAvoPaternaAntes = forms.IntegerField(min_value=0,label="Sua avó paterna teve quantos filhos homens no relacionamento anterior à relação com seu avô?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasAvoPaternaAntes = forms.IntegerField(label="Sua avó paterna teve quantas filhas mulheres no relacionamento anterior à relação com seu avô?",
+    filhasAvoPaternaAntes = forms.IntegerField(min_value=0,label="Sua avó paterna teve quantas filhas mulheres no relacionamento anterior à relação com seu avô?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
 class RelacionamentoAvosPaternosDepois(forms.Form):
 
-    filhosAvoPaterno = forms.IntegerField(label="Seu avô paterno teve quantos filhos homens no relacionamento posterior à relação com sua avó?",
+    filhosAvoPaterno = forms.IntegerField(min_value=0,label="Seu avô paterno teve quantos filhos homens no relacionamento posterior à relação com sua avó?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasAvoPaterno = forms.IntegerField(label="Seu avô paterno teve quantas filhas mulheres no relacionamento posterior à relação com sua avó?",
+    filhasAvoPaterno = forms.IntegerField(min_value=0,label="Seu avô paterno teve quantas filhas mulheres no relacionamento posterior à relação com sua avó?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
-    filhosAvoPaterna = forms.IntegerField(label="Sua avó paterna teve quantos filhos homens no relacionamento posterior à relação com seu avô?",
+    filhosAvoPaterna = forms.IntegerField(min_value=0,label="Sua avó paterna teve quantos filhos homens no relacionamento posterior à relação com seu avô?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasAvoPaterna = forms.IntegerField(label="Sua avó paterna teve quantas filhas mulheres no relacionamento posterior à relação com seu avô?",
+    filhasAvoPaterna = forms.IntegerField(min_value=0,label="Sua avó paterna teve quantas filhas mulheres no relacionamento posterior à relação com seu avô?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
 class RelacionamentoPais(forms.Form):
@@ -690,8 +691,8 @@ class RelacionamentoPais(forms.Form):
         widget = forms.RadioSelect,
         error_messages={'required':'Este campo é obrigatório'}
     )
-    filhos = forms.IntegerField(label="Seus pais tiveram quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
-    filhas = forms.IntegerField(label="Seus pais tiveram quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
+    filhos = forms.IntegerField(min_value=0,label="Seus pais tiveram quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
+    filhas = forms.IntegerField(min_value=0,label="Seus pais tiveram quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
     relacaoPaiAntes = forms.ChoiceField(
         label="Seu pai era separado/divorciado quando se relacionava com sua mãe?",
         choices = (
@@ -713,29 +714,29 @@ class RelacionamentoPais(forms.Form):
 
 class RelacionamentoPaiAntes(forms.Form):
 
-    filhosPaiAntes = forms.IntegerField(label="Seu pai teve quantos filhos homens no relacionamento anterior à relação com sua mãe?",
+    filhosPaiAntes = forms.IntegerField(min_value=0,label="Seu pai teve quantos filhos homens no relacionamento anterior à relação com sua mãe?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasPaiAntes = forms.IntegerField(label="Seu pai teve quantas filhas mulheres no relacionamento anterior à relação com sua mãe?",
+    filhasPaiAntes = forms.IntegerField(min_value=0,label="Seu pai teve quantas filhas mulheres no relacionamento anterior à relação com sua mãe?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
 
 class RelacionamentoMaeAntes(forms.Form):
 
-    filhosMaeAntes = forms.IntegerField(label="Sua mãe teve quantos filhos homens no relacionamento anterior à relação com seu pai?",
+    filhosMaeAntes = forms.IntegerField(min_value=0,label="Sua mãe teve quantos filhos homens no relacionamento anterior à relação com seu pai?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasMaeAntes = forms.IntegerField(label="Sua mãe teve quantas filhas mulheres no relacionamento anterior à relação com seu pai?",
+    filhasMaeAntes = forms.IntegerField(min_value=0,label="Sua mãe teve quantas filhas mulheres no relacionamento anterior à relação com seu pai?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
 class RelacionamentoPaisDepois(forms.Form):
 
-    filhosPai = forms.IntegerField(label="Seu pai teve quantos filhos homens no relacionamento posterior à relação com sua mãe?",
+    filhosPai = forms.IntegerField(min_value=0,label="Seu pai teve quantos filhos homens no relacionamento posterior à relação com sua mãe?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasPai = forms.IntegerField(label="Seu pai teve quantas filhas mulheres no relacionamento posterior à relação com sua mãe?",
+    filhasPai = forms.IntegerField(min_value=0,label="Seu pai teve quantas filhas mulheres no relacionamento posterior à relação com sua mãe?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
-    filhosMae = forms.IntegerField(label="Sua mãe teve quantos filhos homens no relacionamento posterior à relação com seu pai?",
+    filhosMae = forms.IntegerField(min_value=0,label="Sua mãe teve quantos filhos homens no relacionamento posterior à relação com seu pai?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasMae = forms.IntegerField(label="Sua mãe teve quantas filhas mulheres no relacionamento posterior à relação com seu pai?",
+    filhasMae = forms.IntegerField(min_value=0,label="Sua mãe teve quantas filhas mulheres no relacionamento posterior à relação com seu pai?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
 class RelacionamentoPaciente(forms.Form):
@@ -752,8 +753,8 @@ class RelacionamentoPaciente(forms.Form):
         widget = forms.RadioSelect,
         error_messages={'required':'Este campo é obrigatório'}
     )
-    filhos = forms.IntegerField(label="Vocẽ tem quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
-    filhas = forms.IntegerField(label="Você tem quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
+    filhos = forms.IntegerField(min_value=0,label="Vocẽ tem quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
+    filhas = forms.IntegerField(min_value=0,label="Você tem quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
     relacaoPacienteAntes = forms.ChoiceField(
         label="Você era separado/divorciado antes de conhecer seu cônjuge?",
         choices = (
@@ -775,27 +776,41 @@ class RelacionamentoPaciente(forms.Form):
 
 class RelacionamentoPacienteAntes(forms.Form):
 
-    filhosPacienteAntes = forms.IntegerField(label="Você teve quantos filhos homens no relacionamento anterior à relação com seu cônjuge?",
+    filhosPacienteAntes = forms.IntegerField(min_value=0,label="Você teve quantos filhos homens no relacionamento anterior à relação com seu cônjuge?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasPacienteAntes = forms.IntegerField(label="Você teve quantas filhas mulheres no relacionamento anterior à relação com seu cônjuge?",
+    filhasPacienteAntes = forms.IntegerField(min_value=0,label="Você teve quantas filhas mulheres no relacionamento anterior à relação com seu cônjuge?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
 
 class RelacionamentoConjugeAntes(forms.Form):
 
-    filhosConjugeAntes = forms.IntegerField(label="Seu cônjuge teve quantos filhos homens no relacionamento anterior à relação com você?",
+    filhosConjugeAntes = forms.IntegerField(min_value=0,label="Seu cônjuge teve quantos filhos homens no relacionamento anterior à relação com você?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasConjugeAntes = forms.IntegerField(label="Seu cônjuge teve quantos filhas mulheres no relacionamento anterior à relação com você?",
+    filhasConjugeAntes = forms.IntegerField(min_value=0,label="Seu cônjuge teve quantos filhas mulheres no relacionamento anterior à relação com você?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
 class RelacionamentoPacienteDepois(forms.Form):
 
-    filhosPaciente = forms.IntegerField(label="Você teve quantos filhos homens no relacionamento posterior à relação com seu cônjuge?",
+    filhosPaciente = forms.IntegerField(min_value=0,label="Você teve quantos filhos homens no relacionamento posterior à relação com seu cônjuge?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasPaciente = forms.IntegerField(label="Você teve quantas filhas mulheres no relacionamento posterior à relação com seu cônjuge?",
+    filhasPaciente = forms.IntegerField(min_value=0,label="Você teve quantas filhas mulheres no relacionamento posterior à relação com seu cônjuge?",
                                 error_messages={'required':'Este campo é obrigatório'})
 
-    filhosConjuge = forms.IntegerField(label="Seu cônjuge teve quantos filhos homens no relacionamento posterior à relação com você?",
+    filhosConjuge = forms.IntegerField(min_value=0,label="Seu cônjuge teve quantos filhos homens no relacionamento posterior à relação com você?",
                                 error_messages={'required':'Este campo é obrigatório'})
-    filhasConjuge = forms.IntegerField(label="Seu cônjuge teve quantos filhas mulheres no relacionamento posterior à relação com você?",
+    filhasConjuge = forms.IntegerField(min_value=0,label="Seu cônjuge teve quantos filhas mulheres no relacionamento posterior à relação com você?",
                                 error_messages={'required':'Este campo é obrigatório'})
+
+class GrauDeIndeferenciacao(forms.Form):
+
+        resposta = GrauIndiferenciacao.objects.all()
+        RESPOSTAS = []
+        for item in resposta:
+            RESPOSTAS.append((item.id,item.resposta))
+        random.shuffle(RESPOSTAS)
+        grauIndiferenciacao = forms.MultipleChoiceField(
+            label= "Assinale as características que coincidem com o seu comportamento.",
+            choices = RESPOSTAS,
+            error_messages={'required':'Você esqueceu de marcar'},
+            widget = forms.CheckboxSelectMultiple
+        )

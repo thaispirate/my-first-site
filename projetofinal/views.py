@@ -8,8 +8,9 @@ from .forms import ConsultarAreaAfetiva,CadastroPaciente,CadastroConjuge,Cadastr
     RelacionamentoAvosMaternos, RelacionamentoAvoMaternoAntes, RelacionamentoAvoMaternaAntes, RelacionamentoAvosMaternosDepois,\
     RelacionamentoAvosPaternos, RelacionamentoAvoPaternoAntes, RelacionamentoAvoPaternaAntes, RelacionamentoAvosPaternosDepois,\
     RelacionamentoPais, RelacionamentoPaiAntes,RelacionamentoMaeAntes,RelacionamentoPaisDepois, RelacionamentoPaciente,\
-    RelacionamentoPacienteAntes, RelacionamentoConjugeAntes, RelacionamentoPacienteDepois
-from .models import Paciente,User,Familia, Psicologo, AreaAfetiva, Anamnesia, RespostaAreaAfetiva, Relacionamento
+    RelacionamentoPacienteAntes, RelacionamentoConjugeAntes, RelacionamentoPacienteDepois,GrauDeIndeferenciacao
+from .models import Paciente,User,Familia, Psicologo, AreaAfetiva, Anamnesia, RespostaAreaAfetiva,\
+    Relacionamento,GrauIndiferenciacao, GrauIndiferenciacaoPaciente
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
@@ -435,7 +436,8 @@ class InserirAnalise(SessionWizardView):
                  RelacionamentoPais,RelacionamentoPaiAntes,RelacionamentoMaeAntes,
                  RelacionamentoPaisDepois,RelacionamentoPaciente,
                  RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
-                 RelacionamentoPacienteDepois]
+                 RelacionamentoPacienteDepois,
+                 GrauDeIndeferenciacao,]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -600,6 +602,19 @@ class InserirAnalise(SessionWizardView):
                 relacionamento.filhasDepois = form_data[indice]["filhas"+parentes[contador+1]]
                 relacionamento.save()
 
+        indice = 0
+        for item in form_data:
+            if "grauIndiferenciacao" in item:
+                respostasIndiferenciacao = form_data[indice]["grauIndiferenciacao"]
+            indice = indice +1
+        for item in respostasIndiferenciacao:
+            anamnesia = Anamnesia.objects.get(id=anamnesia_id)
+            indiferenciacao = GrauIndiferenciacaoPaciente()
+            indiferenciacao.paciente=paciente
+            indiferenciacao.anamnesia=anamnesia
+            indiferenciacao.resposta = GrauIndiferenciacao(id=int(item))
+            indiferenciacao.save()
+
 
 
         return redirect(AnaliseIniciada)
@@ -661,7 +676,7 @@ class ConsultandoAnalise(SessionWizardView):
                  RelacionamentoPaiAntes,RelacionamentoMaeAntes,
                  RelacionamentoPaisDepois,RelacionamentoPaciente,
                  RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
-                 RelacionamentoPacienteDepois]
+                 RelacionamentoPacienteDepois,GrauDeIndeferenciacao]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -681,7 +696,7 @@ class ConsultandoAnalise(SessionWizardView):
             try:
                 analise = AreaAfetiva.objects.filter(anamnesia_id=analise_id)
             except Anamnesia.DoesNotExist:
-                raise Http404("Análise não existe")
+                raise Http404("Atendimento não existe")
 
 
         # determine the step if not given
@@ -773,9 +788,6 @@ class ConsultandoAnalise(SessionWizardView):
                 for key, value in self.form_list.items():
                     if value == RelacionamentoAvosPaternosDepois:
                         self.form_list.pop(key)
-                print("aqui")
-                print(self.form_list)
-                print(self.steps.all)
             return form
 
         if step == "6":
@@ -917,6 +929,17 @@ class ConsultandoAnalise(SessionWizardView):
             for field in form.fields:
                 form.fields[field].widget.attrs['disabled'] = True
                 form.fields[field].required = False
+            return form
+
+        if step == "17":
+            indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(paciente_id=paciente.id,anamnesia_id=analise_id)
+            selecionadas = []
+            for item in indiferenciacao:
+                selecionadas.append(str(item.id))
+            form = GrauDeIndeferenciacao(data=data,initial= {"grauIndiferenciacao":selecionadas})
+            form.fields["grauIndiferenciacao"].widget.attrs['disabled'] = True
+            form.fields["grauIndiferenciacao"].required = False
+            print("aqui")
             return form
 
 

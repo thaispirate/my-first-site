@@ -72,7 +72,7 @@ class Anamnesia(models.Model):
     areaAfetiva = models.CharField(max_length=20,null=True)
     inicio = models.DateTimeField(null=True)
     fim = models.DateTimeField(null=True,blank=True)
-    retornos = models.IntegerField(null=True, blank=True)
+    retornos = models.PositiveIntegerField(null=True, blank=True)
     GrauDiferenciacao = models.IntegerField(null=True, blank=True)
 
 
@@ -105,15 +105,37 @@ class Relacionamento(models.Model):
     anamnesia = models.ForeignKey(Anamnesia, on_delete=models.CASCADE,null=True)
     parente = models.CharField(max_length=10, choices=parentes,null=True)
     relacao = models.CharField(max_length=20,null=True)
-    filhos = models.IntegerField(null=True)
-    filhas = models.IntegerField(null=True)
+    filhos = models.PositiveIntegerField(null=True)
+    filhas = models.PositiveIntegerField(null=True)
     relacaoAntes = models.CharField(max_length=20,null=True)
-    filhosAntes = models.IntegerField(null=True, blank=True)
-    filhasAntes = models.IntegerField(null=True, blank=True)
-    filhosDepois = models.IntegerField(null=True, blank=True)
-    filhasDepois = models.IntegerField(null=True, blank=True)
+    filhosAntes = models.PositiveIntegerField(null=True, blank=True)
+    filhasAntes = models.PositiveIntegerField(null=True, blank=True)
+    filhosDepois = models.PositiveIntegerField(null=True, blank=True)
+    filhasDepois = models.PositiveIntegerField(null=True, blank=True)
 
 
     def __str__(self):
         return self.paciente.nome + "-" + self.parente + " " + self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")
 
+
+class GrauIndiferenciacao(models.Model):
+    PADRAO = (
+        ("adaptativo","Adaptativo"),
+        ("reativo","Reativo"),
+        ("criativo","Criativo")
+
+    )
+    padrao = models.CharField(max_length=10,choices=PADRAO,null=True)
+    resposta = models.TextField(null=True)
+
+    def __str__(self):
+        return self.padrao+"-"+self.resposta
+
+class GrauIndiferenciacaoPaciente(models.Model):
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
+    anamnesia = models.ForeignKey(Anamnesia, on_delete=models.CASCADE,null=True)
+    resposta = models.ForeignKey(GrauIndiferenciacao, on_delete=models.CASCADE,null=True)
+
+
+    def __str__(self):
+        return self.paciente.nome+" "+self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")+" "+self.resposta.padrao
