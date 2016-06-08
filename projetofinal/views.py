@@ -8,9 +8,10 @@ from .forms import ConsultarAreaAfetiva,CadastroPaciente,CadastroConjuge,Cadastr
     RelacionamentoAvosMaternos, RelacionamentoAvoMaternoAntes, RelacionamentoAvoMaternaAntes, RelacionamentoAvosMaternosDepois,\
     RelacionamentoAvosPaternos, RelacionamentoAvoPaternoAntes, RelacionamentoAvoPaternaAntes, RelacionamentoAvosPaternosDepois,\
     RelacionamentoPais, RelacionamentoPaiAntes,RelacionamentoMaeAntes,RelacionamentoPaisDepois, RelacionamentoPaciente,\
-    RelacionamentoPacienteAntes, RelacionamentoConjugeAntes, RelacionamentoPacienteDepois,GrauDeIndeferenciacao
+    RelacionamentoPacienteAntes, RelacionamentoConjugeAntes, RelacionamentoPacienteDepois,GrauDeIndeferenciacao,\
+    PerguntasSeletivas, ConsultarPerguntasSeletivas
 from .models import Paciente,User,Familia, Psicologo, AreaAfetiva, Anamnesia, RespostaAreaAfetiva,\
-    Relacionamento,GrauIndiferenciacao, GrauIndiferenciacaoPaciente
+    Relacionamento,GrauIndiferenciacao, GrauIndiferenciacaoPaciente, Seletiva, RespostaSeletiva, PerguntaSeletiva
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
@@ -428,16 +429,15 @@ reset_done = ResetDone.as_view()
 #Views da Análise
 class InserirAnalise(SessionWizardView):
     template_name = "projetofinal/analise/inserir.html"
-    form_list = [IniciarAreaAfetiva,
-                 RelacionamentoAvosMaternos,RelacionamentoAvoMaternoAntes,
-                 RelacionamentoAvoMaternaAntes,RelacionamentoAvosMaternosDepois,
-                 RelacionamentoAvosPaternos,RelacionamentoAvoPaternoAntes,
-                 RelacionamentoAvoPaternaAntes,RelacionamentoAvosPaternosDepois,
-                 RelacionamentoPais,RelacionamentoPaiAntes,RelacionamentoMaeAntes,
+    form_list = [IniciarAreaAfetiva,RelacionamentoAvosMaternos,
+                 RelacionamentoAvoMaternoAntes,RelacionamentoAvoMaternaAntes,
+                 RelacionamentoAvosMaternosDepois,RelacionamentoAvosPaternos,
+                 RelacionamentoAvoPaternoAntes,RelacionamentoAvoPaternaAntes,
+                 RelacionamentoAvosPaternosDepois,RelacionamentoPais,
+                 RelacionamentoPaiAntes,RelacionamentoMaeAntes,
                  RelacionamentoPaisDepois,RelacionamentoPaciente,
                  RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
-                 RelacionamentoPacienteDepois,
-                 GrauDeIndeferenciacao,]
+                 RelacionamentoPacienteDepois,GrauDeIndeferenciacao,PerguntasSeletivas]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -624,6 +624,28 @@ class InserirAnalise(SessionWizardView):
                 criativo = criativo+1
             indiferenciacao.save()
 
+        indice = 0
+        for item in form_data:
+            if "S01" in item:
+                seletivas = form_data[indice]
+                for perguntas in seletivas:
+                    if perguntas != "S03" and perguntas != "S04":
+                        seletiva = Seletiva()
+                        seletiva.paciente = paciente
+                        seletiva.anamnesia = anamnesia
+                        pergunta = PerguntaSeletiva.objects.get(numero=perguntas)
+                        seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=seletivas[perguntas])
+                        seletiva.save()
+                    else:
+                        for resposta in seletivas[perguntas]:
+                            seletiva = Seletiva()
+                            seletiva.paciente = paciente
+                            seletiva.anamnesia = anamnesia
+                            pergunta = PerguntaSeletiva.objects.get(numero=perguntas)
+                            seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=resposta)
+                            seletiva.save()
+            indice = indice +1
+
         return redirect(AnaliseIniciada)
 
 def AnaliseIniciada(request):
@@ -683,7 +705,8 @@ class ConsultandoAnalise(SessionWizardView):
                  RelacionamentoPaiAntes,RelacionamentoMaeAntes,
                  RelacionamentoPaisDepois,RelacionamentoPaciente,
                  RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
-                 RelacionamentoPacienteDepois,GrauDeIndeferenciacao]
+                 RelacionamentoPacienteDepois,GrauDeIndeferenciacao,
+                 ConsultarPerguntasSeletivas]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -949,6 +972,13 @@ class ConsultandoAnalise(SessionWizardView):
                 form.fields[field].required = False
             return form
 
+        if step == "18":
+            form = ConsultarPerguntasSeletivas(analise_id=analise_id, data=data)
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
 
 @login_required()
 def RemoverAnalise(request, paciente_id):
@@ -960,6 +990,7 @@ def RemoverAnalise(request, paciente_id):
         AreaAfetiva.objects.filter(anamnesia_id=analise).delete()
         Relacionamento.objects.filter(anamnesia_id=analise).delete()
         GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise).delete()
+        Seletiva.objects.filter(anamnesia_id=analise).delete()
     return render(request,"projetofinal/analise/removida.html")
 
 
@@ -1091,6 +1122,16 @@ class AnalisePaciente(TemplateView):
 
 class ConsultandoAnalisePaciente(SessionWizardView):
     template_name = "projetofinal/psicologo/paciente/consultando.html"
+    form_list = [ConsultarAreaAfetiva,RelacionamentoAvosMaternos,
+                 RelacionamentoAvoMaternoAntes,RelacionamentoAvoMaternaAntes,
+                 RelacionamentoAvosMaternosDepois,RelacionamentoAvosPaternos,
+                 RelacionamentoAvoPaternoAntes,RelacionamentoAvoPaternaAntes,
+                 RelacionamentoAvosPaternosDepois,RelacionamentoPais,
+                 RelacionamentoPaiAntes,RelacionamentoMaeAntes,
+                 RelacionamentoPaisDepois,RelacionamentoPaciente,
+                 RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
+                 RelacionamentoPacienteDepois,GrauDeIndeferenciacao,
+                 ConsultarPerguntasSeletivas]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -1104,6 +1145,7 @@ class ConsultandoAnalisePaciente(SessionWizardView):
             except Paciente.DoesNotExist:
                 raise Http404("Paciente não existe")
         return paciente_id
+
 
     def get_form(self, step=None, data=None, files=None):
         form = super(ConsultandoAnalisePaciente, self).get_form(step, data, files)
@@ -1119,12 +1161,255 @@ class ConsultandoAnalisePaciente(SessionWizardView):
             try:
                 analise = AreaAfetiva.objects.filter(anamnesia_id=analise_id)
             except Anamnesia.DoesNotExist:
-                raise Http404("Análise não existe")
+                raise Http404("Atendimento não existe")
+
+
         # determine the step if not given
         if step is None:
             step = self.steps.current
 
         if step == "0":
             form = ConsultarAreaAfetiva(analise_id=analise_id, data=data)
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
 
-        return form
+        if step == "1":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="AvoMaterno")
+            relacionamentoavo = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="AvoMaterna")
+            form = RelacionamentoAvosMaternos(data=data,initial = { "relacao":relacionamento.relacao,"filhos":relacionamento.filhos,
+                                                                    "filhas": relacionamento.filhas,
+                                                                    "relacaoAvoMaternoAntes":relacionamento.relacaoAntes,
+                                                                    "relacaoAvoMaternaAntes":relacionamentoavo.relacaoAntes})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            if not relacionamento.filhosAntes:
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvoMaternoAntes:
+                        self.form_list.pop(key)
+            if not relacionamentoavo.filhosAntes:
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvoMaternaAntes:
+                        self.form_list.pop(key)
+            if not relacionamento.filhosDepois:
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvosMaternosDepois:
+                        self.form_list.pop(key)
+            return form
+
+        if step == "2":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="AvoMaterno")
+            form = RelacionamentoAvoMaternoAntes(data=data,initial = { "filhosAvoMaternoAntes":relacionamento.filhosAntes,
+                                                                    "filhasAvoMaternoAntes":relacionamento.filhasAntes})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+
+        if step == "3":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="AvoMaterna")
+            form = RelacionamentoAvoMaternaAntes(data=data,initial = { "filhosAvoMaternaAntes":relacionamento.filhosAntes,
+                                                                    "filhasAvoMaternaAntes":relacionamento.filhasAntes})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+        if step == "4":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="AvoMaterno")
+            relacionamentoavo = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="AvoMaterna")
+            form = RelacionamentoAvosMaternosDepois(data=data,initial = { "filhosAvoMaterno":relacionamento.filhosDepois,
+                                                                          "filhasAvoMaterno":relacionamento.filhasDepois,
+                                                                          "filhosAvoMaterna": relacionamentoavo.filhosDepois,
+                                                                          "filhasAvoMaterna":relacionamentoavo.filhosDepois})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+
+        if step == "5":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="AvoPaterno")
+            relacionamentoavo = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="AvoPaterna")
+            form = RelacionamentoAvosPaternos(data=data,initial = { "relacao":relacionamento.relacao,"filhos":relacionamento.filhos,
+                                                                    "filhas": relacionamento.filhas,
+                                                                    "relacaoAvoPaternoAntes":relacionamento.relacaoAntes,
+                                                                    "relacaoAvoPaternaAntes":relacionamentoavo.relacaoAntes})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            if not relacionamento.filhosAntes:
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvoPaternoAntes:
+                        self.form_list.pop(key)
+            if not relacionamentoavo.filhosAntes:
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvoPaternaAntes:
+                        self.form_list.pop(key)
+            if not relacionamento.filhosDepois:
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvosPaternosDepois:
+                        self.form_list.pop(key)
+            return form
+
+        if step == "6":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="AvoPaterno")
+            form = RelacionamentoAvoPaternoAntes(data=data,initial = { "filhosAvoPaternoAntes":relacionamento.filhosAntes,
+                                                                    "filhasAvoPaternoAntes":relacionamento.filhasAntes})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+
+        if step == "7":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="AvoPaterna")
+            form = RelacionamentoAvoPaternaAntes(data=data,initial = { "filhosAvoPaternaAntes":relacionamento.filhosAntes,
+                                                                    "filhasAvoPaternaAntes":relacionamento.filhasAntes})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+        if step == "8":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="AvoPaterno")
+            relacionamentoavo = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="AvoPaterna")
+            form = RelacionamentoAvosPaternosDepois(data=data,initial = { "filhosAvoPaterno":relacionamento.filhosDepois,
+                                                                          "filhasAvoPaterno":relacionamento.filhasDepois,
+                                                                          "filhosAvoPaterna": relacionamentoavo.filhosDepois,
+                                                                          "filhasAvoPaterna":relacionamentoavo.filhosDepois})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+        if step == "9":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Pai")
+            relacionamentomae = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Mae")
+            form = RelacionamentoPais(data=data,initial = { "relacao":relacionamento.relacao,"filhos":relacionamento.filhos,
+                                                                    "filhas": relacionamento.filhas,
+                                                                    "relacaoPaiAntes":relacionamento.relacaoAntes,
+                                                                    "relacaoMaeAntes":relacionamentomae.relacaoAntes})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            if not relacionamento.filhosAntes:
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPaiAntes:
+                        self.form_list.pop(key)
+            if not relacionamentomae.filhosAntes:
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoMaeAntes:
+                        self.form_list.pop(key)
+            if not relacionamento.filhosDepois:
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPaisDepois:
+                        self.form_list.pop(key)
+            return form
+
+        if step == "10":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Pai")
+            form = RelacionamentoPaiAntes(data=data,initial = { "filhosPaiAntes":relacionamento.filhosAntes,
+                                                                    "filhasPaiAntes":relacionamento.filhasAntes})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+
+        if step == "11":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Mae")
+            form = RelacionamentoMaeAntes(data=data,initial = { "filhosMaeAntes":relacionamento.filhosAntes,
+                                                                    "filhasMaeAntes":relacionamento.filhasAntes})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+        if step == "12":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Pai")
+            relacionamentomae = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Mae")
+            form = RelacionamentoPaisDepois(data=data,initial = { "filhosPai":relacionamento.filhosDepois,
+                                                                          "filhasPai":relacionamento.filhasDepois,
+                                                                          "filhosMae": relacionamentomae.filhosDepois,
+                                                                          "filhasMae":relacionamentomae.filhosDepois})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+        if step == "13":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Paciente")
+            relacionamentoconjuge = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Conjuge")
+            form = RelacionamentoPaciente(data=data,initial = { "relacao":relacionamento.relacao,"filhos":relacionamento.filhos,
+                                                                    "filhas": relacionamento.filhas,
+                                                                    "relacaoPacienteAntes":relacionamento.relacaoAntes,
+                                                                    "relacaoConjugeAntes":relacionamentoconjuge.relacaoAntes})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            if not relacionamento.filhosAntes:
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPacienteAntes:
+                        self.form_list.pop(key)
+            if not relacionamentoconjuge.filhosAntes:
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoConjugeAntes:
+                        self.form_list.pop(key)
+            if not relacionamento.filhosDepois:
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPacienteDepois:
+                        self.form_list.pop(key)
+            return form
+
+        if step == "14":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Paciente")
+            form = RelacionamentoPacienteAntes(data=data,initial = { "filhosPacienteAntes":relacionamento.filhosAntes,
+                                                                    "filhasPacienteAntes":relacionamento.filhasAntes})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+
+        if step == "15":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Conjuge")
+            form = RelacionamentoConjugeAntes(data=data,initial = { "filhosConjugeAntes":relacionamento.filhosAntes,
+                                                                    "filhasConjugeAntes":relacionamento.filhasAntes})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+        if step == "16":
+            relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Paciente")
+            relacionamentoconjuge = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Conjuge")
+            form = RelacionamentoPacienteDepois(data=data,initial = { "filhosPaciente":relacionamento.filhosDepois,
+                                                                          "filhasPaciente":relacionamento.filhasDepois,
+                                                                          "filhosConjuge": relacionamentoconjuge.filhosDepois,
+                                                                          "filhasConjuge":relacionamentoconjuge.filhosDepois})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+        if step == "17":
+            indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(paciente_id=paciente.id,anamnesia_id=analise_id)
+            selecionadas = []
+            for item in indiferenciacao:
+                selecionadas.append(str(item.resposta.id))
+            form = GrauDeIndeferenciacao(data=data,initial= {"grauIndiferenciacao":selecionadas})
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+        if step == "18":
+            form = ConsultarPerguntasSeletivas(analise_id=analise_id, data=data)
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form

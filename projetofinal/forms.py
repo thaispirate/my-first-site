@@ -1,6 +1,7 @@
 import random
 from django import forms
-from .models import User,Paciente, Familia, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva, Anamnesia, GrauIndiferenciacao
+from .models import User,Paciente, Familia, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva,\
+    Anamnesia, GrauIndiferenciacao, PerguntaSeletiva, RespostaSeletiva,Seletiva
 from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
@@ -540,7 +541,7 @@ class ConsultarAreaAfetiva(forms.Form):
         analise_id = kwargs.pop('analise_id', None)
         super(ConsultarAreaAfetiva, self).__init__(*args,**kwargs)
         pergunta = PerguntaAreaAfetiva.objects.all()
-        pacienteResposta = AreaAfetiva.objects.filter(anamnesia_id=analise_id)
+        pacienteResposta = AreaAfetiva.objects.filter(anamnesia_id=analise_id).order_by('resposta')
         for item,resposta in zip(pergunta,pacienteResposta):
             respostas = RespostaAreaAfetiva.objects.filter(pergunta_id=item.id)
             RESPOSTAS = []
@@ -808,9 +809,77 @@ class GrauDeIndeferenciacao(forms.Form):
         for item in resposta:
             RESPOSTAS.append((item.id,item.resposta))
         random.shuffle(RESPOSTAS)
+        print(RESPOSTAS)
         grauIndiferenciacao = forms.MultipleChoiceField(
             label= "Assinale as características que coincidem com o seu comportamento.",
             choices = RESPOSTAS,
             error_messages={'required':'Você esqueceu de marcar'},
             widget = forms.CheckboxSelectMultiple
         )
+
+class PerguntasSeletivas(forms.Form):
+
+    def __init__(self,*args,**kwargs):
+        super(PerguntasSeletivas, self).__init__(*args,**kwargs)
+        pergunta = PerguntaSeletiva.objects.all()
+        for item in pergunta:
+            if item.numero != "S03" and item.numero != "S04":
+                resposta = RespostaSeletiva.objects.filter(pergunta_id=item.id)
+                RESPOSTAS = []
+                for resp in resposta:
+                    RESPOSTAS.append((resp.letra, resp.resposta))
+                self.fields[item.numero] = forms.ChoiceField(
+                    label= item.numero + ". " + item.pergunta,
+                    choices = RESPOSTAS,
+                    error_messages={'required':'Você esqueceu de marcar'},
+                    widget = forms.RadioSelect,
+                )
+            else:
+                resposta = RespostaSeletiva.objects.filter(pergunta_id=item.id)
+                RESPOSTAS = []
+                for resp in resposta:
+                    RESPOSTAS.append((resp.letra, resp.resposta))
+                self.fields[item.numero] = forms.MultipleChoiceField(
+                    label= item.numero + ". " + item.pergunta,
+                    choices = RESPOSTAS,
+                    error_messages={'required':'Você esqueceu de marcar'},
+                    widget = forms.CheckboxSelectMultiple,
+                )
+
+class ConsultarPerguntasSeletivas(forms.Form):
+
+    def __init__(self,*args,**kwargs):
+        analise_id = kwargs.pop('analise_id',None)
+        super(ConsultarPerguntasSeletivas, self).__init__(*args,**kwargs)
+        pergunta = PerguntaSeletiva.objects.all()
+        respostaPaciente = Seletiva.objects.filter(anamnesia_id=analise_id).order_by('resposta')
+        for item in pergunta:
+            escolhidas =[]
+            for selecionadas in respostaPaciente:
+                if item.numero == selecionadas.resposta.pergunta.numero and (item.numero == "S03" or item.numero == "S04"):
+                    resposta = RespostaSeletiva.objects.filter(pergunta_id=item.id)
+                    RESPOSTAS = []
+                    for resp in resposta:
+                        RESPOSTAS.append((resp.letra, resp.resposta))
+                    selecionada = RespostaSeletiva.objects.get(id=selecionadas.resposta_id)
+                    escolhidas.append(selecionada.letra)
+                    self.fields[item.numero] = forms.MultipleChoiceField(
+                        label= item.numero + ". " + item.pergunta,
+                        choices = RESPOSTAS,
+                        error_messages={'required':'Você esqueceu de marcar'},
+                        widget = forms.CheckboxSelectMultiple,
+                        initial= escolhidas
+                    )
+                if item.numero == selecionadas.resposta.pergunta.numero and (item.numero != "S03" and item.numero != "S04"):
+                    resposta = RespostaSeletiva.objects.filter(pergunta_id=item.id)
+                    RESPOSTAS = []
+                    for resp in resposta:
+                        RESPOSTAS.append((resp.letra, resp.resposta))
+                    selecionada = RespostaSeletiva.objects.get(id=selecionadas.resposta_id)
+                    self.fields[item.numero] = forms.ChoiceField(
+                        label= item.numero + ". " + item.pergunta,
+                        choices = RESPOSTAS,
+                        error_messages={'required':'Você esqueceu de marcar'},
+                        widget = forms.RadioSelect,
+                        initial = selecionada.letra
+                    )

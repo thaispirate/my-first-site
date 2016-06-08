@@ -145,3 +145,27 @@ class GrauIndiferenciacaoPaciente(models.Model):
 
     def __str__(self):
         return self.paciente.nome+" "+self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")+" "+self.resposta.padrao
+
+class PerguntaSeletiva(models.Model):
+    numero = models.CharField(max_length=10,null=True)
+    pergunta = models.TextField(null=True)
+
+    def __str__(self):
+        return self.numero
+
+class RespostaSeletiva(models.Model):
+    pergunta =  models.ForeignKey(PerguntaSeletiva, on_delete=models.CASCADE,null=True)
+    letra = models.CharField(max_length=1,null=True)
+    resposta = models.TextField(null=True)
+
+    def __str__(self):
+        return self.pergunta.numero+"-"+self.letra
+
+class Seletiva(models.Model):
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
+    anamnesia = models.ForeignKey(Anamnesia, on_delete=models.CASCADE,null=True)
+    resposta = models.ForeignKey(RespostaSeletiva, on_delete=models.CASCADE,null=True)
+
+
+    def __str__(self):
+        return self.paciente.nome+" "+self.resposta.pergunta.numero+"-"+self.resposta.letra+" "+self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")
