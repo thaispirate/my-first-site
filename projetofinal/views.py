@@ -4,14 +4,17 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User, Group
 from .forms import ConsultarAreaAfetiva,CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,\
-    CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna,EdicaoPaciente, IniciarAreaAfetiva,\
+    CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna,EdicaoPaciente, PerguntasAreaAfetiva,\
     RelacionamentoAvosMaternos, RelacionamentoAvoMaternoAntes, RelacionamentoAvoMaternaAntes, RelacionamentoAvosMaternosDepois,\
     RelacionamentoAvosPaternos, RelacionamentoAvoPaternoAntes, RelacionamentoAvoPaternaAntes, RelacionamentoAvosPaternosDepois,\
     RelacionamentoPais, RelacionamentoPaiAntes,RelacionamentoMaeAntes,RelacionamentoPaisDepois, RelacionamentoPaciente,\
     RelacionamentoPacienteAntes, RelacionamentoConjugeAntes, RelacionamentoPacienteDepois,GrauDeIndeferenciacao,\
-    PerguntasSeletivas, ConsultarPerguntasSeletivas
+    PerguntasSeletivas, ConsultarPerguntasSeletivas, PerguntasInterventivas, ConsultarPerguntasInterventivas
+
 from .models import Paciente,User,Familia, Psicologo, AreaAfetiva, Anamnesia, RespostaAreaAfetiva,\
-    Relacionamento,GrauIndiferenciacao, GrauIndiferenciacaoPaciente, Seletiva, RespostaSeletiva, PerguntaSeletiva
+    Relacionamento,GrauIndiferenciacao, GrauIndiferenciacaoPaciente,\
+    Seletiva, RespostaSeletiva, PerguntaSeletiva,\
+    Interventiva, PerguntaInterventiva, RespostaInterventiva
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
@@ -429,7 +432,7 @@ reset_done = ResetDone.as_view()
 #Views da Análise
 class InserirAnalise(SessionWizardView):
     template_name = "projetofinal/analise/inserir.html"
-    form_list = [IniciarAreaAfetiva,RelacionamentoAvosMaternos,
+    form_list = [PerguntasAreaAfetiva,RelacionamentoAvosMaternos,
                  RelacionamentoAvoMaternoAntes,RelacionamentoAvoMaternaAntes,
                  RelacionamentoAvosMaternosDepois,RelacionamentoAvosPaternos,
                  RelacionamentoAvoPaternoAntes,RelacionamentoAvoPaternaAntes,
@@ -437,7 +440,8 @@ class InserirAnalise(SessionWizardView):
                  RelacionamentoPaiAntes,RelacionamentoMaeAntes,
                  RelacionamentoPaisDepois,RelacionamentoPaciente,
                  RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
-                 RelacionamentoPacienteDepois,GrauDeIndeferenciacao,PerguntasSeletivas]
+                 RelacionamentoPacienteDepois,GrauDeIndeferenciacao,
+                 PerguntasSeletivas,PerguntasInterventivas]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -646,6 +650,19 @@ class InserirAnalise(SessionWizardView):
                             seletiva.save()
             indice = indice +1
 
+        indice = 0
+        for item in form_data:
+            if "I01" in item:
+                interventivas = form_data[indice]
+                for perguntas in interventivas:
+                        interventiva = Interventiva()
+                        interventiva.paciente = paciente
+                        interventiva.anamnesia = anamnesia
+                        pergunta = PerguntaInterventiva.objects.get(numero=perguntas)
+                        interventiva.resposta = RespostaInterventiva.objects.get(pergunta_id=pergunta.id,letra=interventivas[perguntas])
+                        interventiva.save()
+            indice = indice +1
+
         return redirect(AnaliseIniciada)
 
 def AnaliseIniciada(request):
@@ -706,7 +723,7 @@ class ConsultandoAnalise(SessionWizardView):
                  RelacionamentoPaisDepois,RelacionamentoPaciente,
                  RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
                  RelacionamentoPacienteDepois,GrauDeIndeferenciacao,
-                 ConsultarPerguntasSeletivas]
+                 ConsultarPerguntasSeletivas,ConsultarPerguntasInterventivas]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -979,6 +996,12 @@ class ConsultandoAnalise(SessionWizardView):
                 form.fields[field].required = False
             return form
 
+        if step == "19":
+            form = ConsultarPerguntasInterventivas(analise_id=analise_id, data=data)
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
 
 @login_required()
 def RemoverAnalise(request, paciente_id):
@@ -991,6 +1014,7 @@ def RemoverAnalise(request, paciente_id):
         Relacionamento.objects.filter(anamnesia_id=analise).delete()
         GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise).delete()
         Seletiva.objects.filter(anamnesia_id=analise).delete()
+        Interventiva.objects.filter(anamnesia_id=analise).delete()
     return render(request,"projetofinal/analise/removida.html")
 
 
@@ -1131,7 +1155,7 @@ class ConsultandoAnalisePaciente(SessionWizardView):
                  RelacionamentoPaisDepois,RelacionamentoPaciente,
                  RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
                  RelacionamentoPacienteDepois,GrauDeIndeferenciacao,
-                 ConsultarPerguntasSeletivas]
+                 ConsultarPerguntasSeletivas,ConsultarPerguntasInterventivas]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -1409,6 +1433,13 @@ class ConsultandoAnalisePaciente(SessionWizardView):
 
         if step == "18":
             form = ConsultarPerguntasSeletivas(analise_id=analise_id, data=data)
+            for field in form.fields:
+                form.fields[field].widget.attrs['disabled'] = True
+                form.fields[field].required = False
+            return form
+
+        if step == "19":
+            form = ConsultarPerguntasInterventivas(analise_id=analise_id, data=data)
             for field in form.fields:
                 form.fields[field].widget.attrs['disabled'] = True
                 form.fields[field].required = False

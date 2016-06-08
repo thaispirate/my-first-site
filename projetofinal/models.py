@@ -169,3 +169,27 @@ class Seletiva(models.Model):
 
     def __str__(self):
         return self.paciente.nome+" "+self.resposta.pergunta.numero+"-"+self.resposta.letra+" "+self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")
+
+class PerguntaInterventiva(models.Model):
+    numero = models.CharField(max_length=10,null=True)
+    pergunta = models.TextField(null=True)
+
+    def __str__(self):
+        return self.numero
+
+class RespostaInterventiva(models.Model):
+    pergunta =  models.ForeignKey(PerguntaInterventiva, on_delete=models.CASCADE,null=True)
+    letra = models.CharField(max_length=1,null=True)
+    resposta = models.TextField(null=True)
+
+    def __str__(self):
+        return self.pergunta.numero+"-"+self.letra
+
+class Interventiva(models.Model):
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
+    anamnesia = models.ForeignKey(Anamnesia, on_delete=models.CASCADE,null=True)
+    resposta = models.ForeignKey(RespostaInterventiva, on_delete=models.CASCADE,null=True)
+
+
+    def __str__(self):
+        return self.paciente.nome+" "+self.resposta.pergunta.numero+"-"+self.resposta.letra+" "+self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")

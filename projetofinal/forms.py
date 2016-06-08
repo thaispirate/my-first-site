@@ -1,7 +1,8 @@
 import random
 from django import forms
 from .models import User,Paciente, Familia, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva,\
-    Anamnesia, GrauIndiferenciacao, PerguntaSeletiva, RespostaSeletiva,Seletiva
+    Anamnesia, GrauIndiferenciacao, PerguntaSeletiva, RespostaSeletiva,Seletiva,\
+    PerguntaInterventiva, RespostaInterventiva, Interventiva
 from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
@@ -518,10 +519,10 @@ class CadastroPsicologoForm(UserCreationForm):
 
     nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório'})
 
-class IniciarAreaAfetiva(forms.Form):
+class PerguntasAreaAfetiva(forms.Form):
 
     def __init__(self,*args,**kwargs):
-        super(IniciarAreaAfetiva, self).__init__(*args,**kwargs)
+        super(PerguntasAreaAfetiva, self).__init__(*args,**kwargs)
         pergunta = PerguntaAreaAfetiva.objects.all()
         for item in pergunta:
             resposta = RespostaAreaAfetiva.objects.filter(pergunta_id=item.id)
@@ -809,7 +810,6 @@ class GrauDeIndeferenciacao(forms.Form):
         for item in resposta:
             RESPOSTAS.append((item.id,item.resposta))
         random.shuffle(RESPOSTAS)
-        print(RESPOSTAS)
         grauIndiferenciacao = forms.MultipleChoiceField(
             label= "Assinale as características que coincidem com o seu comportamento.",
             choices = RESPOSTAS,
@@ -883,3 +883,42 @@ class ConsultarPerguntasSeletivas(forms.Form):
                         widget = forms.RadioSelect,
                         initial = selecionada.letra
                     )
+
+class PerguntasInterventivas(forms.Form):
+
+    def __init__(self,*args,**kwargs):
+        super(PerguntasInterventivas, self).__init__(*args,**kwargs)
+        pergunta = PerguntaInterventiva.objects.all()
+        for item in pergunta:
+            resposta = RespostaInterventiva.objects.filter(pergunta_id=item.id)
+            RESPOSTAS = []
+            for resp in resposta:
+                RESPOSTAS.append((resp.letra, resp.resposta))
+            self.fields[item.numero] = forms.ChoiceField(
+                label= item.numero + ". " + item.pergunta,
+                choices = RESPOSTAS,
+                error_messages={'required':'Você esqueceu de marcar'},
+                widget = forms.RadioSelect,
+            )
+
+class ConsultarPerguntasInterventivas(forms.Form):
+
+    def __init__(self,*args,**kwargs):
+        analise_id = kwargs.pop('analise_id', None)
+        super(ConsultarPerguntasInterventivas, self).__init__(*args,**kwargs)
+        pergunta = PerguntaInterventiva.objects.all()
+        pacienteResposta = Interventiva.objects.filter(anamnesia_id=analise_id).order_by('resposta')
+        for item,resposta in zip(pergunta,pacienteResposta):
+            respostas = RespostaInterventiva.objects.filter(pergunta_id=item.id)
+            RESPOSTAS = []
+            for resp in respostas:
+                RESPOSTAS.append((resp.letra, resp.resposta))
+            escolhida = RespostaInterventiva.objects.get(id=resposta.resposta_id)
+            self.fields[item.id] = forms.ChoiceField(
+                label= item.numero + ". " + item.pergunta,
+                choices = RESPOSTAS,
+                error_messages={'required':'Você esqueceu de marcar'},
+                widget = forms.RadioSelect,
+                initial= escolhida.letra,
+
+            )
