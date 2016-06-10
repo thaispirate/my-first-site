@@ -448,6 +448,49 @@ class InserirAnalise(SessionWizardView):
         return super(InserirAnalise, self).dispatch(*args, **kwargs)
 
     def get_form_step_data(self, form):
+        paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        if form.data['inserir_analise-current_step'] == '0':
+            anamnesia = Anamnesia()
+            anamnesia.paciente = paciente
+            A=[0]
+            for item in form.data:
+                if item[0] == "0":
+                    resposta = RespostaAreaAfetiva.objects.get(pergunta_id=int(item.split("-")[1]),letra=form.data[item])
+                    A.append(resposta.valor)
+
+            afetivoRelacional=(A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8)
+            produtividade=(A[5]+A[16]+A[20]+A[22]+A[23])/5
+            organico=(A[7]+A[12]+A[14]+A[27]+A[29])/5
+            espiritual=(A[3]+A[11]+A[18]+A[24]+A[26])/5
+            socioCultural=(A[8]+A[10]+A[20]+A[22]+A[23])/5
+
+            anamnesia.areaAfetiva= "Espiritual"
+            if socioCultural >= espiritual:
+                anamnesia.areaAfetiva= "Socio-Cultural"
+            if afetivoRelacional >= socioCultural and anamnesia.areaAfetiva=="Socio-Cultural":
+                    anamnesia.areaAfetiva= "Afetivo-Relacional"
+            if produtividade >= afetivoRelacional and anamnesia.areaAfetiva=="Afetivo-Relacional":
+                anamnesia.areaAfetiva= "Produtividade"
+            if organico >= produtividade and anamnesia.areaAfetiva=="Produtividade":
+                anamnesia.areaAfetiva="Orgânico"
+
+            inicio=anamnesia.inicio=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            anamnesia.save()
+            anamnesia = Anamnesia.objects.get(inicio=inicio)
+            self.initial_dict['anamnesia_id']=anamnesia.id
+
+            for item in form.data:
+                if item[0] == "0":
+                    resposta = RespostaAreaAfetiva.objects.get(pergunta_id=int(item.split("-")[1]),letra=form.data[item])
+                    areaAfetiva = AreaAfetiva()
+                    areaAfetiva.paciente = paciente
+                    areaAfetiva.resposta = resposta
+                    areaAfetiva.anamnesia = anamnesia
+                    areaAfetiva.save()
+
+
         if form.data['inserir_analise-current_step'] == '1':
             if form.data['1-relacaoAvoMaternoAntes'] == "Não":
                 for key, value in self.form_list.items():
@@ -500,138 +543,108 @@ class InserirAnalise(SessionWizardView):
                 for key, value in self.form_list.items():
                     if value == RelacionamentoPacienteDepois:
                         self.form_list.pop(key)
-        return form.data
+        steps =[]
+        for i in range(1,17):
+            steps.append(str(i))
+        avoM =[]
+        for i in range(1,5):
+            avoM.append(str(i))
+        avoP =[]
+        for i in range(5,9):
+            avoP.append(str(i))
+        pais =[]
+        for i in range(9,13):
+            pais.append(str(i))
+        pac =[]
+        for i in range(13,17):
+            pac.append(str(i))
 
-    def done(self, form_list, form_dict, **kwargs):
-        paciente_id = self.kwargs['paciente_id']
-        paciente = Paciente.objects.get(usuario_id=paciente_id)
-        form_data= [form.cleaned_data for form in form_list]
-        anamnesia = Anamnesia()
-        anamnesia.paciente = paciente
-        A=[0]
-        for item in form_data[0]:
-            resposta = RespostaAreaAfetiva.objects.get(pergunta_id=int(item),letra=form_data[0][item])
-            A.append(resposta.valor)
-
-        afetivoRelacional=(A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8)
-        produtividade=(A[5]+A[16]+A[20]+A[22]+A[23])/5
-        organico=(A[7]+A[12]+A[14]+A[27]+A[29])/5
-        espiritual=(A[3]+A[11]+A[18]+A[24]+A[26])/5
-        socioCultural=(A[8]+A[10]+A[20]+A[22]+A[23])/5
-
-        anamnesia.areaAfetiva= "Espiritual"
-        if socioCultural >= espiritual:
-            anamnesia.areaAfetiva= "Socio-Cultural"
-        if afetivoRelacional >= socioCultural and anamnesia.areaAfetiva=="Socio-Cultural":
-                anamnesia.areaAfetiva= "Afetivo-Relacional"
-        if produtividade >= afetivoRelacional and anamnesia.areaAfetiva=="Afetivo-Relacional":
-            anamnesia.areaAfetiva= "Produtividade"
-        if organico >= produtividade and anamnesia.areaAfetiva=="Produtividade":
-            anamnesia.areaAfetiva="Orgânico"
-
-        inicio=anamnesia.inicio=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        anamnesia.save()
-        anamnesia = Anamnesia.objects.get(inicio=inicio)
-        anamnesia_id = anamnesia.id
-
-        for item in form_data[0]:
-            resposta = RespostaAreaAfetiva.objects.get(pergunta_id=int(item),letra=form_data[0][item])
-            areaAfetiva = AreaAfetiva()
-            areaAfetiva.paciente = paciente
-            areaAfetiva.resposta = resposta
-            areaAfetiva.anamnesia = anamnesia
-            areaAfetiva.save()
-
+        if form.data['inserir_analise-current_step'] in avoM:
+            contador = 0
+        if form.data['inserir_analise-current_step'] in avoP:
+            contador = 2
+        if form.data['inserir_analise-current_step'] in pais:
+            contador = 4
+        if form.data['inserir_analise-current_step'] in pac:
+            contador = 6
         parentes = ["AvoMaterno","AvoMaterna","AvoPaterno","AvoPaterna","Pai","Mae","Paciente","Conjuge"]
-        contador = -1
-        indice = -1
 
-        for item in form_data:
-            indice = indice +1
-            if "relacao" in item:
+        if form.data['inserir_analise-current_step'] in steps:
+
+            item = form.data['inserir_analise-current_step']
+            if item+"-"+"relacao" in form.data:
                 relacionamento = Relacionamento()
                 relacionamento.paciente = paciente
-                relacionamento.anamnesia = Anamnesia.objects.get(id = anamnesia_id,paciente_id=paciente.id)
-                contador = contador +1
+                relacionamento.anamnesia = Anamnesia.objects.get(id = self.initial_dict['anamnesia_id'],paciente_id=paciente.id)
                 relacionamento.parente=parentes[contador]
-                relacionamento.relacao = form_data[indice]["relacao"]
-                relacionamento.filhos = form_data[indice]["filhos"]
-                relacionamento.filhas = form_data[indice]["filhas"]
-                relacionamento.relacaoAntes = form_data[indice]["relacao"+parentes[contador]+"Antes"]
+                relacionamento.relacao = form.data[item+"-"+"relacao"]
+                relacionamento.filhos = form.data[item+"-"+"filhos"]
+                relacionamento.filhas = form.data[item+"-"+"filhas"]
+                relacionamento.relacaoAntes = form.data[item+"-"+"relacao"+parentes[contador]+"Antes"]
                 relacionamento.save()
+
                 relacionamento = Relacionamento()
                 relacionamento.paciente = paciente
-                relacionamento.anamnesia = Anamnesia.objects.get(id = anamnesia_id,paciente_id=paciente.id)
-                contador = contador +1
-                relacionamento.parente=parentes[contador]
-                relacionamento.relacao = form_data[indice]["relacao"]
-                relacionamento.filhos = form_data[indice]["filhos"]
-                relacionamento.filhas = form_data[indice]["filhas"]
-                relacionamento.relacaoAntes = form_data[indice]["relacao"+parentes[contador]+"Antes"]
+                relacionamento.anamnesia = Anamnesia.objects.get(id = self.initial_dict['anamnesia_id'],paciente_id=paciente.id)
+                relacionamento.parente=parentes[contador+1]
+                relacionamento.relacao = form.data[item+"-"+"relacao"]
+                relacionamento.filhos = form.data[item+"-"+"filhos"]
+                relacionamento.filhas = form.data[item+"-"+"filhas"]
+                relacionamento.relacaoAntes = form.data[item+"-"+"relacao"+parentes[contador+1]+"Antes"]
                 relacionamento.save()
 
-        contador = -2
-        indice = -1
-
-        for item in form_data:
-            indice = indice +1
-            if "relacao" in item:
-                contador = contador + 2
-            if "filhos"+parentes[contador]+"Antes" in item:
-                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = anamnesia_id,parente = parentes[contador])
-                relacionamento.filhosAntes = form_data[indice]["filhos"+parentes[contador]+"Antes"]
-                relacionamento.filhasAntes = form_data[indice]["filhas"+parentes[contador]+"Antes"]
+            if item+"-"+"filhos"+parentes[contador]+"Antes" in form.data:
+                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = self.initial_dict['anamnesia_id'],parente = parentes[contador])
+                relacionamento.filhosAntes = form.data[item+"-"+"filhos"+parentes[contador]+"Antes"]
+                relacionamento.filhasAntes = form.data[item+"-"+"filhas"+parentes[contador]+"Antes"]
                 relacionamento.save()
-            if "filhos"+parentes[contador+1]+"Antes" in item:
-                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = anamnesia_id,parente = parentes[contador+1])
-                relacionamento.filhosAntes = form_data[indice]["filhos"+parentes[contador+1]+"Antes"]
-                relacionamento.filhasAntes = form_data[indice]["filhas"+parentes[contador+1]+"Antes"]
+            if item+"-"+"filhos"+parentes[contador+1]+"Antes" in form.data:
+                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = self.initial_dict['anamnesia_id'],parente = parentes[contador+1])
+                relacionamento.filhosAntes = form.data[item+"-"+"filhos"+parentes[contador+1]+"Antes"]
+                relacionamento.filhasAntes = form.data[item+"-"+"filhas"+parentes[contador+1]+"Antes"]
                 relacionamento.save()
 
-        contador = -2
-        indice = -1
-
-        for item in form_data:
-            indice = indice +1
-            if "relacao" in item:
-                contador = contador +2
-            if "filhos"+parentes[contador] in item:
-                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = anamnesia_id,parente = parentes[contador])
-                relacionamento.filhosDepois = form_data[indice]["filhos"+parentes[contador]]
-                relacionamento.filhasDepois = form_data[indice]["filhas"+parentes[contador]]
+            if item+"-"+"filhos"+parentes[contador] in form.data:
+                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = self.initial_dict['anamnesia_id'],parente = parentes[contador])
+                relacionamento.filhosDepois = form.data[item+"-"+"filhos"+parentes[contador]]
+                relacionamento.filhasDepois = form.data[item+"-"+"filhas"+parentes[contador]]
                 relacionamento.save()
-            if "filhos"+parentes[contador+1] in item:
-                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = anamnesia_id,parente = parentes[contador+1])
-                relacionamento.filhosDepois = form_data[indice]["filhos"+parentes[contador+1]]
-                relacionamento.filhasDepois = form_data[indice]["filhas"+parentes[contador+1]]
+            if item+"-"+"filhos"+parentes[contador+1] in form.data:
+                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = self.initial_dict['anamnesia_id'],parente = parentes[contador+1])
+                relacionamento.filhosDepois = form.data[item+"-"+"filhos"+parentes[contador+1]]
+                relacionamento.filhasDepois = form.data[item+"-"+"filhas"+parentes[contador+1]]
                 relacionamento.save()
 
-        indice = 0
-        adaptativo = 0
-        reativo = 0
-        criativo = 0
-        for item in form_data:
-            if "grauIndiferenciacao" in item:
-                respostasIndiferenciacao = form_data[indice]["grauIndiferenciacao"]
-            indice = indice +1
-        for item in respostasIndiferenciacao:
-            anamnesia = Anamnesia.objects.get(id=anamnesia_id)
-            indiferenciacao = GrauIndiferenciacaoPaciente()
-            indiferenciacao.paciente=paciente
-            indiferenciacao.anamnesia=anamnesia
-            indiferenciacao.resposta = GrauIndiferenciacao.objects.get(id=int(item))
-            if indiferenciacao.resposta.padrao == "adaptativo":
-                adaptativo = adaptativo+1
-            if indiferenciacao.resposta.padrao == "reativo":
-                reativo = reativo+1
-            if indiferenciacao.resposta.padrao == "criativo":
-                criativo = criativo+1
-            indiferenciacao.save()
+        if form.data['inserir_analise-current_step'] == '17':
+            anamnesia = Anamnesia.objects.get(id=self.initial_dict['anamnesia_id'])
+            respostasIndiferenciacao = []
+            adaptativo = 0
+            reativo = 0
+            criativo = 0
+            if "17-grauIndiferenciacao" in form.data:
+                respostasIndiferenciacao = form.data.getlist('17-grauIndiferenciacao')
+            for item in respostasIndiferenciacao:
+                indiferenciacao = GrauIndiferenciacaoPaciente()
+                indiferenciacao.paciente=paciente
+                indiferenciacao.anamnesia=anamnesia
+                indiferenciacao.resposta = GrauIndiferenciacao.objects.get(id=int(item))
+                if indiferenciacao.resposta.padrao == "adaptativo":
+                    adaptativo = adaptativo+1
+                if indiferenciacao.resposta.padrao == "reativo":
+                    reativo = reativo+1
+                if indiferenciacao.resposta.padrao == "criativo":
+                    criativo = criativo+1
+                indiferenciacao.save()
 
-        indice = 0
-        for item in form_data:
-            if "S01" in item:
-                seletivas = form_data[indice]
+        if form.data['inserir_analise-current_step'] == '18':
+            anamnesia = Anamnesia.objects.get(id=self.initial_dict['anamnesia_id'])
+            seletivas = {}
+            if "S01" in form.data:
+                for item in form.data:
+                    print(item)
+                    if item[0] == "1":
+                        seletivas.append({item.split("-")[1]:form.data[item]})
+                print(seletivas)
                 for perguntas in seletivas:
                     if perguntas != "S03" and perguntas != "S04":
                         seletiva = Seletiva()
@@ -648,20 +661,27 @@ class InserirAnalise(SessionWizardView):
                             pergunta = PerguntaSeletiva.objects.get(numero=perguntas)
                             seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=resposta)
                             seletiva.save()
-            indice = indice +1
 
-        indice = 0
-        for item in form_data:
-            if "I01" in item:
-                interventivas = form_data[indice]
+        if form.data['inserir_analise-current_step'] == '19':
+            anamnesia = Anamnesia.objects.get(id=self.initial_dict['anamnesia_id'])
+            interventivas = {}
+            if "I01" in form.data:
+                for item in form.data:
+                    if item[0] == "1":
+                        interventivas.append({item.split("-")[1]:form.data[item]})
+                print(interventivas)
                 for perguntas in interventivas:
-                        interventiva = Interventiva()
-                        interventiva.paciente = paciente
-                        interventiva.anamnesia = anamnesia
-                        pergunta = PerguntaInterventiva.objects.get(numero=perguntas)
-                        interventiva.resposta = RespostaInterventiva.objects.get(pergunta_id=pergunta.id,letra=interventivas[perguntas])
-                        interventiva.save()
-            indice = indice +1
+                    interventiva = Interventiva()
+                    interventiva.paciente = paciente
+                    interventiva.anamnesia = anamnesia
+                    pergunta = PerguntaInterventiva.objects.get(numero=perguntas)
+                    interventiva.resposta = RespostaInterventiva.objects.get(pergunta_id=pergunta.id,letra=interventivas[perguntas])
+                    interventiva.save()
+
+        return form.data
+
+
+    def done(self, form_list, form_dict, **kwargs):
 
         return redirect(AnaliseIniciada)
 
@@ -714,20 +734,75 @@ class ConsultarAnalise(TemplateView):
 
 class ConsultandoAnalise(SessionWizardView):
     template_name = "projetofinal/analise/consultando.html"
-    form_list = [ConsultarAreaAfetiva,RelacionamentoAvosMaternos,
-                 RelacionamentoAvoMaternoAntes,RelacionamentoAvoMaternaAntes,
-                 RelacionamentoAvosMaternosDepois,RelacionamentoAvosPaternos,
-                 RelacionamentoAvoPaternoAntes,RelacionamentoAvoPaternaAntes,
-                 RelacionamentoAvosPaternosDepois,RelacionamentoPais,
-                 RelacionamentoPaiAntes,RelacionamentoMaeAntes,
-                 RelacionamentoPaisDepois,RelacionamentoPaciente,
-                 RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
-                 RelacionamentoPacienteDepois,GrauDeIndeferenciacao,
-                 ConsultarPerguntasSeletivas,ConsultarPerguntasInterventivas]
+    form_list = [ConsultarAreaAfetiva]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(ConsultandoAnalise, self).dispatch(*args, **kwargs)
+
+    def get_form_initial(self, step):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+            try:
+                paciente = Paciente.objects.get(usuario_id=paciente_id)
+            except Paciente.DoesNotExist:
+                raise Http404("Paciente não existe")
+            if 'analise_id' in self.kwargs:
+                analise_id = self.kwargs['analise_id']
+            try:
+                analise = Anamnesia.objects.get(id=analise_id)
+            except Anamnesia.DoesNotExist:
+                raise Http404("Atendimento não existe")
+
+        relacionamentos = Relacionamento.objects.filter(anamnesia_id = analise_id)
+        for relacionamento in relacionamentos:
+            if relacionamento.parente == "AvoMaterno":
+                self.form_list.update({'1':RelacionamentoAvosMaternos})
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'2':RelacionamentoAvoMaternoAntes})
+            if relacionamento.parente == "AvoMaterna":
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'3':RelacionamentoAvoMaternaAntes})
+                if relacionamento.filhosDepois is not None:
+                    self.form_list.update({'4':RelacionamentoAvosMaternosDepois})
+            if relacionamento.parente == "AvoPaterno":
+                self.form_list.update({'5':RelacionamentoAvosPaternos})
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'6':RelacionamentoAvoPaternoAntes})
+            if relacionamento.parente == "AvoPaterna":
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'7':RelacionamentoAvoPaternaAntes})
+                if relacionamento.filhosDepois is not None:
+                    self.form_list.update({'8':RelacionamentoAvosPaternosDepois})
+            if relacionamento.parente == "Pai":
+                self.form_list.update({'9':RelacionamentoPais})
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'10':RelacionamentoPaiAntes})
+            if relacionamento.parente == "Mae":
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'11':RelacionamentoMaeAntes})
+                if relacionamento.filhosDepois is not None:
+                    self.form_list.update({'12':RelacionamentoPaisDepois})
+            if relacionamento.parente == "Paciente":
+                self.form_list.update({'13':RelacionamentoPaciente})
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'14':RelacionamentoPacienteAntes})
+            if relacionamento.parente == "Conjuge":
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'15':RelacionamentoConjugeAntes})
+                if relacionamento.filhosDepois is not None:
+                    self.form_list.update({'16':RelacionamentoPacienteDepois})
+
+        if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id = analise_id).exists():
+            self.form_list.update({'17':GrauDeIndeferenciacao})
+
+        if Seletiva.objects.filter(anamnesia_id = analise_id).exists():
+            self.form_list.update({'18':ConsultarPerguntasSeletivas})
+
+        if Interventiva.objects.filter(anamnesia_id = analise_id).exists():
+            self.form_list.update({'19':ConsultarPerguntasInterventivas})
+
+        return self.initial_dict.get(step, {})
 
     def get_form(self, step=None, data=None, files=None):
         form = super(ConsultandoAnalise, self).get_form(step, data, files)
@@ -741,7 +816,7 @@ class ConsultandoAnalise(SessionWizardView):
             if 'analise_id' in self.kwargs:
                 analise_id = self.kwargs['analise_id']
             try:
-                analise = AreaAfetiva.objects.filter(anamnesia_id=analise_id)
+                analise = Anamnesia.objects.get(id=analise_id)
             except Anamnesia.DoesNotExist:
                 raise Http404("Atendimento não existe")
 
@@ -978,6 +1053,7 @@ class ConsultandoAnalise(SessionWizardView):
                 form.fields[field].required = False
             return form
 
+
         if step == "17":
             indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(paciente_id=paciente.id,anamnesia_id=analise_id)
             selecionadas = []
@@ -1003,6 +1079,406 @@ class ConsultandoAnalise(SessionWizardView):
                 form.fields[field].required = False
             return form
 
+
+class ProsseguirAnalise(TemplateView):
+    template_name="projetofinal/analise/prosseguir.html"
+
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ProsseguirAnalise, self).dispatch(*args, **kwargs)
+
+    def anamnesia(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
+        for analise in anamnesia:
+            if Interventiva.objects.filter(anamnesia_id = analise.id).exists():
+                anamnesia = anamnesia.exclude(id = analise.id)
+
+
+        return anamnesia
+
+    def grafico(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = {
+        }
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
+        for analise in anamnesia:
+            if Interventiva.objects.filter(anamnesia_id = analise.id).exists():
+                anamnesia = anamnesia.exclude(id = analise.id)
+        for analise in anamnesia:
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id)
+            A=[0]
+            for respostas in area:
+                resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
+                A.append(resposta.valor)
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8))*10
+            produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)*10
+            organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)*10
+            espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)*10
+            socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)*10
+            dados[str(analise.inicio)] = [afetivoRelacional]
+            dados[str(analise.inicio)].append(produtividade)
+            dados[str(analise.inicio)].append(organico)
+            dados[str(analise.inicio)].append(espiritual)
+            dados[str(analise.inicio)].append(socioCultural)
+
+
+        grafico = simplejson.dumps(dados)
+        return grafico
+
+
+class ProsseguindoAnalise(SessionWizardView):
+    template_name = "projetofinal/analise/prosseguindo.html"
+    form_list = [PerguntasAreaAfetiva,RelacionamentoAvosMaternos,
+                 RelacionamentoAvoMaternoAntes,RelacionamentoAvoMaternaAntes,
+                 RelacionamentoAvosMaternosDepois,RelacionamentoAvosPaternos,
+                 RelacionamentoAvoPaternoAntes,RelacionamentoAvoPaternaAntes,
+                 RelacionamentoAvosPaternosDepois,RelacionamentoPais,
+                 RelacionamentoPaiAntes,RelacionamentoMaeAntes,
+                 RelacionamentoPaisDepois,RelacionamentoPaciente,
+                 RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
+                 RelacionamentoPacienteDepois,GrauDeIndeferenciacao,
+                 PerguntasSeletivas,PerguntasInterventivas]
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ProsseguindoAnalise, self).dispatch(*args, **kwargs)
+
+    def get_form_initial(self, step):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+            try:
+                paciente = Paciente.objects.get(usuario_id=paciente_id)
+            except Paciente.DoesNotExist:
+                raise Http404("Paciente não existe")
+            if 'analise_id' in self.kwargs:
+                analise_id = self.kwargs['analise_id']
+            try:
+                analise = Anamnesia.objects.get(id=analise_id)
+            except Anamnesia.DoesNotExist:
+                raise Http404("Atendimento não existe")
+
+
+        if AreaAfetiva.objects.filter(anamnesia_id = analise_id).exists():
+            for key, value in self.form_list.items():
+                if value == PerguntasAreaAfetiva:
+                    self.form_list.pop(key)
+
+        relacionamentos = Relacionamento.objects.filter(anamnesia_id = analise_id)
+        for relacionamento in relacionamentos:
+            if relacionamento.parente == "AvoMaterno":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvosMaternos:
+                        self.form_list.pop(key)
+                if (relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
+                        or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
+                    for key, value in self.form_list.items():
+                        if value == RelacionamentoAvoMaternoAntes:
+                            self.form_list.pop(key)
+            if relacionamento.parente == "AvoMaterna":
+                if(relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
+                        or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
+                    for key, value in self.form_list.items():
+                        if value == RelacionamentoAvoMaternaAntes:
+                            self.form_list.pop(key)
+                if(relacionamento.filhosDepois is None and (relacionamento.relacao == "Casados" or relacionamento.relacao == "Moram junto"))\
+                        or ((relacionamento.relacao == "Separados" or relacionamento.relacao == "Divorciados") and relacionamento.filhosDepois is not None):
+                    for key, value in self.form_list.items():
+                        if value == RelacionamentoAvosMaternosDepois:
+                            self.form_list.pop(key)
+
+            if relacionamento.parente == "AvoPaterno":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvosPaternos:
+                        self.form_list.pop(key)
+                if (relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
+                        or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
+                    for key, value in self.form_list.items():
+                        if value == RelacionamentoAvoPaternoAntes:
+                            self.form_list.pop(key)
+            if relacionamento.parente == "AvoPaterna":
+                if(relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
+                        or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
+                    for key, value in self.form_list.items():
+                        if value == RelacionamentoAvoPaternaAntes:
+                            self.form_list.pop(key)
+                if(relacionamento.filhosDepois is None and (relacionamento.relacao == "Casados" or relacionamento.relacao == "Moram junto"))\
+                        or ((relacionamento.relacao == "Separados" or relacionamento.relacao == "Divorciados") and relacionamento.filhosDepois is not None):
+                    for key, value in self.form_list.items():
+                        if value == RelacionamentoAvosPaternosDepois:
+                            self.form_list.pop(key)
+
+            if relacionamento.parente == "Pai":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPais:
+                        self.form_list.pop(key)
+                if (relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
+                        or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
+                    for key, value in self.form_list.items():
+                        if value == RelacionamentoPaiAntes:
+                            self.form_list.pop(key)
+            if relacionamento.parente == "Mae":
+                if(relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
+                        or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
+                    for key, value in self.form_list.items():
+                        if value == RelacionamentoMaeAntes:
+                            self.form_list.pop(key)
+                if(relacionamento.filhosDepois is None and (relacionamento.relacao == "Casados" or relacionamento.relacao == "Moram junto"))\
+                        or ((relacionamento.relacao == "Separados" or relacionamento.relacao == "Divorciados") and relacionamento.filhosDepois is not None):
+                    for key, value in self.form_list.items():
+                        if value == RelacionamentoPaisDepois:
+                            self.form_list.pop(key)
+
+            if relacionamento.parente == "Paciente":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPaciente:
+                        self.form_list.pop(key)
+                if (relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
+                        or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
+                    for key, value in self.form_list.items():
+                        if value == RelacionamentoPacienteAntes:
+                            self.form_list.pop(key)
+            if relacionamento.parente == "Conjuge":
+                if(relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
+                        or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
+                    for key, value in self.form_list.items():
+                        if value == RelacionamentoConjugeAntes:
+                            self.form_list.pop(key)
+                if(relacionamento.filhosDepois is None and (relacionamento.relacao == "Casado(a)" or relacionamento.relacao == "Mora junto" or relacionamento.relacao == "Não se aplica"))\
+                        or ((relacionamento.relacao == "Separado(a)" or relacionamento.relacao == "Divorciado(a)") and relacionamento.filhosDepois is not None):
+                    for key, value in self.form_list.items():
+                        if value == RelacionamentoPacienteDepois:
+                            self.form_list.pop(key)
+
+
+
+        if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id = analise_id).exists():
+            for key, value in self.form_list.items():
+                if value == GrauDeIndeferenciacao:
+                    self.form_list.pop(key)
+
+        if Seletiva.objects.filter(anamnesia_id = analise_id).exists():
+            for key, value in self.form_list.items():
+                if value == PerguntasSeletivas:
+                    self.form_list.pop(key)
+
+        if Interventiva.objects.filter(anamnesia_id = analise_id).exists():
+            for key, value in self.form_list.items():
+                if value == PerguntasInterventivas:
+                    self.form_list.pop(key)
+
+        return self.initial_dict.get(step, {})
+
+    def get_form_step_data(self, form):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+            try:
+                paciente = Paciente.objects.get(usuario_id=paciente_id)
+            except Paciente.DoesNotExist:
+                raise Http404("Paciente não existe")
+            if 'analise_id' in self.kwargs:
+                analise_id = self.kwargs['analise_id']
+            try:
+                analise = Anamnesia.objects.get(id=analise_id)
+            except Anamnesia.DoesNotExist:
+                raise Http404("Atendimento não existe")
+
+        if form.data['prosseguindo_analise-current_step'] == '1':
+            if form.data['1-relacaoAvoMaternoAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvoMaternoAntes:
+                        self.form_list.pop(key)
+            if form.data['1-relacaoAvoMaternaAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvoMaternaAntes:
+                        self.form_list.pop(key)
+            if (form.data['1-relacao'] == "Casados") or (form.data['1-relacao'] == "Moram junto"):
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvosMaternosDepois:
+                        self.form_list.pop(key)
+        if form.data['prosseguindo_analise-current_step'] == '5':
+            if form.data['5-relacaoAvoPaternoAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvoPaternoAntes:
+                        self.form_list.pop(key)
+            if form.data['5-relacaoAvoPaternaAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvoPaternaAntes:
+                        self.form_list.pop(key)
+            if (form.data['5-relacao'] == "Casados") or (form.data['5-relacao'] == "Moram junto"):
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoAvosPaternosDepois:
+                        self.form_list.pop(key)
+        if form.data['prosseguindo_analise-current_step'] == '9':
+            if form.data['9-relacaoPaiAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPaiAntes:
+                        self.form_list.pop(key)
+            if form.data['9-relacaoMaeAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoMaeAntes:
+                        self.form_list.pop(key)
+            if (form.data['9-relacao'] == "Casados") or (form.data['9-relacao'] == "Moram junto"):
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPaisDepois:
+                        self.form_list.pop(key)
+        if form.data['prosseguindo_analise-current_step'] == '13':
+            if form.data['13-relacaoPacienteAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPacienteAntes:
+                        self.form_list.pop(key)
+            if form.data['13-relacaoConjugeAntes'] == "Não":
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoConjugeAntes:
+                        self.form_list.pop(key)
+            if (form.data['13-relacao'] == "Casados") or (form.data['13-relacao'] == "Mora junto") or (form.data['13-relacao'] == "Não se aplica"):
+                for key, value in self.form_list.items():
+                    if value == RelacionamentoPacienteDepois:
+                        self.form_list.pop(key)
+        steps =[]
+        for i in range(1,17):
+            steps.append(str(i))
+        avoM =[]
+        for i in range(1,5):
+            avoM.append(str(i))
+        avoP =[]
+        for i in range(5,9):
+            avoP.append(str(i))
+        pais =[]
+        for i in range(9,13):
+            pais.append(str(i))
+        pac =[]
+        for i in range(13,17):
+            pac.append(str(i))
+
+        if form.data['prosseguindo_analise-current_step'] in avoM:
+            contador = 0
+        if form.data['prosseguindo_analise-current_step'] in avoP:
+            contador = 2
+        if form.data['prosseguindo_analise-current_step'] in pais:
+            contador = 4
+        if form.data['prosseguindo_analise-current_step'] in pac:
+            contador = 6
+        parentes = ["AvoMaterno","AvoMaterna","AvoPaterno","AvoPaterna","Pai","Mae","Paciente","Conjuge"]
+
+        if form.data['prosseguindo_analise-current_step'] in steps:
+
+            item = form.data['prosseguindo_analise-current_step']
+            if item+"-"+"relacao" in form.data:
+                relacionamento = Relacionamento()
+                relacionamento.paciente = paciente
+                relacionamento.anamnesia = Anamnesia.objects.get(id = analise_id,paciente_id=paciente.id)
+                relacionamento.parente=parentes[contador]
+                relacionamento.relacao = form.data[item+"-"+"relacao"]
+                relacionamento.filhos = form.data[item+"-"+"filhos"]
+                relacionamento.filhas = form.data[item+"-"+"filhas"]
+                relacionamento.relacaoAntes = form.data[item+"-"+"relacao"+parentes[contador]+"Antes"]
+                relacionamento.save()
+
+                relacionamento = Relacionamento()
+                relacionamento.paciente = paciente
+                relacionamento.anamnesia = Anamnesia.objects.get(id = analise_id,paciente_id=paciente.id)
+                relacionamento.parente=parentes[contador+1]
+                relacionamento.relacao = form.data[item+"-"+"relacao"]
+                relacionamento.filhos = form.data[item+"-"+"filhos"]
+                relacionamento.filhas = form.data[item+"-"+"filhas"]
+                relacionamento.relacaoAntes = form.data[item+"-"+"relacao"+parentes[contador+1]+"Antes"]
+                relacionamento.save()
+
+            if item+"-"+"filhos"+parentes[contador]+"Antes" in form.data:
+                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = analise_id,parente = parentes[contador])
+                relacionamento.filhosAntes = form.data[item+"-"+"filhos"+parentes[contador]+"Antes"]
+                relacionamento.filhasAntes = form.data[item+"-"+"filhas"+parentes[contador]+"Antes"]
+                relacionamento.save()
+            if item+"-"+"filhos"+parentes[contador+1]+"Antes" in form.data:
+                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = analise_id,parente = parentes[contador+1])
+                relacionamento.filhosAntes = form.data[item+"-"+"filhos"+parentes[contador+1]+"Antes"]
+                relacionamento.filhasAntes = form.data[item+"-"+"filhas"+parentes[contador+1]+"Antes"]
+                relacionamento.save()
+
+            if item+"-"+"filhos"+parentes[contador] in form.data:
+                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = analise_id,parente = parentes[contador])
+                relacionamento.filhosDepois = form.data[item+"-"+"filhos"+parentes[contador]]
+                relacionamento.filhasDepois = form.data[item+"-"+"filhas"+parentes[contador]]
+                relacionamento.save()
+            if item+"-"+"filhos"+parentes[contador+1] in form.data:
+                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = analise_id,parente = parentes[contador+1])
+                relacionamento.filhosDepois = form.data[item+"-"+"filhos"+parentes[contador+1]]
+                relacionamento.filhasDepois = form.data[item+"-"+"filhas"+parentes[contador+1]]
+                relacionamento.save()
+
+        if form.data['prosseguindo_analise-current_step'] == '17':
+            anamnesia = Anamnesia.objects.get(id=analise_id)
+            respostasIndiferenciacao = []
+            adaptativo = 0
+            reativo = 0
+            criativo = 0
+            if "17-grauIndiferenciacao" in form.data:
+                respostasIndiferenciacao = form.data.getlist('17-grauIndiferenciacao')
+            for item in respostasIndiferenciacao:
+                indiferenciacao = GrauIndiferenciacaoPaciente()
+                indiferenciacao.paciente=paciente
+                indiferenciacao.anamnesia=anamnesia
+                indiferenciacao.resposta = GrauIndiferenciacao.objects.get(id=int(item))
+                if indiferenciacao.resposta.padrao == "adaptativo":
+                    adaptativo = adaptativo+1
+                if indiferenciacao.resposta.padrao == "reativo":
+                    reativo = reativo+1
+                if indiferenciacao.resposta.padrao == "criativo":
+                    criativo = criativo+1
+                indiferenciacao.save()
+
+        if form.data['prosseguindo_analise-current_step'] == '18':
+            anamnesia = Anamnesia.objects.get(id=analise_id)
+            seletivas = {}
+            if "18-S01" in form.data:
+                for item in form.data:
+                    if item[0] == "1":
+                        seletivas.update({item.split("-")[1]:form.data[item]})
+                for perguntas in seletivas:
+                    if perguntas != "S03" and perguntas != "S04":
+                        seletiva = Seletiva()
+                        seletiva.paciente = paciente
+                        seletiva.anamnesia = anamnesia
+                        pergunta = PerguntaSeletiva.objects.get(numero=perguntas)
+                        seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=seletivas[perguntas])
+                        seletiva.save()
+                    else:
+                        for resposta in seletivas[perguntas]:
+                            seletiva = Seletiva()
+                            seletiva.paciente = paciente
+                            seletiva.anamnesia = anamnesia
+                            pergunta = PerguntaSeletiva.objects.get(numero=perguntas)
+                            seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=resposta)
+                            seletiva.save()
+
+        if form.data['prosseguindo_analise-current_step'] == '19':
+            anamnesia = Anamnesia.objects.get(id = analise_id)
+            interventivas = {}
+            if "19-I01" in form.data:
+                for item in form.data:
+                    if item[0] == "1":
+                        interventivas.update({item.split("-")[1]:form.data[item]})
+                for perguntas in interventivas:
+                    interventiva = Interventiva()
+                    interventiva.paciente = paciente
+                    interventiva.anamnesia = anamnesia
+                    pergunta = PerguntaInterventiva.objects.get(numero=perguntas)
+                    interventiva.resposta = RespostaInterventiva.objects.get(pergunta_id=pergunta.id,letra=interventivas[perguntas])
+                    interventiva.save()
+
+        return form.data
+
+
+    def done(self, form_list, form_dict, **kwargs):
+
+        return redirect(AnaliseIniciada)
+
 @login_required()
 def RemoverAnalise(request, paciente_id):
 
@@ -1016,8 +1492,6 @@ def RemoverAnalise(request, paciente_id):
         Seletiva.objects.filter(anamnesia_id=analise).delete()
         Interventiva.objects.filter(anamnesia_id=analise).delete()
     return render(request,"projetofinal/analise/removida.html")
-
-
 
 
 #Views do Psicólogo
@@ -1183,9 +1657,58 @@ class ConsultandoAnalisePaciente(SessionWizardView):
             if 'analise_id' in self.kwargs:
                 analise_id = self.kwargs['analise_id']
             try:
-                analise = AreaAfetiva.objects.filter(anamnesia_id=analise_id)
+                analise = Anamnesia.objects.get(id=analise_id)
             except Anamnesia.DoesNotExist:
                 raise Http404("Atendimento não existe")
+
+
+        relacionamentos = Relacionamento.objects.filter(anamnesia_id = analise_id)
+        for relacionamento in relacionamentos:
+            if relacionamento.parente == "AvoMaterno":
+                self.form_list.update({'1':RelacionamentoAvosMaternos})
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'2':RelacionamentoAvoMaternoAntes})
+            if relacionamento.parente == "AvoMaterna":
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'3':RelacionamentoAvoMaternaAntes})
+                if relacionamento.filhosDepois is not None:
+                    self.form_list.update({'4':RelacionamentoAvosMaternosDepois})
+            if relacionamento.parente == "AvoPaterno":
+                self.form_list.update({'5':RelacionamentoAvosPaternos})
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'6':RelacionamentoAvoPaternoAntes})
+            if relacionamento.parente == "AvoPaterna":
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'7':RelacionamentoAvoPaternaAntes})
+                if relacionamento.filhosDepois is not None:
+                    self.form_list.update({'8':RelacionamentoAvosPaternosDepois})
+            if relacionamento.parente == "Pai":
+                self.form_list.update({'9':RelacionamentoPais})
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'10':RelacionamentoPaiAntes})
+            if relacionamento.parente == "Mae":
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'11':RelacionamentoMaeAntes})
+                if relacionamento.filhosDepois is not None:
+                    self.form_list.update({'12':RelacionamentoPaisDepois})
+            if relacionamento.parente == "Paciente":
+                self.form_list.update({'13':RelacionamentoPaciente})
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'14':RelacionamentoPacienteAntes})
+            if relacionamento.parente == "Conjuge":
+                if relacionamento.filhosAntes is not None:
+                    self.form_list.update({'15':RelacionamentoConjugeAntes})
+                if relacionamento.filhosDepois is not None:
+                    self.form_list.update({'16':RelacionamentoPacienteDepois})
+
+        if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id = analise_id).exists():
+            self.form_list.update({'17':GrauDeIndeferenciacao})
+
+        if Seletiva.objects.filter(anamnesia_id = analise_id).exists():
+            self.form_list.update({'18':ConsultarPerguntasSeletivas})
+
+        if Interventiva.objects.filter(anamnesia_id = analise_id).exists():
+            self.form_list.update({'19':ConsultarPerguntasInterventivas})
 
 
         # determine the step if not given

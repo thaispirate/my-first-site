@@ -6,7 +6,8 @@ from django.views.generic import TemplateView
 from .forms import CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,CadastroAvoPaterna,\
     CadastroAvoMaterno, CadastroAvoMaterna,EdicaoPaciente, CadastroPsicologoForm
 from .views import CadastroWizard, EditarCadastro, PsicologoPaciente, CadastroPsicologoWizard,\
-    InserirAnalise, ConsultarAnalise, ConsultandoAnalise,AnalisePaciente, ConsultandoAnalisePaciente
+    InserirAnalise, ConsultarAnalise, ConsultandoAnalise,AnalisePaciente, ConsultandoAnalisePaciente,\
+    ProsseguirAnalise, ProsseguindoAnalise
 
 handler404="views.erro404"
 
@@ -32,6 +33,8 @@ urlpatterns = [
     url(r'^analise/iniciada$', views.AnaliseIniciada),
     url(r'^analise/consultar/(?P<paciente_id>\d+)/$', ConsultarAnalise.as_view(), name="consultar"),
     url(r'^analise/consultar/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ConsultandoAnalise.as_view(), name="consultando"),
+    url(r'^analise/prosseguir/(?P<paciente_id>\d+)/$', ProsseguirAnalise.as_view(), name="prosseguir"),
+    url(r'^analise/prosseguir/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ProsseguindoAnalise.as_view(), name="prosseguindo"),
     url(r'^analise/consultar/(?P<paciente_id>\d+)/remover$', views.RemoverAnalise, name="remover"),
 
     #Psicólogo
