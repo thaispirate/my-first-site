@@ -1598,34 +1598,14 @@ class AnalisePaciente(TemplateView):
 
 class ConsultandoAnalisePaciente(SessionWizardView):
     template_name = "projetofinal/psicologo/paciente/consultando.html"
-    form_list = [ConsultarAreaAfetiva,RelacionamentoAvosMaternos,
-                 RelacionamentoAvoMaternoAntes,RelacionamentoAvoMaternaAntes,
-                 RelacionamentoAvosMaternosDepois,RelacionamentoAvosPaternos,
-                 RelacionamentoAvoPaternoAntes,RelacionamentoAvoPaternaAntes,
-                 RelacionamentoAvosPaternosDepois,RelacionamentoPais,
-                 RelacionamentoPaiAntes,RelacionamentoMaeAntes,
-                 RelacionamentoPaisDepois,RelacionamentoPaciente,
-                 RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
-                 RelacionamentoPacienteDepois,GrauDeIndeferenciacao,
-                 ConsultarPerguntasSeletivas,ConsultarPerguntasInterventivas]
+    form_list = [ConsultarAreaAfetiva]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(ConsultandoAnalisePaciente, self).dispatch(*args, **kwargs)
 
-    def paciente(self):
-        if 'paciente_id' in self.kwargs:
-            paciente_id = self.kwargs['paciente_id']
-            try:
-                paciente = Paciente.objects.get(usuario_id=paciente_id)
-            except Paciente.DoesNotExist:
-                raise Http404("Paciente não existe")
-        return paciente_id
-
-
     def get_form(self, step=None, data=None, files=None):
         form = super(ConsultandoAnalisePaciente, self).get_form(step, data, files)
-
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
             try:
@@ -1639,6 +1619,9 @@ class ConsultandoAnalisePaciente(SessionWizardView):
             except Anamnesia.DoesNotExist:
                 raise Http404("Atendimento não existe")
 
+        for key,value in self.form_list.items():
+            if value != ConsultarAreaAfetiva:
+                self.form_list.pop(key)
 
         relacionamentos = Relacionamento.objects.filter(anamnesia_id = analise_id)
         for relacionamento in relacionamentos:
@@ -1678,7 +1661,6 @@ class ConsultandoAnalisePaciente(SessionWizardView):
                     self.form_list.update({'15':RelacionamentoConjugeAntes})
                 if relacionamento.filhosDepois is not None:
                     self.form_list.update({'16':RelacionamentoPacienteDepois})
-
         if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id = analise_id).exists():
             self.form_list.update({'17':GrauDeIndeferenciacao})
 
@@ -1687,8 +1669,6 @@ class ConsultandoAnalisePaciente(SessionWizardView):
 
         if Interventiva.objects.filter(anamnesia_id = analise_id).exists():
             self.form_list.update({'19':ConsultarPerguntasInterventivas})
-
-
         # determine the step if not given
         if step is None:
             step = self.steps.current
@@ -1920,6 +1900,7 @@ class ConsultandoAnalisePaciente(SessionWizardView):
                 form.fields[field].widget.attrs['disabled'] = True
                 form.fields[field].required = False
             return form
+
 
         if step == "17":
             indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(paciente_id=paciente.id,anamnesia_id=analise_id)
