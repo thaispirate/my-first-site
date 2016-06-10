@@ -740,7 +740,8 @@ class ConsultandoAnalise(SessionWizardView):
     def dispatch(self, *args, **kwargs):
         return super(ConsultandoAnalise, self).dispatch(*args, **kwargs)
 
-    def get_form_initial(self, step):
+    def get_form(self, step=None, data=None, files=None):
+        form = super(ConsultandoAnalise, self).get_form(step, data, files)
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
             try:
@@ -753,6 +754,10 @@ class ConsultandoAnalise(SessionWizardView):
                 analise = Anamnesia.objects.get(id=analise_id)
             except Anamnesia.DoesNotExist:
                 raise Http404("Atendimento não existe")
+
+        for key,value in self.form_list.items():
+            if value != ConsultarAreaAfetiva:
+                self.form_list.pop(key)
 
         relacionamentos = Relacionamento.objects.filter(anamnesia_id = analise_id)
         for relacionamento in relacionamentos:
@@ -792,7 +797,6 @@ class ConsultandoAnalise(SessionWizardView):
                     self.form_list.update({'15':RelacionamentoConjugeAntes})
                 if relacionamento.filhosDepois is not None:
                     self.form_list.update({'16':RelacionamentoPacienteDepois})
-
         if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id = analise_id).exists():
             self.form_list.update({'17':GrauDeIndeferenciacao})
 
@@ -801,26 +805,6 @@ class ConsultandoAnalise(SessionWizardView):
 
         if Interventiva.objects.filter(anamnesia_id = analise_id).exists():
             self.form_list.update({'19':ConsultarPerguntasInterventivas})
-
-        return self.initial_dict.get(step, {})
-
-    def get_form(self, step=None, data=None, files=None):
-        form = super(ConsultandoAnalise, self).get_form(step, data, files)
-
-        if 'paciente_id' in self.kwargs:
-            paciente_id = self.kwargs['paciente_id']
-            try:
-                paciente = Paciente.objects.get(usuario_id=paciente_id)
-            except Paciente.DoesNotExist:
-                raise Http404("Paciente não existe")
-            if 'analise_id' in self.kwargs:
-                analise_id = self.kwargs['analise_id']
-            try:
-                analise = Anamnesia.objects.get(id=analise_id)
-            except Anamnesia.DoesNotExist:
-                raise Http404("Atendimento não existe")
-
-
         # determine the step if not given
         if step is None:
             step = self.steps.current
@@ -1134,7 +1118,7 @@ class ProsseguirAnalise(TemplateView):
 
 class ProsseguindoAnalise(SessionWizardView):
     template_name = "projetofinal/analise/prosseguindo.html"
-    form_list = [PerguntasAreaAfetiva,RelacionamentoAvosMaternos,
+    form_list = [RelacionamentoAvosMaternos,
                  RelacionamentoAvoMaternoAntes,RelacionamentoAvoMaternaAntes,
                  RelacionamentoAvosMaternosDepois,RelacionamentoAvosPaternos,
                  RelacionamentoAvoPaternoAntes,RelacionamentoAvoPaternaAntes,
@@ -1162,12 +1146,6 @@ class ProsseguindoAnalise(SessionWizardView):
                 analise = Anamnesia.objects.get(id=analise_id)
             except Anamnesia.DoesNotExist:
                 raise Http404("Atendimento não existe")
-
-
-        if AreaAfetiva.objects.filter(anamnesia_id = analise_id).exists():
-            for key, value in self.form_list.items():
-                if value == PerguntasAreaAfetiva:
-                    self.form_list.pop(key)
 
         relacionamentos = Relacionamento.objects.filter(anamnesia_id = analise_id)
         for relacionamento in relacionamentos:
@@ -1288,72 +1266,72 @@ class ProsseguindoAnalise(SessionWizardView):
             except Anamnesia.DoesNotExist:
                 raise Http404("Atendimento não existe")
 
-        if form.data['prosseguindo_analise-current_step'] == '1':
-            if form.data['1-relacaoAvoMaternoAntes'] == "Não":
+        if form.data['prosseguindo_analise-current_step'] == '0':
+            if form.data['0-relacaoAvoMaternoAntes'] == "Não":
                 for key, value in self.form_list.items():
                     if value == RelacionamentoAvoMaternoAntes:
                         self.form_list.pop(key)
-            if form.data['1-relacaoAvoMaternaAntes'] == "Não":
+            if form.data['0-relacaoAvoMaternaAntes'] == "Não":
                 for key, value in self.form_list.items():
                     if value == RelacionamentoAvoMaternaAntes:
                         self.form_list.pop(key)
-            if (form.data['1-relacao'] == "Casados") or (form.data['1-relacao'] == "Moram junto"):
+            if (form.data['0-relacao'] == "Casados") or (form.data['0-relacao'] == "Moram junto"):
                 for key, value in self.form_list.items():
                     if value == RelacionamentoAvosMaternosDepois:
                         self.form_list.pop(key)
-        if form.data['prosseguindo_analise-current_step'] == '5':
-            if form.data['5-relacaoAvoPaternoAntes'] == "Não":
+        if form.data['prosseguindo_analise-current_step'] == '4':
+            if form.data['4-relacaoAvoPaternoAntes'] == "Não":
                 for key, value in self.form_list.items():
                     if value == RelacionamentoAvoPaternoAntes:
                         self.form_list.pop(key)
-            if form.data['5-relacaoAvoPaternaAntes'] == "Não":
+            if form.data['4-relacaoAvoPaternaAntes'] == "Não":
                 for key, value in self.form_list.items():
                     if value == RelacionamentoAvoPaternaAntes:
                         self.form_list.pop(key)
-            if (form.data['5-relacao'] == "Casados") or (form.data['5-relacao'] == "Moram junto"):
+            if (form.data['4-relacao'] == "Casados") or (form.data['4-relacao'] == "Moram junto"):
                 for key, value in self.form_list.items():
                     if value == RelacionamentoAvosPaternosDepois:
                         self.form_list.pop(key)
-        if form.data['prosseguindo_analise-current_step'] == '9':
-            if form.data['9-relacaoPaiAntes'] == "Não":
+        if form.data['prosseguindo_analise-current_step'] == '8':
+            if form.data['8-relacaoPaiAntes'] == "Não":
                 for key, value in self.form_list.items():
                     if value == RelacionamentoPaiAntes:
                         self.form_list.pop(key)
-            if form.data['9-relacaoMaeAntes'] == "Não":
+            if form.data['8-relacaoMaeAntes'] == "Não":
                 for key, value in self.form_list.items():
                     if value == RelacionamentoMaeAntes:
                         self.form_list.pop(key)
-            if (form.data['9-relacao'] == "Casados") or (form.data['9-relacao'] == "Moram junto"):
+            if (form.data['8-relacao'] == "Casados") or (form.data['8-relacao'] == "Moram junto"):
                 for key, value in self.form_list.items():
                     if value == RelacionamentoPaisDepois:
                         self.form_list.pop(key)
-        if form.data['prosseguindo_analise-current_step'] == '13':
-            if form.data['13-relacaoPacienteAntes'] == "Não":
+        if form.data['prosseguindo_analise-current_step'] == '12':
+            if form.data['12-relacaoPacienteAntes'] == "Não":
                 for key, value in self.form_list.items():
                     if value == RelacionamentoPacienteAntes:
                         self.form_list.pop(key)
-            if form.data['13-relacaoConjugeAntes'] == "Não":
+            if form.data['12-relacaoConjugeAntes'] == "Não":
                 for key, value in self.form_list.items():
                     if value == RelacionamentoConjugeAntes:
                         self.form_list.pop(key)
-            if (form.data['13-relacao'] == "Casados") or (form.data['13-relacao'] == "Mora junto") or (form.data['13-relacao'] == "Não se aplica"):
+            if (form.data['12-relacao'] == "Casados") or (form.data['12-relacao'] == "Mora junto") or (form.data['12-relacao'] == "Não se aplica"):
                 for key, value in self.form_list.items():
                     if value == RelacionamentoPacienteDepois:
                         self.form_list.pop(key)
         steps =[]
-        for i in range(1,17):
+        for i in range(0,16):
             steps.append(str(i))
         avoM =[]
-        for i in range(1,5):
+        for i in range(0,4):
             avoM.append(str(i))
         avoP =[]
-        for i in range(5,9):
+        for i in range(4,8):
             avoP.append(str(i))
         pais =[]
-        for i in range(9,13):
+        for i in range(8,12):
             pais.append(str(i))
         pac =[]
-        for i in range(13,17):
+        for i in range(12,16):
             pac.append(str(i))
 
         if form.data['prosseguindo_analise-current_step'] in avoM:
@@ -1412,14 +1390,14 @@ class ProsseguindoAnalise(SessionWizardView):
                 relacionamento.filhasDepois = form.data[item+"-"+"filhas"+parentes[contador+1]]
                 relacionamento.save()
 
-        if form.data['prosseguindo_analise-current_step'] == '17':
+        if form.data['prosseguindo_analise-current_step'] == '16':
             anamnesia = Anamnesia.objects.get(id=analise_id)
             respostasIndiferenciacao = []
             adaptativo = 0
             reativo = 0
             criativo = 0
             if "17-grauIndiferenciacao" in form.data:
-                respostasIndiferenciacao = form.data.getlist('17-grauIndiferenciacao')
+                respostasIndiferenciacao = form.data.getlist('16-grauIndiferenciacao')
             for item in respostasIndiferenciacao:
                 indiferenciacao = GrauIndiferenciacaoPaciente()
                 indiferenciacao.paciente=paciente
@@ -1433,10 +1411,10 @@ class ProsseguindoAnalise(SessionWizardView):
                     criativo = criativo+1
                 indiferenciacao.save()
 
-        if form.data['prosseguindo_analise-current_step'] == '18':
+        if form.data['prosseguindo_analise-current_step'] == '17':
             anamnesia = Anamnesia.objects.get(id=analise_id)
             seletivas = {}
-            if "18-S01" in form.data:
+            if "17-S01" in form.data:
                 for item in form.data:
                     if item[0] == "1":
                         seletivas.update({item.split("-")[1]:form.data[item]})
@@ -1457,10 +1435,10 @@ class ProsseguindoAnalise(SessionWizardView):
                             seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=resposta)
                             seletiva.save()
 
-        if form.data['prosseguindo_analise-current_step'] == '19':
+        if form.data['prosseguindo_analise-current_step'] == '18':
             anamnesia = Anamnesia.objects.get(id = analise_id)
             interventivas = {}
-            if "19-I01" in form.data:
+            if "18-I01" in form.data:
                 for item in form.data:
                     if item[0] == "1":
                         interventivas.update({item.split("-")[1]:form.data[item]})
