@@ -677,12 +677,13 @@ class InserirAnalise(SessionWizardView):
                     pergunta = PerguntaInterventiva.objects.get(numero=perguntas)
                     interventiva.resposta = RespostaInterventiva.objects.get(pergunta_id=pergunta.id,letra=interventivas[perguntas])
                     interventiva.save()
+                    anamnesia.fim = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    anamnesia.save()
 
         return form.data
 
 
     def done(self, form_list, form_dict, **kwargs):
-
         return redirect(AnaliseIniciada)
 
 def AnaliseIniciada(request):
@@ -717,20 +718,30 @@ class ConsultarAnalise(TemplateView):
             for respostas in area:
                 resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
                 A.append(resposta.valor)
-            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8))*10
-            produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)*10
-            organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)*10
-            espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)*10
-            socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)*10
-            dados[str(analise.inicio)] = [afetivoRelacional]
-            dados[str(analise.inicio)].append(produtividade)
-            dados[str(analise.inicio)].append(organico)
-            dados[str(analise.inicio)].append(espiritual)
-            dados[str(analise.inicio)].append(socioCultural)
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8))
+            produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)
+            organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
+            espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
+            socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
 
 
         grafico = simplejson.dumps(dados)
         return grafico
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = { 'paciente': paciente.nome
+        }
+
+        paciente = simplejson.dumps(dados)
+        return paciente
 
 class ConsultandoAnalise(SessionWizardView):
     template_name = "projetofinal/analise/consultando.html"
@@ -1080,8 +1091,6 @@ class ProsseguirAnalise(TemplateView):
         for analise in anamnesia:
             if Interventiva.objects.filter(anamnesia_id = analise.id).exists():
                 anamnesia = anamnesia.exclude(id = analise.id)
-
-
         return anamnesia
 
     def grafico(self):
@@ -1105,16 +1114,23 @@ class ProsseguirAnalise(TemplateView):
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)*10
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)*10
             socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)*10
-            dados[str(analise.inicio)] = [afetivoRelacional]
-            dados[str(analise.inicio)].append(produtividade)
-            dados[str(analise.inicio)].append(organico)
-            dados[str(analise.inicio)].append(espiritual)
-            dados[str(analise.inicio)].append(socioCultural)
-
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
 
         grafico = simplejson.dumps(dados)
         return grafico
 
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = { 'paciente': paciente.nome
+        }
+        paciente = simplejson.dumps(dados)
+        return paciente
 
 class ProsseguindoAnalise(SessionWizardView):
     template_name = "projetofinal/analise/prosseguindo.html"
@@ -1146,6 +1162,28 @@ class ProsseguindoAnalise(SessionWizardView):
                 analise = Anamnesia.objects.get(id=analise_id)
             except Anamnesia.DoesNotExist:
                 raise Http404("Atendimento não existe")
+
+
+        self.form_list.update({'0':RelacionamentoAvosMaternos})
+        self.form_list.update({'1':RelacionamentoAvoMaternoAntes})
+        self.form_list.update({'2':RelacionamentoAvoMaternaAntes})
+        self.form_list.update({'3':RelacionamentoAvosMaternosDepois})
+        self.form_list.update({'4':RelacionamentoAvosPaternos})
+        self.form_list.update({'5':RelacionamentoAvoPaternoAntes})
+        self.form_list.update({'6':RelacionamentoAvoPaternaAntes})
+        self.form_list.update({'7':RelacionamentoAvosPaternosDepois})
+        self.form_list.update({'8':RelacionamentoPais})
+        self.form_list.update({'9':RelacionamentoPaiAntes})
+        self.form_list.update({'10':RelacionamentoMaeAntes})
+        self.form_list.update({'11':RelacionamentoPaisDepois})
+        self.form_list.update({'12':RelacionamentoPaciente})
+        self.form_list.update({'13':RelacionamentoPacienteAntes})
+        self.form_list.update({'14':RelacionamentoConjugeAntes})
+        self.form_list.update({'15':RelacionamentoPacienteDepois})
+        self.form_list.update({'16':GrauDeIndeferenciacao})
+        self.form_list.update({'17':PerguntasSeletivas})
+        self.form_list.update({'18':PerguntasInterventivas})
+
 
         relacionamentos = Relacionamento.objects.filter(anamnesia_id = analise_id)
         for relacionamento in relacionamentos:
@@ -1396,7 +1434,7 @@ class ProsseguindoAnalise(SessionWizardView):
             adaptativo = 0
             reativo = 0
             criativo = 0
-            if "17-grauIndiferenciacao" in form.data:
+            if "16-grauIndiferenciacao" in form.data:
                 respostasIndiferenciacao = form.data.getlist('16-grauIndiferenciacao')
             for item in respostasIndiferenciacao:
                 indiferenciacao = GrauIndiferenciacaoPaciente()
@@ -1449,12 +1487,13 @@ class ProsseguindoAnalise(SessionWizardView):
                     pergunta = PerguntaInterventiva.objects.get(numero=perguntas)
                     interventiva.resposta = RespostaInterventiva.objects.get(pergunta_id=pergunta.id,letra=interventivas[perguntas])
                     interventiva.save()
+                    anamnesia.fim = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    anamnesia.save()
 
         return form.data
 
 
     def done(self, form_list, form_dict, **kwargs):
-
         return redirect(AnaliseIniciada)
 
 @login_required()
@@ -1581,20 +1620,30 @@ class AnalisePaciente(TemplateView):
             for respostas in area:
                 resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
                 A.append(resposta.valor)
-            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8))*10
-            produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)*10
-            organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)*10
-            espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)*10
-            socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)*10
-            dados[str(analise.inicio)] = [afetivoRelacional]
-            dados[str(analise.inicio)].append(produtividade)
-            dados[str(analise.inicio)].append(organico)
-            dados[str(analise.inicio)].append(espiritual)
-            dados[str(analise.inicio)].append(socioCultural)
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8))
+            produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)
+            organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
+            espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
+            socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
 
 
         grafico = simplejson.dumps(dados)
         return grafico
+
+    def pacienteGrafico(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = { 'paciente': paciente.nome
+        }
+
+        paciente = simplejson.dumps(dados)
+        return paciente
 
 class ConsultandoAnalisePaciente(SessionWizardView):
     template_name = "projetofinal/psicologo/paciente/consultando.html"
@@ -1603,6 +1652,15 @@ class ConsultandoAnalisePaciente(SessionWizardView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(ConsultandoAnalisePaciente, self).dispatch(*args, **kwargs)
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+            try:
+                paciente = Paciente.objects.get(usuario_id=paciente_id)
+            except Paciente.DoesNotExist:
+                raise Http404("Paciente não existe")
+        return paciente_id
 
     def get_form(self, step=None, data=None, files=None):
         form = super(ConsultandoAnalisePaciente, self).get_form(step, data, files)

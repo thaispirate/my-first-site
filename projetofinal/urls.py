@@ -35,8 +35,8 @@ urlpatterns = [
     url(r'^analise/consultar/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ConsultandoAnalise.as_view(), name="consultando"),
     url(r'^analise/prosseguir/(?P<paciente_id>\d+)/$', ProsseguirAnalise.as_view(), name="prosseguir"),
     url(r'^analise/prosseguir/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ProsseguindoAnalise.as_view(), name="prosseguindo"),
+    url(r'^analise/prosseguir/(?P<paciente_id>\d+)/remover$', views.RemoverAnalise, name="remover"),
     url(r'^analise/consultar/(?P<paciente_id>\d+)/remover$', views.RemoverAnalise, name="remover"),
-
     #Psicólogo
     url(r'^psicologo/administracao$', views.PsicologoAdministracao),
     url(r'^psicologo/login$', views.LoginPsicologo),

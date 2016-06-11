@@ -95,7 +95,7 @@
                         <input type="checkbox" name="analise" value="{{analise.id}}">
                       </label>
                 </td>
-                <td><a href="/analise/consultar/{{user.id}}/{{ analise.id }}">{{analise.inicio}}</a>
+                <td><a href="/analise/consultar/{{user.id}}/{{ analise.id }}">{{analise.inicio|date:'d-m-Y H:i' }}</a>
                 </td>
             </tr>
             {% endfor %}
@@ -115,6 +115,7 @@
 
 <script text="text/javascript">
 dados = {{ view.grafico|safe }};
+paciente = {{ view.paciente|safe }};
 </script>
 
   </body>
