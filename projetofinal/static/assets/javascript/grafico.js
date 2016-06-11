@@ -21,7 +21,7 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'nota'
+                    text: 'Valor'
                 }
             },
             tooltip: {
