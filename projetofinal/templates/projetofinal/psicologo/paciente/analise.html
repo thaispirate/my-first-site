@@ -72,6 +72,9 @@
        <div class="container">
           <hr class="featurette-divider">
           <div class="col-md-10">
+              {% if not view.anamnesia %}
+              <h2>Não existem atendimentos</h2>
+              {% else %}
           <table class="table table-bordered">
             <tr>
                 <th>#</th>
