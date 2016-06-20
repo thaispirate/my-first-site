@@ -9,11 +9,12 @@ from .forms import ConsultarAreaAfetiva,CadastroPaciente,CadastroConjuge,Cadastr
     RelacionamentoAvosPaternos, RelacionamentoAvoPaternoAntes, RelacionamentoAvoPaternaAntes, RelacionamentoAvosPaternosDepois,\
     RelacionamentoPais, RelacionamentoPaiAntes,RelacionamentoMaeAntes,RelacionamentoPaisDepois, RelacionamentoPaciente,\
     RelacionamentoPacienteAntes, RelacionamentoConjugeAntes, RelacionamentoPacienteDepois,GrauDeIndeferenciacao,\
-    PerguntasSeletivas, ConsultarPerguntasSeletivas, PerguntasInterventivas, ConsultarPerguntasInterventivas
+    PerguntasSeletivas,PerguntasSeletivasCondicionadas, ConsultarPerguntasSeletivas,\
+    PerguntasInterventivas, ConsultarPerguntasInterventivas
 
 from .models import Paciente,User,Familia, Psicologo, AreaAfetiva, Anamnesia, RespostaAreaAfetiva,\
     Relacionamento,GrauIndiferenciacao, GrauIndiferenciacaoPaciente,\
-    Seletiva, RespostaSeletiva, PerguntaSeletiva,\
+    Seletiva, PerguntaSeletiva,RespostaSeletiva, PerguntaSeletiva,\
     Interventiva, PerguntaInterventiva, RespostaInterventiva
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404, HttpResponseRedirect, HttpResponse
@@ -441,7 +442,8 @@ class InserirAnalise(SessionWizardView):
                  RelacionamentoPaisDepois,RelacionamentoPaciente,
                  RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
                  RelacionamentoPacienteDepois,GrauDeIndeferenciacao,
-                 PerguntasSeletivas,PerguntasInterventivas]
+                 PerguntasSeletivas,PerguntasSeletivasCondicionadas,
+                 PerguntasInterventivas]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -535,13 +537,17 @@ class InserirAnalise(SessionWizardView):
                 for key, value in self.form_list.items():
                     if value == RelacionamentoPacienteAntes:
                         self.form_list.pop(key)
-            if form.data['13-relacaoConjugeAntes'] == "Não":
+            if form.data['13-relacaoConjugeAntes'] == "Não" or form.data['13-relacaoConjugeAntes'] == "Não se aplica":
                 for key, value in self.form_list.items():
                     if value == RelacionamentoConjugeAntes:
                         self.form_list.pop(key)
-            if (form.data['13-relacao'] == "Casados") or (form.data['13-relacao'] == "Mora junto") or (form.data['13-relacao'] == "Não se aplica"):
+            if (form.data['13-relacao'] == "Casado(a)") or (form.data['13-relacao'] == "Mora junto") or (form.data['13-relacao'] == "Solteiro(a)"):
                 for key, value in self.form_list.items():
                     if value == RelacionamentoPacienteDepois:
+                        self.form_list.pop(key)
+            if (form.data['13-relacao'] == "Divorciado(a)") or (form.data['13-relacao'] == "Separado(a)") or (form.data['13-relacao'] == "Solteiro(a)"):
+                for key, value in self.form_list.items():
+                    if value == PerguntasSeletivasCondicionadas:
                         self.form_list.pop(key)
         steps =[]
         for i in range(1,17):
@@ -639,12 +645,10 @@ class InserirAnalise(SessionWizardView):
         if form.data['inserir_analise-current_step'] == '18':
             anamnesia = Anamnesia.objects.get(id=self.initial_dict['anamnesia_id'])
             seletivas = {}
-            if "S01" in form.data:
+            if "18-S01" in form.data:
                 for item in form.data:
-                    print(item)
                     if item[0] == "1":
-                        seletivas.append({item.split("-")[1]:form.data[item]})
-                print(seletivas)
+                        seletivas.update({item.split("-")[1]:form.data[item]})
                 for perguntas in seletivas:
                     if perguntas != "S03" and perguntas != "S04":
                         seletiva = Seletiva()
@@ -664,12 +668,30 @@ class InserirAnalise(SessionWizardView):
 
         if form.data['inserir_analise-current_step'] == '19':
             anamnesia = Anamnesia.objects.get(id=self.initial_dict['anamnesia_id'])
-            interventivas = {}
-            if "I01" in form.data:
+            seletivas = {}
+            if "19-S34" in form.data:
                 for item in form.data:
                     if item[0] == "1":
-                        interventivas.append({item.split("-")[1]:form.data[item]})
-                print(interventivas)
+                        seletivas.update({item.split("-")[1]:form.data[item]})
+                for perguntas in seletivas:
+                    seletiva = Seletiva()
+                    seletiva.paciente = paciente
+                    seletiva.anamnesia = anamnesia
+                    pergunta = PerguntaSeletiva.objects.get(numero=perguntas)
+                    seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=seletivas[perguntas])
+                    seletiva.save()
+
+
+        if form.data['inserir_analise-current_step'] == '20':
+            print("primeiro if", form.data)
+            anamnesia = Anamnesia.objects.get(id=self.initial_dict['anamnesia_id'])
+            interventivas = {}
+            if "20-I01" in form.data:
+                print("segundo if")
+                for item in form.data:
+                    if item[0] == "2":
+                        print("terceiro if",item)
+                        interventivas.update({item.split("-")[1]:form.data[item]})
                 for perguntas in interventivas:
                     interventiva = Interventiva()
                     interventiva.paciente = paciente
@@ -1159,7 +1181,8 @@ class ProsseguindoAnalise(SessionWizardView):
         self.form_list.update({'15':RelacionamentoPacienteDepois})
         self.form_list.update({'16':GrauDeIndeferenciacao})
         self.form_list.update({'17':PerguntasSeletivas})
-        self.form_list.update({'18':PerguntasInterventivas})
+        self.form_list.update({'18':PerguntasSeletivasCondicionadas})
+        self.form_list.update({'19':PerguntasInterventivas})
 
 
         if 'paciente_id' in self.kwargs:
@@ -1246,18 +1269,22 @@ class ProsseguindoAnalise(SessionWizardView):
                 for key, value in self.form_list.items():
                     if value == RelacionamentoPaciente:
                         self.form_list.pop(key)
+                if relacionamento.relacao == "Separado(a)" or relacionamento.relacao == "Divorciado(a)" or relacionamento.relacao == "Solteiro(a)":
+                    for key, value in self.form_list.items():
+                        if value == PerguntasSeletivasCondicionadas:
+                            self.form_list.pop(key)
                 if (relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
                     for key, value in self.form_list.items():
                         if value == RelacionamentoPacienteAntes:
                             self.form_list.pop(key)
             if relacionamento.parente == "Conjuge":
-                if(relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
+                if(relacionamento.filhosAntes is None and (relacionamento.relacaoAntes == "Não" or relacionamento.relacaoAntes == "Não se aplica" ))\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
                     for key, value in self.form_list.items():
                         if value == RelacionamentoConjugeAntes:
                             self.form_list.pop(key)
-                if(relacionamento.filhosDepois is None and (relacionamento.relacao == "Casado(a)" or relacionamento.relacao == "Mora junto" or relacionamento.relacao == "Não se aplica"))\
+                if(relacionamento.filhosDepois is None and (relacionamento.relacao == "Casado(a)" or relacionamento.relacao == "Mora junto" or relacionamento.relacao == "Solteiro(a)"))\
                         or ((relacionamento.relacao == "Separado(a)" or relacionamento.relacao == "Divorciado(a)") and relacionamento.filhosDepois is not None):
                     for key, value in self.form_list.items():
                         if value == RelacionamentoPacienteDepois:
@@ -1272,6 +1299,18 @@ class ProsseguindoAnalise(SessionWizardView):
             for key, value in self.form_list.items():
                 if value == PerguntasSeletivas:
                     self.form_list.pop(key)
+
+        selecionadas = []
+        perguntas = PerguntaSeletiva.objects.filter(tipo = "condicionada")
+        for item in perguntas:
+            respostas = RespostaSeletiva.objects.filter(pergunta_id=item.id)
+            for resposta in respostas:
+                selecionadas.append(resposta.id)
+        for selecionada in selecionadas:
+            if Seletiva.objects.filter(anamnesia_id = analise_id,resposta_id=selecionada).exists():
+                for key, value in self.form_list.items():
+                    if value == PerguntasSeletivasCondicionadas:
+                        self.form_list.pop(key)
 
         if Interventiva.objects.filter(anamnesia_id = analise_id).exists():
             for key, value in self.form_list.items():
@@ -1339,13 +1378,17 @@ class ProsseguindoAnalise(SessionWizardView):
                 for key, value in self.form_list.items():
                     if value == RelacionamentoPacienteAntes:
                         self.form_list.pop(key)
-            if form.data['12-relacaoConjugeAntes'] == "Não":
+            if form.data['12-relacaoConjugeAntes'] == "Não" or form.data['12-relacaoConjugeAntes'] == "Não se aplica":
                 for key, value in self.form_list.items():
                     if value == RelacionamentoConjugeAntes:
                         self.form_list.pop(key)
-            if (form.data['12-relacao'] == "Casados") or (form.data['12-relacao'] == "Mora junto") or (form.data['12-relacao'] == "Não se aplica"):
+            if (form.data['12-relacao'] == "Casado(a)") or (form.data['12-relacao'] == "Mora junto") or (form.data['12-relacao'] == "Solteiro(a)"):
                 for key, value in self.form_list.items():
                     if value == RelacionamentoPacienteDepois:
+                        self.form_list.pop(key)
+            if (form.data['12-relacao'] == "Divorciado(a)") or (form.data['12-relacao'] == "Separado(a)") or (form.data['12-relacao'] == "Solteiro(a)"):
+                for key, value in self.form_list.items():
+                    if value == PerguntasSeletivasCondicionadas:
                         self.form_list.pop(key)
         steps =[]
         for i in range(1,16):
@@ -1465,9 +1508,24 @@ class ProsseguindoAnalise(SessionWizardView):
                             seletiva.save()
 
         if form.data['prosseguindo_analise-current_step'] == '18':
+            anamnesia = Anamnesia.objects.get(id=analise_id)
+            seletivas = {}
+            if "18-S34" in form.data:
+                for item in form.data:
+                    if item[0] == "1":
+                        seletivas.update({item.split("-")[1]:form.data[item]})
+                for perguntas in seletivas:
+                        seletiva = Seletiva()
+                        seletiva.paciente = paciente
+                        seletiva.anamnesia = anamnesia
+                        pergunta = PerguntaSeletiva.objects.get(numero=perguntas)
+                        seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=seletivas[perguntas])
+                        seletiva.save()
+
+        if form.data['prosseguindo_analise-current_step'] == '19':
             anamnesia = Anamnesia.objects.get(id = analise_id)
             interventivas = {}
-            if "18-I01" in form.data:
+            if "19-I01" in form.data:
                 for item in form.data:
                     if item[0] == "1":
                         interventivas.update({item.split("-")[1]:form.data[item]})

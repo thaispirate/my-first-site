@@ -11,9 +11,9 @@ class Paciente(models.Model):
     usuario = models.OneToOneField(User)
     email = models.EmailField()
     nome = models.CharField(max_length=50,null=True)
-    nascimento = models.DateField(null=True)
-    sexo = models.CharField(max_length=10,null=True)
-    escolaridade = models.CharField(max_length=15, null=True)
+    nascimento = models.DateField(null=True,blank=True)
+    sexo = models.CharField(max_length=10,null=True,blank=True)
+    escolaridade = models.CharField(max_length=15, null=True,blank=True)
 
     def __str__(self):
         return self.usuario.first_name
@@ -32,8 +32,8 @@ class Familia(models.Model):
     )
     usuario = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
     parente = models.CharField(max_length=10,choices=parentes,null=True)
-    nome = models.CharField(max_length=50,null=True)
-    nascimento = models.DateField(null=True)
+    nome = models.CharField(max_length=50,null=True,blank=True)
+    nascimento = models.DateField(null=True,blank=True)
     falecimento = models.DateField(null=True,blank=True)
     sexo = models.CharField(max_length=10,null=True,blank=True)
     escolaridade = models.CharField(max_length=15, null=True,blank=True)
@@ -149,6 +149,7 @@ class GrauIndiferenciacaoPaciente(models.Model):
 class PerguntaSeletiva(models.Model):
     numero = models.CharField(max_length=10,null=True)
     pergunta = models.TextField(null=True)
+    tipo = models.CharField(max_length=10,null=True,blank=True)
 
     def __str__(self):
         return self.numero
@@ -157,6 +158,7 @@ class RespostaSeletiva(models.Model):
     pergunta =  models.ForeignKey(PerguntaSeletiva, on_delete=models.CASCADE,null=True)
     letra = models.CharField(max_length=1,null=True)
     resposta = models.TextField(null=True)
+    tipo = models.CharField(max_length=10,null=True,blank=True)
 
     def __str__(self):
         return self.pergunta.numero+"-"+self.letra

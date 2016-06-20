@@ -106,7 +106,7 @@ class CadastroPaciente(UserCreationForm):
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'required':'Este campo é obrigatório'}
+        required=False
     )
 
     sexo = forms.ChoiceField(
@@ -116,7 +116,8 @@ class CadastroPaciente(UserCreationForm):
             ('Masculino', "Masculino")
         ),
         widget = forms.RadioSelect,
-        initial = 'Feminino',
+        required=False
+
     )
 
     escolaridade = forms.ChoiceField(
@@ -129,7 +130,8 @@ class CadastroPaciente(UserCreationForm):
             ('Pós-graduado','Pós-graduado')
         ),
         widget = forms.RadioSelect,
-        initial = 'Fundamental',
+        required=False
+
     )
 
 class CadastroConjuge(forms.Form):
@@ -149,7 +151,7 @@ class CadastroConjuge(forms.Form):
             ('Masculino', "Masculino")
         ),
         widget = forms.RadioSelect,
-        initial = 'Feminino',
+        required=False
     )
     escolaridadeConjuge = forms.ChoiceField(
         label="Escolaridade do Cônjuge",
@@ -161,17 +163,17 @@ class CadastroConjuge(forms.Form):
             ('Pós-graduado','Pós-graduado')
         ),
         widget = forms.RadioSelect,
-        initial = 'Fundamental',
+        required=False
     )
 
 class CadastroPai(forms.Form):
-    nomePai = forms.CharField(label="Primeiro nome do Pai",error_messages={'required':'Este campo é obrigatório'})
+    nomePai = forms.CharField(label="Primeiro nome do Pai",required=False)
     nascimentoPai = forms.DateField(
         label="Data de Nascimento do Pai",
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'required':'Este campo é obrigatório'}
+        required=False
     )
     falecimentoPai = forms.DateField(
         label="Data de falecimento do Pai",
@@ -190,17 +192,17 @@ class CadastroPai(forms.Form):
             ('Pós-graduado','Pós-graduado')
         ),
         widget = forms.RadioSelect,
-        initial = 'Fundamental',
+        required=False
     )
 
 class CadastroMae(forms.Form):
-    nomeMae = forms.CharField(label="Primeiro nome da Mãe",error_messages={'required':'Este campo é obrigatório'})
+    nomeMae = forms.CharField(label="Primeiro nome da Mãe",required=False)
     nascimentoMae = forms.DateField(
         label="Data de Nascimento da Mãe",
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'required':'Este campo é obrigatório'}
+        required=False
     )
     falecimentoMae = forms.DateField(
         label="Data de falecimento da Mãe",
@@ -219,17 +221,17 @@ class CadastroMae(forms.Form):
             ('Pós-graduado','Pós-graduado')
         ),
         widget = forms.RadioSelect,
-        initial = 'Fundamental',
+        required=False
     )
 
 class CadastroAvoPaterno(forms.Form):
-    nomeAvoPaterno = forms.CharField(label="Primeiro nome do Avô Paterno",error_messages={'required':'Este campo é obrigatório'})
+    nomeAvoPaterno = forms.CharField(label="Primeiro nome do Avô Paterno",required=False)
     nascimentoAvoPaterno = forms.DateField(
         label="Data de Nascimento do Avô Paterno",
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'required':'Este campo é obrigatório'}
+        required=False
     )
     falecimentoAvoPaterno = forms.DateField(
         label="Data de falecimento do Avô Paterno",
@@ -248,17 +250,17 @@ class CadastroAvoPaterno(forms.Form):
             ('Pós-graduado','Pós-graduado')
         ),
         widget = forms.RadioSelect,
-        initial = 'Fundamental',
+        required=False
     )
 
 class CadastroAvoPaterna(forms.Form):
-    nomeAvoPaterna = forms.CharField(label="Primeiro nome da Avó Paterna",error_messages={'required':'Este campo é obrigatório'})
+    nomeAvoPaterna = forms.CharField(label="Primeiro nome da Avó Paterna",required=False)
     nascimentoAvoPaterna = forms.DateField(
         label="Data de Nascimento da Avó Paterna",
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'required':'Este campo é obrigatório'}
+        required=False
     )
     falecimentoAvoPaterna = forms.DateField(
         label="Data de falecimento da Avó Paterna",
@@ -277,17 +279,17 @@ class CadastroAvoPaterna(forms.Form):
             ('Pós-graduado','Pós-graduado')
         ),
         widget = forms.RadioSelect,
-        initial = 'Fundamental',
+        required=False
     )
 
 class CadastroAvoMaterno(forms.Form):
-    nomeAvoMaterno = forms.CharField(label="Primeiro nome do Avô Materno",error_messages={'required':'Este campo é obrigatório'})
+    nomeAvoMaterno = forms.CharField(label="Primeiro nome do Avô Materno",required=False)
     nascimentoAvoMaterno = forms.DateField(
         label="Data de Nascimento do Avô Materno",
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'required':'Este campo é obrigatório'}
+        required=False
     )
     falecimentoAvoMaterno = forms.DateField(
         label="Data de falecimento do Avô Materno",
@@ -306,17 +308,17 @@ class CadastroAvoMaterno(forms.Form):
             ('Pós-graduado','Pós-graduado')
         ),
         widget = forms.RadioSelect,
-        initial = 'Fundamental',
+        required=False
     )
 
 class CadastroAvoMaterna(forms.Form):
-    nomeAvoMaterna = forms.CharField(label="Primeiro nome da Avó Materna",error_messages={'required':'Este campo é obrigatório'})
+    nomeAvoMaterna = forms.CharField(label="Primeiro nome da Avó Materna",required=False)
     nascimentoAvoMaterna = forms.DateField(
         label="Data de Nascimento da Avó Materna",
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'required':'Este campo é obrigatório'}
+        required=False
     )
     falecimentoAvoMaterna = forms.DateField(
         label="Data de falecimento da Avó Materna",
@@ -335,7 +337,7 @@ class CadastroAvoMaterna(forms.Form):
             ('Pós-graduado','Pós-graduado')
         ),
         widget = forms.RadioSelect,
-        initial = 'Fundamental',
+        required=False
     )
 
 class EdicaoPaciente(forms.Form):
@@ -350,8 +352,8 @@ class EdicaoPaciente(forms.Form):
             input_formats=["%d/%m/%Y",],
             widget=forms.DateInput(format='%d/%m/%Y'),
             help_text= "DD/MM/AAAA",
-            error_messages={'required':'Este campo é obrigatório'},
-            initial=paciente.nascimento
+            initial=paciente.nascimento,
+            required=False
         )
 
         self.fields['sexo'] = forms.ChoiceField(
@@ -362,6 +364,7 @@ class EdicaoPaciente(forms.Form):
             ),
             widget = forms.RadioSelect,
             initial = paciente.sexo,
+            required=False
         )
 
         self.fields['escolaridade'] = forms.ChoiceField(
@@ -375,6 +378,7 @@ class EdicaoPaciente(forms.Form):
             ),
             widget = forms.RadioSelect,
             initial = paciente.escolaridade,
+            required=False
         )
 
 
@@ -750,7 +754,7 @@ class RelacionamentoPaciente(forms.Form):
             ('Mora junto', "Mora junto"),
             ('Separado(a)', 'Separado(a)'),
             ('Divorciado(a)', 'Divorciado(a)'),
-            ('Não se aplica', 'Não se aplica')
+            ('Solteiro(a)', 'Solteiro(a)')
         ),
         widget = forms.RadioSelect,
         error_messages={'required':'Este campo é obrigatório'}
@@ -758,7 +762,7 @@ class RelacionamentoPaciente(forms.Form):
     filhos = forms.IntegerField(min_value=0,label="Vocẽ tem quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
     filhas = forms.IntegerField(min_value=0,label="Você tem quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
     relacaoPacienteAntes = forms.ChoiceField(
-        label="Você era separado/divorciado antes de conhecer seu cônjuge?",
+        label="Você já foi separado/divorciado?",
         choices = (
             ('Sim', "Sim"),
             ('Não', "Não")
@@ -770,7 +774,8 @@ class RelacionamentoPaciente(forms.Form):
         label="Sua cônjuge era separado/divorciado antes de conhecer você?",
         choices = (
             ('Sim', "Sim"),
-            ('Não', "Não")
+            ('Não', "Não"),
+            ("Não se aplica", "Não se aplica")
         ),
         widget = forms.RadioSelect,
         error_messages={'required':'Este campo é obrigatório'}
@@ -821,7 +826,7 @@ class PerguntasSeletivas(forms.Form):
 
     def __init__(self,*args,**kwargs):
         super(PerguntasSeletivas, self).__init__(*args,**kwargs)
-        pergunta = PerguntaSeletiva.objects.all()
+        pergunta = PerguntaSeletiva.objects.filter(tipo=None)
         for item in pergunta:
             if item.numero != "S03" and item.numero != "S04":
                 resposta = RespostaSeletiva.objects.filter(pergunta_id=item.id)
@@ -835,7 +840,7 @@ class PerguntasSeletivas(forms.Form):
                     widget = forms.RadioSelect,
                 )
             else:
-                resposta = RespostaSeletiva.objects.filter(pergunta_id=item.id)
+                resposta = RespostaSeletiva.objects.filter(pergunta_id=item.id,tipo= None)
                 RESPOSTAS = []
                 for resp in resposta:
                     RESPOSTAS.append((resp.letra, resp.resposta))
@@ -844,6 +849,23 @@ class PerguntasSeletivas(forms.Form):
                     choices = RESPOSTAS,
                     error_messages={'required':'Você esqueceu de marcar'},
                     widget = forms.CheckboxSelectMultiple,
+                )
+
+class PerguntasSeletivasCondicionadas(forms.Form):
+
+    def __init__(self,*args,**kwargs):
+        super(PerguntasSeletivasCondicionadas, self).__init__(*args,**kwargs)
+        pergunta = PerguntaSeletiva.objects.filter(tipo ="condicionada")
+        for item in pergunta:
+            resposta = RespostaSeletiva.objects.filter(pergunta_id=item.id,tipo="condicionada")
+            RESPOSTAS = []
+            for resp in resposta:
+                RESPOSTAS.append((resp.letra, resp.resposta))
+            self.fields[item.numero] = forms.ChoiceField(
+                    label= item.numero + ". " + item.pergunta,
+                    choices = RESPOSTAS,
+                    error_messages={'required':'Você esqueceu de marcar'},
+                    widget = forms.RadioSelect,
                 )
 
 class ConsultarPerguntasSeletivas(forms.Form):
@@ -866,7 +888,6 @@ class ConsultarPerguntasSeletivas(forms.Form):
                     self.fields[item.numero] = forms.MultipleChoiceField(
                         label= item.numero + ". " + item.pergunta,
                         choices = RESPOSTAS,
-                        error_messages={'required':'Você esqueceu de marcar'},
                         widget = forms.CheckboxSelectMultiple,
                         initial= escolhidas
                     )
@@ -879,7 +900,6 @@ class ConsultarPerguntasSeletivas(forms.Form):
                     self.fields[item.numero] = forms.ChoiceField(
                         label= item.numero + ". " + item.pergunta,
                         choices = RESPOSTAS,
-                        error_messages={'required':'Você esqueceu de marcar'},
                         widget = forms.RadioSelect,
                         initial = selecionada.letra
                     )
@@ -917,7 +937,6 @@ class ConsultarPerguntasInterventivas(forms.Form):
             self.fields[item.id] = forms.ChoiceField(
                 label= item.numero + ". " + item.pergunta,
                 choices = RESPOSTAS,
-                error_messages={'required':'Você esqueceu de marcar'},
                 widget = forms.RadioSelect,
                 initial= escolhida.letra,
 
