@@ -83,6 +83,7 @@
     {{ wizard.management_form }}
     {% if wizard.form.forms %}
         {{ wizard.form.management_form }}
+        {{wizard.form.forms}}
         {% for form in wizard.form.forms %}
             {{ form }}
         {% endfor %}

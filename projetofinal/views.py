@@ -1132,38 +1132,15 @@ class ProsseguirAnalise(TemplateView):
         paciente = simplejson.dumps(dados)
         return paciente
 
+
+
 class ProsseguindoAnalise(SessionWizardView):
     template_name = "projetofinal/analise/prosseguindo.html"
-    form_list = [RelacionamentoAvosMaternos,
-                 RelacionamentoAvoMaternoAntes,RelacionamentoAvoMaternaAntes,
-                 RelacionamentoAvosMaternosDepois,RelacionamentoAvosPaternos,
-                 RelacionamentoAvoPaternoAntes,RelacionamentoAvoPaternaAntes,
-                 RelacionamentoAvosPaternosDepois,RelacionamentoPais,
-                 RelacionamentoPaiAntes,RelacionamentoMaeAntes,
-                 RelacionamentoPaisDepois,RelacionamentoPaciente,
-                 RelacionamentoPacienteAntes,RelacionamentoConjugeAntes,
-                 RelacionamentoPacienteDepois,GrauDeIndeferenciacao,
-                 PerguntasSeletivas,PerguntasInterventivas]
+    form_list = [PerguntasInterventivas]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(ProsseguindoAnalise, self).dispatch(*args, **kwargs)
-
-    def get_form_initial(self, step):
-        if 'paciente_id' in self.kwargs:
-            paciente_id = self.kwargs['paciente_id']
-            try:
-                paciente = Paciente.objects.get(usuario_id=paciente_id)
-            except Paciente.DoesNotExist:
-                raise Http404("Paciente não existe")
-            if 'analise_id' in self.kwargs:
-                analise_id = self.kwargs['analise_id']
-            try:
-                analise = Anamnesia.objects.get(id=analise_id)
-            except Anamnesia.DoesNotExist:
-                raise Http404("Atendimento não existe")
-
-
+        self.form_list.clear()
         self.form_list.update({'0':RelacionamentoAvosMaternos})
         self.form_list.update({'1':RelacionamentoAvoMaternoAntes})
         self.form_list.update({'2':RelacionamentoAvoMaternaAntes})
@@ -1185,12 +1162,27 @@ class ProsseguindoAnalise(SessionWizardView):
         self.form_list.update({'18':PerguntasInterventivas})
 
 
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+            try:
+                paciente = Paciente.objects.get(usuario_id=paciente_id)
+            except Paciente.DoesNotExist:
+                raise Http404("Paciente não existe")
+            if 'analise_id' in self.kwargs:
+                analise_id = self.kwargs['analise_id']
+            try:
+                analise = Anamnesia.objects.get(id=analise_id)
+            except Anamnesia.DoesNotExist:
+                raise Http404("Atendimento não existe")
+
+
         relacionamentos = Relacionamento.objects.filter(anamnesia_id = analise_id)
         for relacionamento in relacionamentos:
             if relacionamento.parente == "AvoMaterno":
                 for key, value in self.form_list.items():
                     if value == RelacionamentoAvosMaternos:
                         self.form_list.pop(key)
+
                 if (relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
                     for key, value in self.form_list.items():
@@ -1271,8 +1263,6 @@ class ProsseguindoAnalise(SessionWizardView):
                         if value == RelacionamentoPacienteDepois:
                             self.form_list.pop(key)
 
-
-
         if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id = analise_id).exists():
             for key, value in self.form_list.items():
                 if value == GrauDeIndeferenciacao:
@@ -1288,7 +1278,7 @@ class ProsseguindoAnalise(SessionWizardView):
                 if value == PerguntasInterventivas:
                     self.form_list.pop(key)
 
-        return self.initial_dict.get(step, {})
+        return super(ProsseguindoAnalise, self).dispatch(*args, **kwargs)
 
     def get_form_step_data(self, form):
         if 'paciente_id' in self.kwargs:
@@ -1303,6 +1293,7 @@ class ProsseguindoAnalise(SessionWizardView):
                 analise = Anamnesia.objects.get(id=analise_id)
             except Anamnesia.DoesNotExist:
                 raise Http404("Atendimento não existe")
+
 
         if form.data['prosseguindo_analise-current_step'] == '0':
             if form.data['0-relacaoAvoMaternoAntes'] == "Não":
@@ -1357,7 +1348,7 @@ class ProsseguindoAnalise(SessionWizardView):
                     if value == RelacionamentoPacienteDepois:
                         self.form_list.pop(key)
         steps =[]
-        for i in range(0,16):
+        for i in range(1,16):
             steps.append(str(i))
         avoM =[]
         for i in range(0,4):
