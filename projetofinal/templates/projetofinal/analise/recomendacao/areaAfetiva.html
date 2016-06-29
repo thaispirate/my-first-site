@@ -30,7 +30,7 @@
       <script src="{% static 'assets/javascript/grafico.js' %}"></script>
   </head>
   <body>
-
+<div class="mobile-hide">
      <nav class="navbar navbar-inverse navbar-fixed-top">
               <div class="container">
                 <div class="navbar-header">
@@ -50,6 +50,7 @@
               </div>
               </div>
          </nav>
+</div>
         <nav class="navbar navbar-inverse sidebar" role="navigation">
             <div class="container-fluid">
 
@@ -77,25 +78,24 @@
         </nav>
       <div class="main">
        <div class="container">
+         <div class="col-md-10">
           <hr class="featurette-divider">
-           <div class="col-md-10">
            <div class="panel panel-info">
             <div class="panel-heading">Recomendações</div>
                 <div class="panel-body">
 
                 <p>{{view.anamnesia.inicio|date:'d-m-Y H:i' }}</p>
 
-           <div class="col-md-12">
 
               <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
                <hr class="featurette-divider">
               {{ view.texto }}
               <hr class="featurette-divider">
-
               {% if view.indiferenciacao %}
+               <div class="col-md-12 text-center">
               <a type="submit" href="/analise/recomendacao/{{user.id}}/{{view.anamnesia.id}}/grauIndiferenciacao" class="btn btn-default">Próxima</a>
-              {%endif%}
-           </div>
+              </div>
+               {%endif%}
            </div>
            </div>
        </div>
