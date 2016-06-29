@@ -6,8 +6,9 @@ from django.views.generic import TemplateView
 from .forms import CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,CadastroAvoPaterna,\
     CadastroAvoMaterno, CadastroAvoMaterna,EdicaoPaciente, CadastroPsicologoForm
 from .views import CadastroWizard, EditarCadastro, PsicologoPaciente, CadastroPsicologoWizard,\
-    InserirAnalise, ConsultarAnalise, ConsultandoAnalise,AnalisePaciente, ConsultandoAnalisePaciente,\
-    ProsseguirAnalise, ProsseguindoAnalise
+    InserirAnalise,InserirAnaliseRelacionamento,InserirAnaliseIndiferenciacao,InserirAnaliseSeletiva,InserirAnaliseInterventiva,\
+    ConsultarAnalise, ConsultandoAnalise,AnalisePaciente, ConsultandoAnalisePaciente,\
+    ProsseguirAnalise, ProsseguindoAnalise,Recomendacoes,RecomendacaoAreaAfetiva
 
 handler404="views.erro404"
 
@@ -30,13 +31,21 @@ urlpatterns = [
     url(r'^reset/(?P<token>[\w:-]+)/$', views.reset,
         name='password_reset_reset'),
     url(r'^analise/inserir/(?P<paciente_id>\d+)/$', InserirAnalise.as_view()),
-    url(r'^analise/iniciada$', views.AnaliseIniciada),
+    url(r'^analise/inserir/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/recomendacao/areaafetiva$', RecomendacaoAreaAfetiva.as_view(template_name="projetofinal/analise/areaAfetiva.html")),
+    url(r'^analise/inserir/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/relacionamentos$', InserirAnaliseRelacionamento.as_view()),
+    url(r'^analise/inserir/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/indiferenciacao$', InserirAnaliseIndiferenciacao.as_view()),
+    url(r'^analise/inserir/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/seletiva$', InserirAnaliseSeletiva.as_view()),
+    url(r'^analise/inserir/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/interventiva$', InserirAnaliseInterventiva.as_view()),
+    url(r'^analise/iniciada$', views.AnaliseFinalizada),
     url(r'^analise/consultar/(?P<paciente_id>\d+)/$', ConsultarAnalise.as_view(), name="consultar"),
     url(r'^analise/consultar/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ConsultandoAnalise.as_view(), name="consultando"),
     url(r'^analise/prosseguir/(?P<paciente_id>\d+)/$', ProsseguirAnalise.as_view(), name="prosseguir"),
-    url(r'^analise/prosseguir/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ProsseguindoAnalise.as_view(), name="prosseguindo"),
+    url(r'^analise/prosseguir/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', views.ProsseguindoAnalise, name="prosseguindo"),
     url(r'^analise/prosseguir/(?P<paciente_id>\d+)/remover$', views.RemoverAnalise, name="remover"),
     url(r'^analise/consultar/(?P<paciente_id>\d+)/remover$', views.RemoverAnalise, name="remover"),
+    url(r'^analise/recomendacao/(?P<paciente_id>\d+)/$', Recomendacoes.as_view()),
+    url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/areaafetiva$', RecomendacaoAreaAfetiva.as_view(template_name="projetofinal/analise/recomendacao/areaAfetiva.html")),
+
     #Psicólogo
     url(r'^psicologo/administracao$', views.PsicologoAdministracao),
     url(r'^psicologo/login$', views.LoginPsicologo),

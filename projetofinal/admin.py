@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Paciente,Familia, Psicologo, PerguntaAreaAfetiva, RespostaAreaAfetiva,\
     AreaAfetiva, Anamnesia,Relacionamento, GrauIndiferenciacao, GrauIndiferenciacaoPaciente,\
-    PerguntaSeletiva, RespostaSeletiva, Seletiva, PerguntaInterventiva, RespostaInterventiva, Interventiva
+    PerguntaSeletiva, RespostaSeletiva, Seletiva, PerguntaInterventiva, RespostaInterventiva, Interventiva, Recomendacao
 # Register your models here.
 
 admin.site.register(Paciente)
@@ -20,3 +20,4 @@ admin.site.register(Seletiva)
 admin.site.register(PerguntaInterventiva)
 admin.site.register(RespostaInterventiva)
 admin.site.register(Interventiva)
+admin.site.register(Recomendacao)

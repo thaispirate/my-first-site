@@ -79,32 +79,21 @@
        <div class="container">
           <hr class="featurette-divider">
           <div class="col-md-10">
-          <form action="remover" method="POST">{% csrf_token %}
-            {% if not view.anamnesia %}
-              <h2>Não existem atendimentos</h2>
-            {% else %}
           <table class="table">
             <tr>
-                <th></th>
-                <th>Análises</th>
+                <th>Recomendações</th>
             </tr>
-            {% for analise in view.anamnesia %}
             <tr>
-                <td class="col-sm-1">
-                      <label>
-                        <input type="checkbox" name="analise" value="{{analise.id}}">
-                      </label>
-                </td>
-                <td><a href="/analise/prosseguir/{{user.id}}/{{ analise.id }}">{{analise.inicio|date:'d-m-Y H:i'}}</a>
+                <td>{{view.anamnesia.inicio|date:'d-m-Y H:i' }}
                 </td>
             </tr>
-            {% endfor %}
           </table>
-              <button type="submit" class="btn btn-defaul">Remover</button>
-          </form>
               <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+              <hr class="featurette-divider">
+              {{ view.texto }}
+              <hr class="featurette-divider">
+              <a type="submit" href="/analise/inserir/{{user.id}}/{{view.anamnesia.id}}/relacionamentos" class="btn btn-default">Continuar Atendimento</a>
           </div>
-          {% endif %}
        </div>
        </div>
 

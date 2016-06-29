@@ -61,7 +61,7 @@
                     </div>
                         <li><a href="{% url 'projetofinal.views.Home' %}">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                         <li ><a href="/cadastro/editar/{{ user.id }}">Editar Cadastro<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
-                        <li class="dropdown active">
+                        <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Atendimento<span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-edit"></span></a>
                             <ul class="dropdown-menu forAnimate" role="menu">
                                 <li><a href="/analise/inserir/{{ user.id }}">Iniciar</a></li>
@@ -69,7 +69,7 @@
                                 <li><a href="/analise/consultar/{{user.id}}">Consultar</a></li>
                             </ul>
                         </li>
-                        <li><a href="/analise/recomendacao/{{user.id}}">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
+                        <li class="active"><a href="/analise/recomendacao/{{user.id}}">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
                         <li ><a href="{% url 'projetofinal.views.LogoutView' %}">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
                     </ul>
                 </div>
@@ -78,33 +78,28 @@
       <div class="main">
        <div class="container">
           <hr class="featurette-divider">
-          <div class="col-md-10">
-          <form action="remover" method="POST">{% csrf_token %}
-            {% if not view.anamnesia %}
-              <h2>Não existem atendimentos</h2>
-            {% else %}
-          <table class="table">
-            <tr>
-                <th></th>
-                <th>Análises</th>
-            </tr>
-            {% for analise in view.anamnesia %}
-            <tr>
-                <td class="col-sm-1">
-                      <label>
-                        <input type="checkbox" name="analise" value="{{analise.id}}">
-                      </label>
-                </td>
-                <td><a href="/analise/prosseguir/{{user.id}}/{{ analise.id }}">{{analise.inicio|date:'d-m-Y H:i'}}</a>
-                </td>
-            </tr>
-            {% endfor %}
-          </table>
-              <button type="submit" class="btn btn-defaul">Remover</button>
-          </form>
+           <div class="col-md-10">
+           <div class="panel panel-info">
+            <div class="panel-heading">Recomendações</div>
+                <div class="panel-body">
+
+                <p>{{view.anamnesia.inicio|date:'d-m-Y H:i' }}</p>
+
+           <div class="col-md-12">
+
               <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-          </div>
-          {% endif %}
+               <hr class="featurette-divider">
+              {{ view.texto }}
+              <hr class="featurette-divider">
+
+              {% if view.indiferenciacao %}
+              <a type="submit" href="/analise/recomendacao/{{user.id}}/{{view.anamnesia.id}}/grauIndiferenciacao" class="btn btn-default">Próxima</a>
+              {%endif%}
+           </div>
+           </div>
+           </div>
+       </div>
+       </div>
        </div>
        </div>
 

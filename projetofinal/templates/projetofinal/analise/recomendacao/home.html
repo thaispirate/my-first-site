@@ -61,7 +61,7 @@
                     </div>
                         <li><a href="{% url 'projetofinal.views.Home' %}">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                         <li ><a href="/cadastro/editar/{{ user.id }}">Editar Cadastro<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
-                        <li class="dropdown active">
+                        <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Atendimento<span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-edit"></span></a>
                             <ul class="dropdown-menu forAnimate" role="menu">
                                 <li><a href="/analise/inserir/{{ user.id }}">Iniciar</a></li>
@@ -69,7 +69,7 @@
                                 <li><a href="/analise/consultar/{{user.id}}">Consultar</a></li>
                             </ul>
                         </li>
-                        <li><a href="/analise/recomendacao/{{user.id}}">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
+                        <li class="active"><a href="/analise/recomendacao/{{user.id}}">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
                         <li ><a href="{% url 'projetofinal.views.LogoutView' %}">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
                     </ul>
                 </div>
@@ -95,7 +95,7 @@
                         <input type="checkbox" name="analise" value="{{analise.id}}">
                       </label>
                 </td>
-                <td><a href="/analise/prosseguir/{{user.id}}/{{ analise.id }}">{{analise.inicio|date:'d-m-Y H:i'}}</a>
+                <td><a href="/analise/recomendacao/{{user.id}}/{{ analise.id }}/areaafetiva">{{analise.inicio|date:'d-m-Y H:i' }}</a>
                 </td>
             </tr>
             {% endfor %}

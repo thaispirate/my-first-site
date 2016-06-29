@@ -2,8 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ca5a1301-4982-49aa-9407-4d7d63347a4a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/forms.py" afterPath="$PROJECT_DIR$/projetofinal/forms.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/areaAfetiva.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/home.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/admin.py" afterPath="$PROJECT_DIR$/projetofinal/admin.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/models.py" afterPath="$PROJECT_DIR$/projetofinal/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/404.html" afterPath="$PROJECT_DIR$/projetofinal/templates/404.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultando.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultando.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserir.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserir.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguindo.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguindo.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/editar.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/editar.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/urls.py" afterPath="$PROJECT_DIR$/projetofinal/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/views.py" afterPath="$PROJECT_DIR$/projetofinal/views.py" />
     </list>
     <ignored path="django.iws" />
@@ -25,11 +37,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projetofinal/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.94671404">
-              <caret line="816" column="45" selection-start-line="816" selection-start-column="19" selection-end-line="816" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="1638" column="30" selection-start-line="1638" selection-start-column="30" selection-end-line="1638" selection-end-column="30" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -37,12 +49,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/projetofinal/models.py">
+      <file leaf-file-name="areaAfetiva.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/areaAfetiva.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="159" column="42" selection-start-line="159" selection-start-column="42" selection-end-line="159" selection-end-column="42" />
-              <folding />
+            <state vertical-scroll-proportion="-0.083333336">
+              <caret line="71" column="71" selection-start-line="71" selection-start-column="71" selection-end-line="71" selection-end-column="71" />
+              <folding>
+                <element signature="n#style#0;n#span#0;n#a#0;n#li#3;n#ul#0;n#div#0;n#div#0;n#nav#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="areaAfetiva.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/areaAfetiva.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-5.4583335">
+              <caret line="63" column="43" selection-start-line="63" selection-start-column="43" selection-end-line="63" selection-end-column="43" />
+              <folding>
+                <element signature="n#style#0;n#span#0;n#a#0;n#li#3;n#ul#0;n#div#0;n#div#0;n#nav#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -57,14 +83,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
+      <file leaf-file-name="admin.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/projetofinal/admin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="40" column="68" selection-start-line="40" selection-start-column="68" selection-end-line="40" selection-end-column="68" />
+            <state vertical-scroll-proportion="0.55369127">
+              <caret line="22" column="32" selection-start-line="22" selection-start-column="32" selection-end-line="22" selection-end-column="32" />
               <folding>
-                <element signature="e#0#63#0" expanded="true" />
+                <element signature="e#0#32#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="home.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/home.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-10.0">
+              <caret line="71" column="41" selection-start-line="71" selection-start-column="41" selection-end-line="71" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cadastro.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastro.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-16.708334">
+              <caret line="56" column="33" selection-start-line="56" selection-start-column="33" selection-end-line="56" selection-end-column="33" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -106,23 +152,26 @@
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/editado.html" />
         <option value="$PROJECT_DIR$/projetofinal/static/css/projetofinal.css" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente/consultando.html" />
-        <option value="$PROJECT_DIR$/projetofinal/admin.py" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserida.html" />
-        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserir.html" />
-        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/editar.html" />
-        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultando.html" />
-        <option value="$PROJECT_DIR$/projetofinal/urls.py" />
-        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html" />
         <option value="$PROJECT_DIR$/projetofinal/static/assets/javascript/grafico.js" />
-        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html" />
-        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastrado.html" />
-        <option value="$PROJECT_DIR$/projetofinal/templates/404.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente/analise.html" />
-        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguindo.html" />
-        <option value="$PROJECT_DIR$/projetofinal/models.py" />
         <option value="$PROJECT_DIR$/projetofinal/forms.py" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" />
+        <option value="$PROJECT_DIR$/projetofinal/urls.py" />
+        <option value="$PROJECT_DIR$/projetofinal/models.py" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/editar.html" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/404.html" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/areaAfetiva.html" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultando.html" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserir.html" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguindo.html" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html" />
         <option value="$PROJECT_DIR$/projetofinal/views.py" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/home.html" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/areaAfetiva.html" />
+        <option value="$PROJECT_DIR$/projetofinal/admin.py" />
       </list>
     </option>
   </component>
@@ -131,6 +180,25 @@
     <option name="y" value="30" />
     <option name="width" value="1368" />
     <option name="height" value="739" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Python</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>PyPep8Inspection</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -157,7 +225,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -340,7 +407,19 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="projetofinal" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="analise" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="recomendacao" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -361,14 +440,6 @@
               <option name="myItemId" value="static" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="javascript" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -386,6 +457,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -393,12 +465,13 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise" />
+      <recent name="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao" />
       <recent name="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente" />
       <recent name="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise" />
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente" />
       <recent name="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo" />
     </key>
@@ -600,30 +673,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/projetofinal/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/administracao.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="46" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="60" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/cadastrado.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -677,13 +726,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="41" selection-start-line="0" selection-start-column="41" selection-end-line="0" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/cadastro.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="36" column="26" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -750,13 +792,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/administracao.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5472028">
-          <caret line="47" column="68" selection-start-line="47" selection-start-column="68" selection-end-line="47" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-16.166666">
@@ -778,34 +813,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-23.583334">
-          <caret line="59" column="75" selection-start-line="59" selection-start-column="75" selection-end-line="59" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastro.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.4583335">
-          <caret line="56" column="33" selection-start-line="56" selection-start-column="33" selection-end-line="56" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/editado.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.625">
-          <caret line="25" column="22" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5285235">
-          <caret line="21" column="32" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -817,34 +824,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/editar.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3339161">
-          <caret line="60" column="42" selection-start-line="60" selection-start-column="42" selection-end-line="60" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserida.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.25">
-          <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserir.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.333333">
-          <caret line="60" column="55" selection-start-line="60" selection-start-column="55" selection-end-line="60" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/removida.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.70804197">
-          <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -862,38 +841,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.2083335">
-          <caret line="97" column="112" selection-start-line="97" selection-start-column="112" selection-end-line="97" selection-end-column="112" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastrado.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.5">
           <caret line="5" column="49" selection-start-line="5" selection-start-column="49" selection-end-line="5" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.3333335">
-          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="59" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/404.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3409091">
-          <caret line="55" column="32" selection-start-line="55" selection-start-column="32" selection-end-line="55" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9178322">
-          <caret line="35" column="36" selection-start-line="35" selection-start-column="36" selection-end-line="35" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -904,13 +855,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="106" column="9" selection-start-line="106" selection-start-column="9" selection-end-line="106" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente/analise.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-24.208334">
@@ -918,39 +862,191 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/cadastro.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="68" selection-start-line="40" selection-start-column="68" selection-end-line="40" selection-end-column="68" />
-          <folding>
-            <element signature="e#0#63#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultando.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6271777">
-          <caret line="101" column="10" selection-start-line="101" selection-start-column="10" selection-end-line="101" selection-end-column="10" />
+        <state vertical-scroll-proportion="-0.625">
+          <caret line="36" column="26" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguindo.html">
+    <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66027874">
-          <caret line="110" column="35" selection-start-line="110" selection-start-column="35" selection-end-line="110" selection-end-column="35" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#form#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="56" selection-start-line="10" selection-start-column="56" selection-end-line="10" selection-end-column="56" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="159" column="42" selection-start-line="159" selection-start-column="42" selection-end-line="159" selection-end-column="42" />
+          <caret line="201" column="57" selection-start-line="201" selection-start-column="57" selection-end-line="201" selection-end-column="57" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.583334">
+          <caret line="61" column="40" selection-start-line="61" selection-start-column="40" selection-end-line="61" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/editado.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-15.625">
+          <caret line="25" column="22" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/editar.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.833333">
+          <caret line="64" column="67" selection-start-line="64" selection-start-column="67" selection-end-line="64" selection-end-column="67" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#a#0;n#li#3;n#ul#0;n#div#0;n#div#0;n#nav#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-23.125">
+          <caret line="59" column="75" selection-start-line="59" selection-start-column="75" selection-end-line="59" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/404.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.25">
+          <caret line="61" column="75" selection-start-line="61" selection-start-column="75" selection-end-line="61" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-14.375">
+          <caret line="35" column="36" selection-start-line="35" selection-start-column="36" selection-end-line="35" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/administracao.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-20.458334">
+          <caret line="47" column="68" selection-start-line="47" selection-start-column="68" selection-end-line="47" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultando.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.208333">
+          <caret line="64" column="67" selection-start-line="64" selection-start-column="67" selection-end-line="64" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-17.958334">
+          <caret line="71" column="71" selection-start-line="71" selection-start-column="71" selection-end-line="71" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserida.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.25">
+          <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/removida.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.70804197">
+          <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.124125876">
+          <caret line="71" column="71" selection-start-line="71" selection-start-column="71" selection-end-line="71" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguindo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.28146854">
+          <caret line="64" column="67" selection-start-line="64" selection-start-column="67" selection-end-line="64" selection-end-column="67" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#a#0;n#li#3;n#ul#0;n#div#0;n#div#0;n#nav#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/inserir.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5437063">
+          <caret line="64" column="67" selection-start-line="64" selection-start-column="67" selection-end-line="64" selection-end-column="67" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#a#0;n#li#3;n#ul#0;n#div#0;n#div#0;n#nav#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastro.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.708334">
+          <caret line="56" column="33" selection-start-line="56" selection-start-column="33" selection-end-line="56" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/areaAfetiva.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.083333336">
+          <caret line="71" column="71" selection-start-line="71" selection-start-column="71" selection-end-line="71" selection-end-column="71" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#a#0;n#li#3;n#ul#0;n#div#0;n#div#0;n#nav#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1638" column="30" selection-start-line="1638" selection-start-column="30" selection-end-line="1638" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.0">
+          <caret line="71" column="41" selection-start-line="71" selection-start-column="41" selection-end-line="71" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/areaAfetiva.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.4583335">
+          <caret line="63" column="43" selection-start-line="63" selection-start-column="43" selection-end-line="63" selection-end-column="43" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#a#0;n#li#3;n#ul#0;n#div#0;n#div#0;n#nav#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -962,12 +1058,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/views.py">
+    <entry file="file://$PROJECT_DIR$/projetofinal/admin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.94671404">
-          <caret line="816" column="45" selection-start-line="816" selection-start-column="19" selection-end-line="816" selection-end-column="45" />
+        <state vertical-scroll-proportion="0.55369127">
+          <caret line="22" column="32" selection-start-line="22" selection-start-column="32" selection-end-line="22" selection-end-column="32" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>

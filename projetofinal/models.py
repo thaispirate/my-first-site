@@ -195,3 +195,12 @@ class Interventiva(models.Model):
 
     def __str__(self):
         return self.paciente.nome+" "+self.resposta.pergunta.numero+"-"+self.resposta.letra+" "+self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")
+
+class Recomendacao(models.Model):
+
+    nome= models.CharField(max_length=20,null=True)
+    intervalo = models.CharField(max_length=10,null=True)
+    texto = models.TextField(null=True)
+
+    def __str__(self):
+        return self.nome + self.intervalo
