@@ -22,12 +22,14 @@
 
       <script type="text/javascript" src="{% static 'assets/javascript/jquery-1.12.4.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'assets/javascript/highcharts.js' %}"></script>
+      <script type="text/javascript" src="{% static 'assets/javascript/highchart-more.js' %}"></script>
       <script type="text/javascript" src="{% static 'assets/javascript/exporting.js' %}"></script>
       <script src="{% static 'assets/javascript/ajaxgoogleapis.js' %}"></script>
       <script text="text/javascript" src="{% static 'assets/javascript/jquery.js' %}"></script>
       <script src="{% static 'assets/javascript/bootstrap.js' %}"></script>
       <script src="{% static 'assets/javascript/menulateral.js' %}"></script>
-      <script src="{% static 'assets/javascript/grafico.js' %}"></script>
+
+
   </head>
   <body>
      <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -84,14 +86,13 @@
 
                 <p>{{view.anamnesia.inicio|date:'d-m-Y H:i' }}</p>
 
-
-              <div id="container" style="min-width: 250px; height: 400px; margin: 0 auto"></div>
-               <hr class="featurette-divider">
+              <div id="radar" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+              <hr class="featurette-divider">
               {{ view.texto }}
               <hr class="featurette-divider">
-               <div class="col-md-12 text-center">
-              <a type="submit" href="/analise/inserir/{{user.id}}/{{view.anamnesia.id}}/relacionamentos" class="btn btn-default">Continuar atendimento</a>
-              </div>
+             <div class="col-md-12 text-center">
+              <a type="submit" href="/analise/recomendacao/{{user.id}}/{{view.anamnesia.id}}/areaafetiva" class="btn btn-default">Anterior</a>
+             </div>
            </div>
            </div>
        </div>
@@ -107,6 +108,57 @@
 <script text="text/javascript">
 dados = {{ view.grafico|safe }};
 paciente = {{ view.paciente|safe }};
+
+
+var radar = {
+            chart: {
+                polar: true,
+                type: 'line',
+                renderTo:'radar'
+            },
+
+            title: {
+                text: "Grau de Indiferenciação<br>"+paciente['paciente'],
+            },
+
+            pane: {
+                size: '80%'
+            },
+
+            xAxis: {
+                categories: ['Adaptativo', 'Reativo', 'Criativo'],
+                tickmarkPlacement: 'on',
+                lineWidth: 0
+            },
+
+            yAxis: {
+                gridLineInterpolation: 'polygon',
+                lineWidth: 0,
+                min: 0
+            },
+
+            tooltip: {
+                shared: true,
+                pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+            },
+
+            legend: {
+                align: 'bottom',
+                layout: 'vertical'
+            },
+
+            series:[]
+
+            }
+
+        var chart2 = new Highcharts.Chart(radar);
+        for(var item in dados){
+            chart2.addSeries({
+                name:item,
+                data:dados[item],
+                pointPlacement: 'on'
+            });
+        }
 </script>
 
   </body>

@@ -1,12 +1,12 @@
-    $(document).ready(function () {
-        var options = {
+$(document).ready(function () {
+        var coluna = {
             colors: ["#7cb5ec","#f7a35c","#ff095c","#FFDAB9","#FF0000","#AB82FF","#ADFF2F","#FF69B4"],
             chart: {
                 type: 'column',
                 renderTo:'container'
             },
             title: {
-                text: "Áreas Afetivas ("+paciente['paciente']+")"
+                text: "Áreas Afetivas<br> "+paciente['paciente']
             },
             xAxis: {
                 categories: [
@@ -41,7 +41,7 @@
             series:[]
             }
 
-        var chart = new Highcharts.Chart(options);
+        var chart = new Highcharts.Chart(coluna);
         for(var item in dados){
             chart.addSeries({
                 name:item,
@@ -49,4 +49,5 @@
             });
         }
 
-     });
+
+});

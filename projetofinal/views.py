@@ -824,7 +824,7 @@ class InserirAnaliseIndiferenciacao(SessionWizardView):
     def done(self, form_list, form_dict, **kwargs):
         paciente_id = self.kwargs['paciente_id']
         analise_id = self.kwargs['analise_id']
-        return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/seletiva')
+        return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/recomendacao/indiferenciacao')
 
 class InserirAnaliseSeletiva(SessionWizardView):
     template_name = "projetofinal/analise/inserir.html"
@@ -1637,6 +1637,279 @@ class RecomendacaoAreaAfetiva(TemplateView):
         indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise_id)
 
         return indiferenciacao
+
+class RecomendacaoIndiferenciacao(TemplateView):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(RecomendacaoIndiferenciacao, self).dispatch(*args, **kwargs)
+
+    def anamnesia(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+        return anamnesia
+
+    def grafico(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = {
+        }
+        anamnesia = Anamnesia.objects.filter(id=analise_id)
+        criativo=0
+        reativo=0
+        adaptativo=0
+        for analise in anamnesia:
+            indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
+            for opcao in indiferenciacao:
+                resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
+                if resposta.padrao == "adaptativo":
+                    adaptativo=adaptativo+1
+                if resposta.padrao == "reativo":
+                    reativo=reativo+1
+                if resposta.padrao == "criativo":
+                    criativo=criativo+1
+
+        dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
+        dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
+        dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            print("aqui")
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        adaptativoMin=0
+        adaptativoMax=0
+        criativoMin=0
+        criativoMax=0
+        reativoMin=0
+        reativoMax=0
+
+        if idade >=0 and idade <=3:
+            adaptativoMin=14
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=2
+            reativoMin=0
+            reativoMax=2
+        if idade >=4 and idade <=7:
+            adaptativoMin=12
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=3
+            reativoMin=2
+            reativoMax=6
+        if idade >=8 and idade <=12:
+            adaptativoMin=8
+            adaptativoMax=13
+            criativoMin=2
+            criativoMax=5
+            reativoMin=6
+            reativoMax=10
+        if idade >=13 and idade <=19:
+            adaptativoMin=4
+            adaptativoMax=8
+            criativoMin=6
+            criativoMax=8
+            reativoMin=10
+            reativoMax=15
+        if idade >=20 and idade <=24:
+            adaptativoMin=1
+            adaptativoMax=3
+            criativoMin=9
+            criativoMax=11
+            reativoMin=8
+            reativoMax=12
+        if idade >=25 and idade <=32:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=11
+            criativoMax=15
+            reativoMin=3
+            reativoMax=7
+        if idade >=33:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=16
+            criativoMax=19
+            reativoMin=0
+            reativoMax=2
+
+        dados['Ideal-Mínimo'] = [adaptativoMin]
+        dados['Ideal-Mínimo'].append(reativoMin)
+        dados['Ideal-Mínimo'].append(criativoMin)
+        dados['Ideal-Máximo'] = [adaptativoMax]
+        dados['Ideal-Máximo'].append(reativoMax)
+        dados['Ideal-Máximo'].append(criativoMax)
+
+        grafico = simplejson.dumps(dados)
+        return grafico
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = { 'paciente': paciente.nome
+        }
+
+        paciente = simplejson.dumps(dados)
+        return paciente
+
+    def texto(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(id=analise_id)
+
+        criativo=0
+        reativo=0
+        adaptativo=0
+        for analise in anamnesia:
+            indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
+            for opcao in indiferenciacao:
+                resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
+                if resposta.padrao == "adaptativo":
+                    adaptativo=adaptativo+1
+                if resposta.padrao == "reativo":
+                    reativo=reativo+1
+                if resposta.padrao == "criativo":
+                    criativo=criativo+1
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            print("aqui")
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        adaptativoMin=0
+        adaptativoMax=0
+        criativoMin=0
+        criativoMax=0
+        reativoMin=0
+        reativoMax=0
+
+        if idade >=0 and idade <=3:
+            adaptativoMin=14
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=2
+            reativoMin=0
+            reativoMax=2
+        if idade >=4 and idade <=7:
+            adaptativoMin=12
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=3
+            reativoMin=2
+            reativoMax=6
+        if idade >=8 and idade <=12:
+            adaptativoMin=8
+            adaptativoMax=13
+            criativoMin=2
+            criativoMax=5
+            reativoMin=6
+            reativoMax=10
+        if idade >=13 and idade <=19:
+            adaptativoMin=4
+            adaptativoMax=8
+            criativoMin=6
+            criativoMax=8
+            reativoMin=10
+            reativoMax=15
+        if idade >=20 and idade <=24:
+            adaptativoMin=1
+            adaptativoMax=3
+            criativoMin=9
+            criativoMax=11
+            reativoMin=8
+            reativoMax=12
+        if idade >=25 and idade <=32:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=11
+            criativoMax=15
+            reativoMin=3
+            reativoMax=7
+        if idade >=33:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=16
+            criativoMax=19
+            reativoMin=0
+            reativoMax=2
+
+        tudo_dentro=""
+        abaixo_adaptativo=""
+        acima_adaptativo=""
+        abaixo_criativo=""
+        acima_criativo=""
+        abaixo_reativo=""
+        acima_reativo=""
+        texto=""
+        print(adaptativo,reativo,criativo)
+        if adaptativo>adaptativoMin and adaptativo<adaptativoMax and\
+                        reativo>reativoMin and reativo<reativoMax and\
+                        criativo>criativoMin and criativo<criativoMax:
+            tudo_dentro = Recomendacao.objects.get(nome='tudo_dentro')
+            texto= tudo_dentro.texto
+        if adaptativo<adaptativoMin:
+            abaixo_adaptativo = Recomendacao.objects.get(nome='intervalo_adaptativo',intervalo="abaixo")
+            texto=texto+abaixo_adaptativo.texto
+        if adaptativo>adaptativoMax:
+            acima_adaptativo = Recomendacao.objects.get(nome='intervalo_adaptativo',intervalo="acima")
+            texto=texto+acima_adaptativo.texto
+        if reativo<reativoMin:
+            abaixo_reativo = Recomendacao.objects.get(nome='intervalo_reativo',intervalo="abaixo")
+            texto=texto+abaixo_reativo.texto
+        if reativo>reativoMax:
+            acima_reativo = Recomendacao.objects.get(nome='intervalo_reativo',intervalo="acima")
+            texto=texto+acima_reativo.texto
+        if criativo<criativoMin:
+            abaixo_criativo = Recomendacao.objects.get(nome='intervalo_criativo',intervalo="abaixo")
+            texto=texto+abaixo_criativo.texto
+        if criativo>criativoMax:
+            acima_criativo = Recomendacao.objects.get(nome='intervalo_criativo',intervalo="acima")
+            texto=texto+acima_criativo.texto
+
+        return texto
 
 #Views do Psicólogo
 def PsicologoAdministracao(request):

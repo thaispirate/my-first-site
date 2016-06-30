@@ -85,13 +85,13 @@
                 <p>{{view.anamnesia.inicio|date:'d-m-Y H:i' }}</p>
 
 
-              <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+              <div id="container" style="min-width: 250px; height: 400px; margin: 0 auto"></div>
                <hr class="featurette-divider">
               {{ view.texto }}
               <hr class="featurette-divider">
               {% if view.indiferenciacao %}
                <div class="col-md-12 text-center">
-              <a type="submit" href="/analise/recomendacao/{{user.id}}/{{view.anamnesia.id}}/grauIndiferenciacao" class="btn btn-default">Próxima</a>
+              <a type="submit" href="/analise/recomendacao/{{user.id}}/{{view.anamnesia.id}}/indiferenciacao" class="btn btn-default">Próxima</a>
               </div>
                {%endif%}
            </div>
