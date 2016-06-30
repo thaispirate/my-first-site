@@ -463,7 +463,6 @@ class InserirAnalise(SessionWizardView):
 
             lista = [(organico,"a"),(produtividade, "b"),(afetivoRelacional,"c"),(socioCultural,"d"),(espiritual,"e")]
             maximo = max(lista, key=lambda x: x[0])
-            print(maximo[0])
             if maximo[0] == afetivoRelacional:
                 anamnesia.areaAfetiva = "AfetivoRelacional"
             if maximo[0] == produtividade:
@@ -1426,7 +1425,6 @@ def ProsseguindoAnalise(request,paciente_id,analise_id):
     for selecionada in selecionadas:
         if Seletiva.objects.filter(anamnesia_id = analise_id,resposta_id=selecionada).exists():
             verificador = True
-    print(verificador)
     if verificador == False and (relacao == "Casado(a)" or relacao == "Mora junto"):
         return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/seletiva')
 
@@ -1576,7 +1574,7 @@ class RecomendacaoAreaAfetiva(TemplateView):
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
             socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
 
-        print(produtividade)
+        texto=""
         if afetivoRelacional >= 3 and afetivoRelacional <= 4:
             complementox = Recomendacao.objects.get(nome="complementox",intervalo="Máximo")
             complementoy = Recomendacao.objects.get(nome="complementoy",intervalo="Máximo")
@@ -1605,15 +1603,14 @@ class RecomendacaoAreaAfetiva(TemplateView):
         if espiritual >= 0 and espiritual < 1.5:
             ESPIRITUAL = Recomendacao.objects.get(nome="espiritual",intervalo="Mínimo")
         if socioCultural >= 3 and socioCultural <= 4:
-            SOCIOCULTURAL = Recomendacao.objects.get(nome="sociocultutal",intervalo="Máximo")
+            SOCIOCULTURAL = Recomendacao.objects.get(nome="sociocultural",intervalo="Máximo")
         if socioCultural >= 1.5 and socioCultural < 3:
             SOCIOCULTURAL = Recomendacao.objects.get(nome="sociocultural",intervalo="Médio")
         if socioCultural >= 0 and socioCultural < 1.5:
             SOCIOCULTURAL = Recomendacao.objects.get(nome="sociocultural",intervalo="Mínimo")
 
-        lista = [(espiritual,"e"),(socioCultural,"d"),(produtividade, "b"),(organico,"a")]
+        lista = [(espiritual,"a"),(socioCultural,"b"),(produtividade, "c"),(organico,"d")]
         minimo = min(lista, key=lambda x: x[0])
-        print(minimo[0])
         if minimo[0] == produtividade:
             area = PRODUTIVIDADE.texto
         if minimo[0] == organico:
@@ -1692,7 +1689,6 @@ class RecomendacaoIndiferenciacao(TemplateView):
         if mes > mesAtual:
             idade = anoAtual-ano-1
         if mes < mesAtual:
-            print("aqui")
             idade = anoAtual-ano
         if mes == mesAtual:
             if dia >= diaAtual:
@@ -1811,7 +1807,6 @@ class RecomendacaoIndiferenciacao(TemplateView):
         if mes > mesAtual:
             idade = anoAtual-ano-1
         if mes < mesAtual:
-            print("aqui")
             idade = anoAtual-ano
         if mes == mesAtual:
             if dia >= diaAtual:
@@ -1884,7 +1879,6 @@ class RecomendacaoIndiferenciacao(TemplateView):
         abaixo_reativo=""
         acima_reativo=""
         texto=""
-        print(adaptativo,reativo,criativo)
         if adaptativo>adaptativoMin and adaptativo<adaptativoMax and\
                         reativo>reativoMin and reativo<reativoMax and\
                         criativo>criativoMin and criativo<criativoMax:
