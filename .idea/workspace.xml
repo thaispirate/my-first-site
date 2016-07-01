@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ca5a1301-4982-49aa-9407-4d7d63347a4a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/static/assets/javascript/grafico.js" afterPath="$PROJECT_DIR$/projetofinal/static/assets/javascript/grafico.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/base.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/base.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/base.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/home.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/home.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente/analise.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente/analise.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/views.py" afterPath="$PROJECT_DIR$/projetofinal/views.py" />
     </list>
     <ignored path="django.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,10 +36,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="prosseguir.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="prosseguir.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6818182">
+            <state vertical-scroll-proportion="-16.25">
               <caret line="26" column="48" selection-start-line="26" selection-start-column="48" selection-end-line="26" selection-end-column="48" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#aside#0;n#div#0;n#div#0;n#!!top" expanded="true" />
@@ -80,11 +71,31 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="areaAfetiva.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/areaAfetiva.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-3.125">
+              <caret line="5" column="19" selection-start-line="0" selection-start-column="0" selection-end-line="5" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="grafico.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projetofinal/static/assets/javascript/grafico.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+              <caret line="64" column="14" selection-start-line="64" selection-start-column="14" selection-end-line="64" selection-end-column="14" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/base.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="11.875">
+              <caret line="23" column="103" selection-start-line="23" selection-start-column="103" selection-end-line="23" selection-end-column="103" />
               <folding />
             </state>
           </provider>
@@ -96,6 +107,19 @@
             <state vertical-scroll-proportion="0.0">
               <caret line="36" column="171" selection-start-line="36" selection-start-column="171" selection-end-line="36" selection-end-column="171" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="home.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/home.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.36713287">
+              <caret line="26" column="91" selection-start-line="26" selection-start-column="91" selection-end-line="26" selection-end-column="91" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#aside#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -160,9 +184,9 @@
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" />
         <option value="$PROJECT_DIR$/projetofinal/views.py" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente/analise.html" />
-        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/home.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/home.html" />
       </list>
     </option>
   </component>
@@ -853,14 +877,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/areaAfetiva.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.125">
-          <caret line="5" column="19" selection-start-line="0" selection-start-column="0" selection-end-line="5" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultando.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-20.083334">
@@ -919,16 +935,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/areaAfetiva.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="46" selection-start-line="0" selection-start-column="46" selection-end-line="0" selection-end-column="46" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-21.875">
@@ -971,14 +977,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6224832">
           <caret line="122" column="0" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60314685">
-          <caret line="23" column="103" selection-start-line="23" selection-start-column="103" selection-end-line="23" selection-end-column="103" />
           <folding />
         </state>
       </provider>
@@ -1043,25 +1041,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4458042">
-          <caret line="17" column="32" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#aside#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/static/assets/javascript/grafico.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente/analise.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.29195803">
@@ -1081,14 +1060,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="36" column="171" selection-start-line="36" selection-start-column="171" selection-end-line="36" selection-end-column="171" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/consultar.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-12.5">
@@ -1102,8 +1073,59 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6818182">
+        <state vertical-scroll-proportion="-16.25">
           <caret line="26" column="48" selection-start-line="26" selection-start-column="48" selection-end-line="26" selection-end-column="48" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#aside#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/areaAfetiva.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.125">
+          <caret line="5" column="19" selection-start-line="0" selection-start-column="0" selection-end-line="5" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="171" selection-start-line="36" selection-start-column="171" selection-end-line="36" selection-end-column="171" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/areaAfetiva.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="0" column="46" selection-start-line="0" selection-start-column="46" selection-end-line="0" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/static/assets/javascript/grafico.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="64" column="14" selection-start-line="64" selection-start-column="14" selection-end-line="64" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="11.875">
+          <caret line="23" column="103" selection-start-line="23" selection-start-column="103" selection-end-line="23" selection-end-column="103" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36713287">
+          <caret line="26" column="91" selection-start-line="26" selection-start-column="91" selection-end-line="26" selection-end-column="91" />
           <folding>
             <element signature="n#style#0;n#div#0;n#aside#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
