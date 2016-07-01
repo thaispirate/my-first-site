@@ -1,4 +1,5 @@
-from datetime import datetime
+import datetime
+from datetime import datetime, timedelta
 import json
 from django.shortcuts import render
 from django.views.generic import TemplateView
@@ -296,7 +297,7 @@ def loads_with_timestamp(value, salt):
         signing.loads(value, salt=salt, max_age=-1)
     except signing.SignatureExpired as e:
         age = float(str(e).split('Signature age ')[1].split(' >')[0])
-        timestamp = timezone.now() - datetime.timedelta(seconds=age)
+        timestamp = timezone.now() - timedelta(seconds=age)
         return timestamp, signing.loads(value, salt=salt)
 
 
