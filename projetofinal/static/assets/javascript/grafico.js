@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
         var coluna = {
             colors: ["#7cb5ec","#f7a35c","#ff095c","#FFDAB9","#FF0000","#AB82FF","#ADFF2F","#FF69B4"],
             chart: {

@@ -3,6 +3,24 @@ body {
   padding-bottom: 20px;
 }
 
+html {
+  position: relative;
+  min-height: 100%;
+  width:100%
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 40px;
+  background-color: #87CEFA;
+  border-color:#FFFFF;
+}
 .navbar-form .navbar-right h2{
 
   color:white;
@@ -227,4 +245,14 @@ section{
         position:relative;
     }
 
+}
+
+td {
+    text-align: center;
+    }
+th{
+   text-align:center;
+ }
+.table {
+    max-width:200px;
 }
