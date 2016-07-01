@@ -17,6 +17,8 @@
                 <th></th>
                 <th>Atendimentos</th>
             </tr>
+              <td><input type="checkbox" id="selectAll"></td>
+              <td>Selecionar todos</td>
             {% for analise in view.anamnesia %}
             <tr>
                 <td class="col-sm-1">
@@ -37,7 +39,7 @@
 
             <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
          </aside>
-               <div id="radar" style="min-width: 200px; height: 400px; margin: 0 auto"></div>
+               <div id="radar" style="min-width: 100px; height: 400px; margin: 0 auto"></div>
           {% endif %}
        </div>
        </div>

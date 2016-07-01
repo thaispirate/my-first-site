@@ -95,4 +95,9 @@ $(document).ready(function () {
             });
         }
 
+
+    $("#selectAll").click(function() {
+        $( this ).closest('form').find(':checkbox').prop( 'checked' , this.checked ? true : false );
+    });
+
 });
