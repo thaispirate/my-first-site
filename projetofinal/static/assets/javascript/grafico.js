@@ -49,6 +49,50 @@ $(document).ready(function () {
                 data:dados[item]
             });
         }
+        var radar = {
+            chart: {
+                polar: true,
+                type: 'line',
+                renderTo:'radar'
+            },
 
+            title: {
+                text: "Grau de Indiferenciação<br>"+paciente['paciente'],
+            },
+
+            pane: {
+                size: '80%'
+            },
+
+            xAxis: {
+                categories: ['Adaptativo', 'Reativo', 'Criativo'],
+                tickmarkPlacement: 'on',
+                lineWidth: 0
+            },
+
+            yAxis: {
+                gridLineInterpolation: 'polygon',
+                lineWidth: 0,
+                min: 0
+            },
+
+            tooltip: {
+                shared: true,
+                pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+            },
+
+
+            series:[]
+
+            }
+
+        var chart2 = new Highcharts.Chart(radar);
+        for(var item in dadosRadar){
+            chart2.addSeries({
+                name:item,
+                data:dadosRadar[item],
+                pointPlacement: 'on'
+            });
+        }
 
 });

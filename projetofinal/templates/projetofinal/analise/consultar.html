@@ -6,16 +6,16 @@
 {% block content %}
        <div class="container">
           <hr class="featurette-divider">
+           {% if not view.anamnesia %}
+              <h2>Não existem atendimentos</h2>
+            {% else %}
            <div class="row">
           <div role="main" class="col-md-2">
           <form action="remover" method="POST" class="form-group">{% csrf_token %}
-            {% if not view.anamnesia %}
-              <h2>Não existem atendimentos</h2>
-            {% else %}
           <table class="table ">
             <tr>
                 <th></th>
-                <th>Análises</th>
+                <th>Atendimentos</th>
             </tr>
             {% for analise in view.anamnesia %}
             <tr>
@@ -37,12 +37,14 @@
 
             <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
          </aside>
+               <div id="radar" style="min-width: 200px; height: 400px; margin: 0 auto"></div>
           {% endif %}
        </div>
        </div>
 
 <script text="text/javascript">
 dados = {{ view.grafico|safe }};
+dadosRadar = {{ view.graficoRadar|safe }};
 paciente = {{ view.paciente|safe }};
 </script>
 

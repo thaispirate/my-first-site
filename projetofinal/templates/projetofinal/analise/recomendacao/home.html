@@ -6,37 +6,45 @@
 {% block content %}
        <div class="container">
           <hr class="featurette-divider">
-          <div class="col-md-10">
-          <form action="remover" method="POST">{% csrf_token %}
-            {% if not view.anamnesia %}
+           {% if not view.anamnesia %}
               <h2>Não existem atendimentos</h2>
             {% else %}
-          <table class="table">
+          <div class="row">
+          <div role="main" class="col-md-2">
+          <form action="remover" method="POST" class="form-group">{% csrf_token %}
+          <table class="table ">
             <tr>
                 <th></th>
-                <th>Análises</th>
+                <th>Atendimentos</th>
             </tr>
             {% for analise in view.anamnesia %}
             <tr>
                 <td class="col-sm-1">
                       <label>
-                        <input type="checkbox" name="analise" value="{{analise.id}}">
+                        <input class="checkbox_delete" type="checkbox" name="analise" value="{{analise.id}}">
                       </label>
                 </td>
-                <td><a href="/analise/recomendacao/{{user.id}}/{{ analise.id }}/areaafetiva">{{analise.inicio|date:'d-m-Y H:i' }}</a>
+                <td><a href="/analise/consultar/{{user.id}}/{{ analise.id }}">{{analise.inicio|date:'d-m-Y H:i' }}</a>
                 </td>
             </tr>
             {% endfor %}
           </table>
-              <button type="submit" class="btn btn-defaul">Remover</button>
+                <button type="submit" class="btn btn-defaul col-md-offset-2">Remover</button>
+
           </form>
-              <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
           </div>
+          <aside role="complementary" class="col-md-10">
+
+            <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+         </aside>
+               <div id="radar" style="min-width: 200px; height: 400px; margin: 0 auto"></div>
           {% endif %}
+       </div>
        </div>
 
 <script text="text/javascript">
 dados = {{ view.grafico|safe }};
+dadosRadar = {{ view.graficoRadar|safe }};
 paciente = {{ view.paciente|safe }};
 </script>
 
