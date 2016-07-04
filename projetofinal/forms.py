@@ -102,11 +102,10 @@ class CadastroPaciente(UserCreationForm):
 
     nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório'})
     nascimento = forms.DateField(
-        label="Data de Nascimento",
+        label="Data de Nascimento(ou data aproximada)",
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        required=False
     )
 
     sexo = forms.ChoiceField(
@@ -383,7 +382,7 @@ class EdicaoPaciente(forms.Form):
 
 
 class PasswordRecoveryForm(forms.Form):
-    username_or_email = forms.CharField()
+    username_or_email = forms.CharField(error_messages={'required':'Este campo é obrigatório'})
 
     error_messages = {
         'not_found': _("Desculpe, esse usuário não existe."),
@@ -533,7 +532,7 @@ class PerguntasAreaAfetiva(forms.Form):
             RESPOSTAS = []
             for resp in resposta:
                 RESPOSTAS.append((resp.letra, resp.resposta))
-            self.fields[item.id] = forms.ChoiceField(
+            self.fields[item.numero] = forms.ChoiceField(
                 label= item.numero + ". " + item.pergunta,
                 choices = RESPOSTAS,
                 error_messages={'required':'Você esqueceu de marcar'},
@@ -553,7 +552,7 @@ class ConsultarAreaAfetiva(forms.Form):
             for resp in respostas:
                 RESPOSTAS.append((resp.letra, resp.resposta))
             escolhida = RespostaAreaAfetiva.objects.get(id=resposta.resposta_id)
-            self.fields[item.id] = forms.ChoiceField(
+            self.fields[item.numero] = forms.ChoiceField(
                 label= item.numero + ". " + item.pergunta,
                 choices = RESPOSTAS,
                 error_messages={'required':'Você esqueceu de marcar'},

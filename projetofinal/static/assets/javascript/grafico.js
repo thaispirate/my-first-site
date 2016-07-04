@@ -50,6 +50,7 @@ $(document).ready(function () {
             });
         }
         var radar = {
+            colors: ["#7cb5ec","#f7a35c","#ff095c","#FFDAB9","#FF0000","#AB82FF","#ADFF2F","#FF69B4"],
             chart: {
                 polar: true,
                 type: 'line',
@@ -61,7 +62,7 @@ $(document).ready(function () {
             },
 
             pane: {
-                size: '80%'
+                size: '95%'
             },
 
             xAxis: {
@@ -87,6 +88,7 @@ $(document).ready(function () {
             }
 
         var chart2 = new Highcharts.Chart(radar);
+
         for(var item in dadosRadar){
             chart2.addSeries({
                 name:item,

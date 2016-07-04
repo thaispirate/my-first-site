@@ -13,7 +13,7 @@ from .forms import ConsultarAreaAfetiva,CadastroPaciente,CadastroConjuge,Cadastr
     PerguntasSeletivas,PerguntasSeletivasCondicionadas, ConsultarPerguntasSeletivas,\
     PerguntasInterventivas, ConsultarPerguntasInterventivas
 
-from .models import Paciente,User,Familia, Psicologo, AreaAfetiva, Anamnesia, RespostaAreaAfetiva,\
+from .models import Paciente,User,Familia, Psicologo, AreaAfetiva, Anamnesia, PerguntaAreaAfetiva,RespostaAreaAfetiva,\
     Relacionamento,GrauIndiferenciacao, GrauIndiferenciacaoPaciente,\
     Seletiva, PerguntaSeletiva,RespostaSeletiva, PerguntaSeletiva,\
     Interventiva, PerguntaInterventiva, RespostaInterventiva, Recomendacao
@@ -450,17 +450,18 @@ class InserirAnalise(SessionWizardView):
         if form.data['inserir_analise-current_step'] == '0':
             anamnesia = Anamnesia()
             anamnesia.paciente = paciente
-            A=[0]
+            A={'0':0}
             for item in form.data:
                 if item[0] == "0":
-                    resposta = RespostaAreaAfetiva.objects.get(pergunta_id=int(item.split("-")[1]),letra=form.data[item])
-                    A.append(resposta.valor)
+                    pergunta = PerguntaAreaAfetiva.objects.get(numero=item.split("-")[1])
+                    resposta = RespostaAreaAfetiva.objects.get(pergunta_id=pergunta.id,letra=form.data[item])
+                    A[item.split("A")[1]]=resposta.valor
 
-            afetivoRelacional=(A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8)
-            produtividade=(A[5]+A[16]+A[20]+A[22]+A[23])/5
-            organico=(A[7]+A[12]+A[14]+A[27]+A[29])/5
-            espiritual=(A[3]+A[11]+A[18]+A[24]+A[26])/5
-            socioCultural=(A[8]+A[10]+A[20]+A[22]+A[23])/5
+            afetivoRelacional=(A['01']+A['02']+A['04']+A['06']+A['09']+A['13']+A['15']+A['17']+A['19']+A['20']+A['21']+A['22']+A['23']+A['25']+A['28'])/15
+            produtividade=(A['05']+A['16']+A['20']+A['22']+A['23'])/5
+            organico=(A['07']+A['12']+A['14']+A['27']+A['29'])/5
+            espiritual=(A['03']+A['11']+A['18']+A['24']+A['26'])/5
+            socioCultural=(A['08']+A['10']+A['20']+A['22']+A['23'])/5
 
             lista = [(organico,"a"),(produtividade, "b"),(afetivoRelacional,"c"),(socioCultural,"d"),(espiritual,"e")]
             maximo = max(lista, key=lambda x: x[0])
@@ -483,7 +484,8 @@ class InserirAnalise(SessionWizardView):
 
             for item in form.data:
                 if item[0] == "0":
-                    resposta = RespostaAreaAfetiva.objects.get(pergunta_id=int(item.split("-")[1]),letra=form.data[item])
+                    pergunta = PerguntaAreaAfetiva.objects.get(numero=item.split("-")[1])
+                    resposta = RespostaAreaAfetiva.objects.get(pergunta_id=pergunta.id,letra=form.data[item])
                     areaAfetiva = AreaAfetiva()
                     areaAfetiva.paciente = paciente
                     areaAfetiva.resposta = resposta
@@ -971,12 +973,12 @@ class ConsultarAnalise(TemplateView):
         }
         anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
         for analise in anamnesia:
-            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id)
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id).order_by('resposta_id')
             A=[0]
             for respostas in area:
                 resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
                 A.append(resposta.valor)
-            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8))
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/15)
             produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
@@ -1092,12 +1094,12 @@ class ConsultarAnalise(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Ideal-Mínimo'] = [adaptativoMin]
-        dados['Ideal-Mínimo'].append(reativoMin)
-        dados['Ideal-Mínimo'].append(criativoMin)
-        dados['Ideal-Máximo'] = [adaptativoMax]
-        dados['Ideal-Máximo'].append(reativoMax)
-        dados['Ideal-Máximo'].append(criativoMax)
+        dados['Limite Inferior'] = [adaptativoMin]
+        dados['Limite Inferior'].append(reativoMin)
+        dados['Limite Inferior'].append(criativoMin)
+        dados['Limite Superior'] = [adaptativoMax]
+        dados['Limite Superior'].append(reativoMax)
+        dados['Limite Superior'].append(criativoMax)
 
         grafico = simplejson.dumps(dados)
         return grafico
@@ -1473,16 +1475,16 @@ class ProsseguirAnalise(TemplateView):
             if Interventiva.objects.filter(anamnesia_id = analise.id).exists():
                 anamnesia = anamnesia.exclude(id = analise.id)
         for analise in anamnesia:
-            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id)
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id).order_by('resposta_id')
             A=[0]
             for respostas in area:
                 resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
                 A.append(resposta.valor)
-            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8))*10
-            produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)*10
-            organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)*10
-            espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)*10
-            socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)*10
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/15)
+            produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)
+            organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
+            espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
+            socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
             dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
             dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
             dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
@@ -1593,12 +1595,12 @@ class ProsseguirAnalise(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Ideal-Mínimo'] = [adaptativoMin]
-        dados['Ideal-Mínimo'].append(reativoMin)
-        dados['Ideal-Mínimo'].append(criativoMin)
-        dados['Ideal-Máximo'] = [adaptativoMax]
-        dados['Ideal-Máximo'].append(reativoMax)
-        dados['Ideal-Máximo'].append(criativoMax)
+        dados['Limite Inferior'] = [adaptativoMin]
+        dados['Limite Inferior'].append(reativoMin)
+        dados['Limite Inferior'].append(criativoMin)
+        dados['Limite Superior'] = [adaptativoMax]
+        dados['Limite Superior'].append(reativoMax)
+        dados['Limite Superior'].append(criativoMax)
 
         grafico = simplejson.dumps(dados)
         return grafico
@@ -1691,12 +1693,12 @@ class Recomendacoes(TemplateView):
         }
         anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
         for analise in anamnesia:
-            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id)
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id).order_by('resposta_id')
             A=[0]
             for respostas in area:
                 resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
                 A.append(resposta.valor)
-            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8))
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/15)
             produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
@@ -1812,12 +1814,12 @@ class Recomendacoes(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Ideal-Mínimo'] = [adaptativoMin]
-        dados['Ideal-Mínimo'].append(reativoMin)
-        dados['Ideal-Mínimo'].append(criativoMin)
-        dados['Ideal-Máximo'] = [adaptativoMax]
-        dados['Ideal-Máximo'].append(reativoMax)
-        dados['Ideal-Máximo'].append(criativoMax)
+        dados['Limite Inferior'] = [adaptativoMin]
+        dados['Limite Inferior'].append(reativoMin)
+        dados['Limite Inferior'].append(criativoMin)
+        dados['Limite Superior'] = [adaptativoMax]
+        dados['Limite Superior'].append(reativoMax)
+        dados['Limite Superior'].append(criativoMax)
 
         grafico = simplejson.dumps(dados)
         return grafico
@@ -1857,12 +1859,12 @@ class RecomendacaoAreaAfetiva(TemplateView):
         }
         anamnesia = Anamnesia.objects.filter(id=analise_id)
         for analise in anamnesia:
-            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id)
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id).order_by('resposta_id')
             A=[0]
             for respostas in area:
                 resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
                 A.append(resposta.valor)
-            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8))
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/15)
             produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
@@ -1897,12 +1899,12 @@ class RecomendacaoAreaAfetiva(TemplateView):
         }
         anamnesia = Anamnesia.objects.filter(id=analise_id)
         for analise in anamnesia:
-            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id)
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id).order_by('resposta_id')
             A=[0]
             for respostas in area:
                 resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
                 A.append(resposta.valor)
-            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8))
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/15)
             produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
@@ -2087,12 +2089,12 @@ class RecomendacaoIndiferenciacao(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Ideal-Mínimo'] = [adaptativoMin]
-        dados['Ideal-Mínimo'].append(reativoMin)
-        dados['Ideal-Mínimo'].append(criativoMin)
-        dados['Ideal-Máximo'] = [adaptativoMax]
-        dados['Ideal-Máximo'].append(reativoMax)
-        dados['Ideal-Máximo'].append(criativoMax)
+        dados['Limite Inferior'] = [adaptativoMin]
+        dados['Limite Inferior'].append(reativoMin)
+        dados['Limite Inferior'].append(criativoMin)
+        dados['Limite Superior'] = [adaptativoMax]
+        dados['Limite Superior'].append(reativoMax)
+        dados['Limite Superior'].append(criativoMax)
 
         grafico = simplejson.dumps(dados)
         return grafico
@@ -2343,12 +2345,12 @@ class AnalisePaciente(TemplateView):
         }
         anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
         for analise in anamnesia:
-            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id)
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id).order_by('resposta_id')
             A=[0]
             for respostas in area:
                 resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
                 A.append(resposta.valor)
-            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/(15*0.8))
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/15)
             produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
@@ -2464,12 +2466,12 @@ class AnalisePaciente(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Ideal-Mínimo'] = [adaptativoMin]
-        dados['Ideal-Mínimo'].append(reativoMin)
-        dados['Ideal-Mínimo'].append(criativoMin)
-        dados['Ideal-Máximo'] = [adaptativoMax]
-        dados['Ideal-Máximo'].append(reativoMax)
-        dados['Ideal-Máximo'].append(criativoMax)
+        dados['Limite Inferior'] = [adaptativoMin]
+        dados['Limite Inferior'].append(reativoMin)
+        dados['ILimite Inferior'].append(criativoMin)
+        dados['Limite Superior'] = [adaptativoMax]
+        dados['Limite Superior'].append(reativoMax)
+        dados['Limite Superior'].append(criativoMax)
 
         grafico = simplejson.dumps(dados)
         return grafico
