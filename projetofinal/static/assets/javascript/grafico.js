@@ -60,11 +60,6 @@ $(document).ready(function () {
             title: {
                 text: "Grau de Indiferenciação<br>"+paciente['paciente'],
             },
-
-            pane: {
-                size: '95%'
-            },
-
             xAxis: {
                 categories: ['Adaptativo', 'Reativo', 'Criativo'],
                 tickmarkPlacement: 'on',
