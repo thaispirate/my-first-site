@@ -2468,7 +2468,7 @@ class AnalisePaciente(TemplateView):
 
         dados['Limite Inferior'] = [adaptativoMin]
         dados['Limite Inferior'].append(reativoMin)
-        dados['ILimite Inferior'].append(criativoMin)
+        dados['Limite Inferior'].append(criativoMin)
         dados['Limite Superior'] = [adaptativoMax]
         dados['Limite Superior'].append(reativoMax)
         dados['Limite Superior'].append(criativoMax)
