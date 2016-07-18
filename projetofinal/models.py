@@ -11,8 +11,8 @@ class Paciente(models.Model):
     usuario = models.OneToOneField(User)
     email = models.EmailField()
     nome = models.CharField(max_length=50,null=True)
-    nascimento = models.DateField(null=True,blank=True)
-    sexo = models.CharField(max_length=10,null=True,blank=True)
+    nascimento = models.DateField(null=True)
+    sexo = models.CharField(max_length=10,null=True)
     escolaridade = models.CharField(max_length=15, null=True,blank=True)
 
     def __str__(self):

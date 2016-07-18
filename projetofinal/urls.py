@@ -49,6 +49,7 @@ urlpatterns = [
     url(r'^analise/recomendacao/(?P<paciente_id>\d+)/remover$', views.RemoverAnalise, name="remover"),
     url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/areaafetiva$', RecomendacaoAreaAfetiva.as_view(template_name="projetofinal/analise/recomendacao/areaAfetiva.html")),
     url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/indiferenciacao$', RecomendacaoIndiferenciacao.as_view(template_name="projetofinal/analise/recomendacao/indiferenciacao.html")),
+    url(r'^pdf/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', views.pdf_view),
 
     #Psicólogo
     url(r'^psicologo/administracao$', views.PsicologoAdministracao),

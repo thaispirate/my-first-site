@@ -134,6 +134,29 @@ descompactar django-highcharts-0.1.7.tar.gz
 cd django-highcharts-0.1.7
 sudo cp -R highcharts/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
 
+-cairo
+wget http://www.cairographics.org/releases/pixman-0.28.0.tar.gz
+tar -xzf pixman-0.28.0.tar.gz
+cd pixman-0.28.0
+./configure --prefix=$HOME
+make
+make install
+cd ..
+wget http://www.cairographics.org/releases/cairo-1.12.8.tar.xz
+tar -xJf cairo-1.12.8.tar.xz
+cd cairo-1.12.8
+./configure --prefix=$HOME
+make
+make install
+cd ..
+baixar pycairo-1.10.0 :https://www.cairographics.org/pycairo/
+descompactar pycairo-1.10.0.tar.bz2
+cd pycairo-1.10.0
+./waf configure --prefix=$VIRTUAL_ENV
+./waf build
+./waf install
+
+
 
 python manage.py makemigrations
 python manage.py migrate

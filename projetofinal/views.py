@@ -18,7 +18,7 @@ from .models import Paciente,User,Familia, Psicologo, AreaAfetiva, Anamnesia, Pe
     Seletiva, PerguntaSeletiva,RespostaSeletiva, PerguntaSeletiva,\
     Interventiva, PerguntaInterventiva, RespostaInterventiva, Recomendacao
 from formtools.wizard.views import SessionWizardView
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.http import Http404, HttpResponseRedirect, HttpResponse, FileResponse
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -44,6 +44,7 @@ from .forms import PasswordRecoveryForm, PasswordResetForm
 from .signals import user_recovers_password
 from .utils import get_user_model, get_username
 from django.contrib.auth import logout
+from .genograma import main
 
 # Create your views here.
 
@@ -1984,7 +1985,9 @@ class RecomendacaoIndiferenciacao(TemplateView):
         if 'analise_id' in self.kwargs:
             analise_id = self.kwargs['analise_id']
         anamnesia = Anamnesia.objects.get(id=analise_id)
+        main(paciente_id,analise_id)
         return anamnesia
+
 
     def grafico(self):
         if 'paciente_id' in self.kwargs:
@@ -2240,6 +2243,12 @@ class RecomendacaoIndiferenciacao(TemplateView):
             texto=texto+acima_criativo.texto
 
         return texto
+
+
+def pdf_view(request, paciente_id,analise_id):
+    paciente_id=paciente_id
+    analise_id=analise_id
+    return FileResponse(open("/home/thais/projetos/django/genograma-"+paciente_id+"-"+analise_id+".pdf", 'rb'), content_type='application/pdf')
 
 #Views do Psicólogo
 def PsicologoAdministracao(request):

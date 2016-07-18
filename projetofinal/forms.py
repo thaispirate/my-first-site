@@ -115,7 +115,6 @@ class CadastroPaciente(UserCreationForm):
             ('Masculino', "Masculino")
         ),
         widget = forms.RadioSelect,
-        required=False
 
     )
 
