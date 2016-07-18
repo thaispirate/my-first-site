@@ -48,8 +48,8 @@
       <file leaf-file-name="install.txt" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/install.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3204698">
-              <caret line="134" column="29" selection-start-line="134" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.57214767">
+              <caret line="144" column="5" selection-start-line="144" selection-start-column="5" selection-end-line="144" selection-end-column="62" />
               <folding />
             </state>
           </provider>
@@ -502,7 +502,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="30" width="1368" height="739" extended-state="6" />
+    <frame x="-1" y="30" width="1368" height="739" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17843866" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -949,8 +949,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/install.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3204698">
-          <caret line="134" column="29" selection-start-line="134" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.57214767">
+          <caret line="144" column="5" selection-start-line="144" selection-start-column="5" selection-end-line="144" selection-end-column="62" />
           <folding />
         </state>
       </provider>
