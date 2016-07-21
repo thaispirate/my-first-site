@@ -1,5 +1,5 @@
 import math
-import cairo
+import cairocffi
 from .models import Paciente,Familia, Relacionamento
 
 ########################### Desenha uma pessoa chave na familia
