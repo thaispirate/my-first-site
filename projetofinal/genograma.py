@@ -1,6 +1,5 @@
-import math
-import cairocffi
-from .models import Paciente,Familia, Relacionamento
+import math,cairo
+from .models import Familia,Paciente,Relacionamento
 
 ########################### Desenha uma pessoa chave na familia
 #piStartX: canto superior esquerdo
@@ -14,7 +13,7 @@ def drawPersonOfInterst(piStartX,piStartY,piSize,pbIndex,pbMan,pbDead,pstrBirthD
 	ctx.set_line_width(0.1)
 	ctx.set_source_rgb(0, 0, 0)
 	if pbMan:
-		ctx.rectangle(piStartX,piStartY,piSize,piSize) 
+		ctx.rectangle(piStartX,piStartY,piSize,piSize)
 		if pbIndex:
 			ctx.rectangle(piStartX+4,piStartY+4,piSize-8,piSize-8)
 		if pbDead:
@@ -51,7 +50,7 @@ def drawPerson(piStartX,piStartY,piSize,pbMan):
 	ctx.set_line_width(0.1)
 	ctx.set_source_rgb(0, 0, 0)
 	if pbMan:
-		ctx.rectangle(piStartX,piStartY,piSize,piSize) 
+		ctx.rectangle(piStartX,piStartY,piSize,piSize)
 	else :
 		ctx.move_to((piStartX+piSize),(piStartY+piSize/2))
 		ctx.arc((piStartX+piSize/2),(piStartY+piSize/2),piSize/2,0,2*math.pi)
@@ -73,11 +72,12 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 	ctx.stroke()
 	iFinalFatherX = 0
 	iFinalFatherY = 0
+
 	if (pbManHadNextRelation or pbWomanHadPreviousRelation):
 		iMaxY = 4*piSize
 	else:#nao existem outros relacionamentos
 		iMaxY = 2*piSize
-	#Comeca a desenha, da esquerda para direita	
+	#Comeca a desenha, da esquerda para direita
 	if pbManHadPreviousRelation: #Relacionamento anterior do Homem
 		drawPerson(piStartX,piStartY,piSize,False)
 		iX = piStartX + int(piSize/2)
@@ -89,6 +89,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 		ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
 		ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
 		ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
+
 		i=0
 		while (i < piManPreviousMaleOffspring): #Filhos homens do relacionamento anterior
 			ctx.move_to(iX,iY)
@@ -116,7 +117,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 	#end if
 	#O homem
 	drawPersonOfInterst(piStartX,piStartY,piSize,False,True,pbDeadGrandfather,pstrGrandfatherBirthDate,pstrGrandfatherDeathDate,pstrGrandfatherName)
-	iX = piStartX + int(piSize/2)			
+	iX = piStartX + int(piSize/2)
 	iY = piStartY + int(piSize+12)
 	ctx.move_to(iX,iY)
 	iY = iY+iMaxY-12
@@ -160,7 +161,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 			iX = iX-int(piSize/2) + 2*piSize
 		iY = iY-piSize-iTic
 		drawPerson(iX,iY,piSize,True)
-		iX = iX + int(piSize/2) 
+		iX = iX + int(piSize/2)
 		iY = iY + piSize
 		ctx.move_to(iX,iY)
 		iY = iY + iTic
@@ -207,6 +208,14 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 		ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
 		ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
 		ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
+
+	if((pstrRelation == "Separados") or (pstrRelation == "Divorciados")):
+		ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
+		ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
+		if(pstrRelation == "Divorciados"):
+			ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
+			ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
+
 	i = 0
 	while (i < piMaleOffSpring): #Filhos homens do casal
 		ctx.move_to(iX,iY)
@@ -226,7 +235,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 		ctx.line_to(iX,iY)
 		ctx.line_to(iX,iY+iTic)
 		drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
-		i = i+1	
+		i = i+1
 	ctx.move_to(iX,iY)
 	ctx.line_to(iXWoman,iY)
 	iYWoman = iY
@@ -234,7 +243,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 	ctx.line_to(iXWoman,iY)
 	piStartX = iXWoman - int(piSize/2)
 	drawPersonOfInterst(piStartX,piStartY,piSize,False,False,pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmotherName)
-	#Relacionamento posterior da Mulher	
+	#Relacionamento posterior da Mulher
 	if pbWomanHadNextRelation:
 		i = 0
 		iX = iXWoman
@@ -253,7 +262,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 			ctx.line_to(iX,iY)
 			ctx.line_to(iX,iY+iTic)
 			drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
-			i = i+1	
+			i = i+1
 		ctx.move_to(iX,iY)
 		if((piWomanNextMaleOffspring+piWomanNextFemaleOffspring)>0):
 			iX = iX + int(1.5*piSize)
@@ -263,16 +272,16 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 		piStartX = iX-int(piSize/2)
 		ctx.move_to(piStartX,piStartY)
 		drawPerson(piStartX,piStartY,piSize,True)
-		iX = piStartX + int(piSize/2)			
+		iX = piStartX + int(piSize/2)
 		iY = piStartY + int(piSize)
 		ctx.move_to(iX,iY)
 		iY = iY+iMaxY
 		ctx.line_to(iX,iY)
 	ctx.stroke()
 	iFinalX = piStartX
-	iFinalY = piStartY 
+	iFinalY = piStartY
 	return iFinalX,iFinalY,iFinalFatherX,iFinalFatherY
-	
+
 
 ########################### Desenha a familia de avos maternos
 def drawMotherParents(piStartX,piStartY,piSize,pstrRelation,piMaleOffSpring,piFemaleOffSpring,
@@ -294,7 +303,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 		iMaxY = 4*piSize
 	else:#nao existem outros relacionamentos
 		iMaxY = 2*piSize
-	#Comeca a desenha, da esquerda para direita	
+	#Comeca a desenha, da esquerda para direita
 	if pbManHadPreviousRelation: #Relacionamento anterior do Homem
 		drawPerson(piStartX,piStartY,piSize,False)
 		iX = piStartX + int(piSize/2)
@@ -333,7 +342,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 	#end if
 	#O homem
 	drawPersonOfInterst(piStartX,piStartY,piSize,False,True,pbDeadGrandfather,pstrGrandfatherBirthDate,pstrGrandfatherDeathDate,pstrGrandfatherName)
-	iX = piStartX + int(piSize/2)			
+	iX = piStartX + int(piSize/2)
 	iY = piStartY + int(piSize+12)
 	ctx.move_to(iX,iY)
 	iY = iY+iMaxY-12
@@ -377,7 +386,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 			iX = iX-int(piSize/2) + 2*piSize
 		iY = iY-piSize-iTic
 		drawPerson(iX,iY,piSize,True)
-		iX = iX + int(piSize/2) 
+		iX = iX + int(piSize/2)
 		iY = iY + piSize
 		ctx.move_to(iX,iY)
 		iY = iY + iTic
@@ -424,6 +433,14 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 		ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
 		ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
 		ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
+
+	if((pstrRelation == "Separados") or (pstrRelation == "Divorciados")):
+		ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
+		ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
+		if(pstrRelation == "Divorciados"):
+			ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
+			ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
+
 	i = 0
 	while (i < piMaleOffSpring): #Filhos homens do casal
 		ctx.move_to(iX,iY)
@@ -443,7 +460,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 			iFinalMotherY = iY+iTic
 		else:
 			drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
-		i = i+1	
+		i = i+1
 	ctx.move_to(iX,iY)
 	ctx.line_to(iXWoman,iY)
 	iYWoman = iY
@@ -451,7 +468,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 	ctx.line_to(iXWoman,iY)
 	piStartX = iXWoman - int(piSize/2)
 	drawPersonOfInterst(piStartX,piStartY,piSize,False,False,pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmotherName)
-	#Relacionamento posterior da Mulher	
+	#Relacionamento posterior da Mulher
 	if pbWomanHadNextRelation:
 		i = 0
 		iX = iXWoman
@@ -470,7 +487,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 			ctx.line_to(iX,iY)
 			ctx.line_to(iX,iY+iTic)
 			drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
-			i = i+1	
+			i = i+1
 		ctx.move_to(iX,iY)
 		if((piWomanNextMaleOffspring+piWomanNextFemaleOffspring)>0):
 			iX = iX + int(1.5*piSize)
@@ -480,7 +497,7 @@ pbDeadGrandmother,pstrGrandmotherBirthDate,pstrGrandmotherDeathDate,pstrGrandmot
 		piStartX = iX-int(piSize/2)
 		ctx.move_to(piStartX,piStartY)
 		drawPerson(piStartX,piStartY,piSize,True)
-		iX = piStartX + int(piSize/2)			
+		iX = piStartX + int(piSize/2)
 		iY = piStartY + int(piSize)
 		ctx.move_to(iX,iY)
 		iY = iY+iMaxY
@@ -518,18 +535,18 @@ pbWomanHadNextRelation,piWomanNextMaleOffspring,piWomanNextFemaleOffspring):
 	ctx.line_to(iX,iY)
 	iX = piFatherX + int(piSize/2)
 	iY = piFatherY + 2*piSize + 6 + iMaxY
-	if((pstrRelation == "Separado") or (pstrRelation == "Casado")):
+	if((pstrRelation == "Separados") or (pstrRelation == "Divorciados")):
 		ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
 		ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
-		if(pstrRelation == "Casado"):
+		if(pstrRelation == "Divorciados"):
 			ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
 			ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
 	i = 0
 	while (i < piMaleOffSpring): #Filhos homens do relacionamento
 		iX = iX + int(1.5*piSize)
 		ctx.move_to(iX,iY)
-		ctx.line_to(iX,iY+iTic)		
-		if(pbIndexIsMale and (i==0)):		
+		ctx.line_to(iX,iY+iTic)
+		if(pbIndexIsMale and (i==0)):
 			iIndexPersonX = iX-int(piSize/2)
 			iIndexPersonY = iY+iTic
 		else:
@@ -540,7 +557,7 @@ pbWomanHadNextRelation,piWomanNextMaleOffspring,piWomanNextFemaleOffspring):
 		iX = iX + int(1.5*piSize)
 		ctx.move_to(iX,iY)
 		ctx.line_to(iX,iY+iTic)
-		if((not pbIndexIsMale) and (i==0)):		
+		if((not pbIndexIsMale) and (i==0)):
 			iIndexPersonX = iX-int(piSize/2)
 			iIndexPersonY = iY+iTic
 		else:
@@ -564,7 +581,7 @@ pbWomanHadNextRelation,piWomanNextMaleOffspring,piWomanNextFemaleOffspring):
 			ctx.move_to(iX,iY)
 			iX = iX - int(1.5*piSize)
 			ctx.line_to(iX,iY)
-			ctx.line_to(iX,iY+iTic)		
+			ctx.line_to(iX,iY+iTic)
 			drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
 			i = i+1
 		ctx.move_to(iX,iY)
@@ -588,7 +605,7 @@ pbWomanHadNextRelation,piWomanNextMaleOffspring,piWomanNextFemaleOffspring):
 			ctx.move_to(iX,iY)
 			iX = iX + int(1.5*piSize)
 			ctx.line_to(iX,iY)
-			ctx.line_to(iX,iY+iTic)		
+			ctx.line_to(iX,iY+iTic)
 			drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
 			i = i+1
 		i = 0
@@ -624,7 +641,7 @@ pbWomanHadNextRelation,piWomanNextMaleOffspring,piWomanNextFemaleOffspring):
 			ctx.move_to(iX,iY)
 			iX = iX - int(1.5*piSize)
 			ctx.line_to(iX,iY)
-			ctx.line_to(iX,iY+iTic)		
+			ctx.line_to(iX,iY+iTic)
 			drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
 			i = i+1
 		ctx.move_to(iX,iY)
@@ -648,7 +665,7 @@ pbWomanHadNextRelation,piWomanNextMaleOffspring,piWomanNextFemaleOffspring):
 			ctx.move_to(iX,iY)
 			iX = iX + int(1.5*piSize)
 			ctx.line_to(iX,iY)
-			ctx.line_to(iX,iY+iTic)		
+			ctx.line_to(iX,iY+iTic)
 			drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
 			i = i+1
 		i = 0
@@ -665,7 +682,7 @@ pbWomanHadNextRelation,piWomanNextMaleOffspring,piWomanNextFemaleOffspring):
 		ctx.move_to(iX,iY)
 		iY = iY - 2.5*piSize - 12
 		ctx.line_to(iX,iY)
-		drawPerson(iX-int(piSize/2),iY-piSize,piSize,True)	
+		drawPerson(iX-int(piSize/2),iY-piSize,piSize,True)
 	ctx.stroke()
 	return iIndexPersonX,iIndexPersonY
 
@@ -688,13 +705,13 @@ pbSposeHadNextRelation,piSposeNextMaleOffspring,piSposeNextFemaleOffspring):
 		if (pbIndexHadNextRelation or pbSposeHadPreviousRelation):
 			iMaxY = 4*piSize
 		else:#nao existem outros relacionamentos
-			iMaxY = 2*piSize
+			iMaxY = 3*piSize
 	else:
 		if (pbIndexHadPreviousRelation or pbSposeHadNextRelation):
 			iMaxY = 4*piSize
 		else:#nao existem outros relacionamentos
-			iMaxY = 2*piSize
-	if(not(pstrRelation == "Nao se aplica")):	
+			iMaxY = 3*piSize
+	if(not(pstrRelation == "Nao se aplica")):
 		#Representa os filhos do relacionamento
 		iX = piIndexX + int(piSize/2)
 		iY = piIndexY + 2*piSize + 6
@@ -702,20 +719,20 @@ pbSposeHadNextRelation,piSposeNextMaleOffspring,piSposeNextFemaleOffspring):
 		ctx.line_to(iX,iY+iMaxY)
 		iY = iY+iMaxY
 		if pbIndexIsMale:
-			if((pstrRelation == "Separado") or (pstrRelation == "Casado")):
+			if((pstrRelation == "Separado(a)") or (pstrRelation == "Divorciado(a)")):
 				ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
 				ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
-				if(pstrRelation == "Casado"):
+				if(pstrRelation == "Divorciado(a)"):
 					ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
 					ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
 		ctx.move_to(iX,iY)
-		if pbIndexIsMale:
+		if pbIndexIsMale: #O relacionamento principal
 			i = 0
 			while (i < piMaleOffSpring): #Filhos homens do relacionamento
 				ctx.move_to(iX,iY)
 				iX = iX + int(1.5*piSize)
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)		
+				ctx.line_to(iX,iY+iTic)
 				drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
 				i = i+1
 			i = 0
@@ -740,262 +757,276 @@ pbSposeHadNextRelation,piSposeNextMaleOffspring,piSposeNextFemaleOffspring):
 				ctx.move_to(iX,iY)
 				iX = iX - int(1.5*piSize)
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)		
+				ctx.line_to(iX,iY+iTic)
 				drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
 				i = i+1
 		ctx.move_to(iX,iY)
 		if pbIndexIsMale:
-			iDelta = piIndexNextMaleOffspring + piIndexNextFemaleOffspring + piSposePreviousMaleOffspring+piSposePreviousFemaleOffspring
+			iDelta = piIndexNextMaleOffspring + piIndexNextFemaleOffspring + piSposePreviousMaleOffspring + piSposePreviousFemaleOffspring
 		else:
 			iDelta = piSposeNextMaleOffspring + piSposeNextFemaleOffspring + piIndexPreviousMaleOffspring + piIndexPreviousFemaleOffspring
-		iDelta = iDelta * piSize + 40	
-		if pbIndexIsMale:		
+		iDelta = iDelta * piSize + 40
+		if pbIndexIsMale:
 			iX = iX + 2*piSize + iDelta
 		else:
 			iX = iX - 2*piSize - iDelta
 		ctx.line_to(iX,iY)
 		ctx.move_to(iX,iY)
 		if not pbIndexIsMale:
-			if((pstrRelation == "Separado") or (pstrRelation == "Casado")):
+			if((pstrRelation == "Separado") or (pstrRelation == "Divorciado")):
 				ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
 				ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
-				if(pstrRelation == "Casado"):
+				if(pstrRelation == "Divorciado"):
 					ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
 					ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
 		ctx.move_to(iX,iY)
 		iSposeRelationsX = iX
 		iSposeRelationsY = iY
-		iY = iY - 2*piSize - 12
+		iY = iY - piSize - 12
 		ctx.line_to(iX,iY)
 		iSposeX = iX-int(piSize/2)
 		iSposeY = iY-piSize
 		if pbIndexIsMale: #O conjunge e mulher
-			#Representa os filhos do relacionamento anterior do conjuge (mulher)
-			iX = iSposeRelationsX
-			iY = iSposeRelationsY - 2*piSize
-			i = 0
-			while (i < piSposePreviousFemaleOffspring): #Filhas mulheres do relacionamento
+			#Relacionamento anterior do conjuge (mulher)
+			if pbSposeHadPreviousRelation: #Representa os filhos do relacionamento anterior do conjuge (mulher)
+				iX = iSposeRelationsX
+				iY = iSposeRelationsY - 2*piSize
+				i = 0
+				while (i < piSposePreviousFemaleOffspring): #Filhas mulheres do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX - int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
+					i = i+1
+				i = 0
+				while (i < piSposePreviousMaleOffspring): #Filhos homens do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX - int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
+					i = i+1
 				ctx.move_to(iX,iY)
-				iX = iX - int(1.5*piSize)
+				iX = iX - 2*piSize
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
-				i = i+1
-			i = 0
-			while (i < piSposePreviousMaleOffspring): #Filhos homens do relacionamento
+				ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
+				ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
+				ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
+				ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
 				ctx.move_to(iX,iY)
-				iX = iX - int(1.5*piSize)
+				iY = iY - iTic
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)		
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
-				i = i+1
-			ctx.move_to(iX,iY)
-			iX = iX - 2*piSize
-			ctx.line_to(iX,iY)
-			ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
-			ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
-			ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
-			ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
-			ctx.move_to(iX,iY)			
-			iY = iY - iTic
-			ctx.line_to(iX,iY)
-			drawPerson(iX-int(piSize/2),iY-piSize,piSize,pbIndexIsMale)
-			#Representa os filhos do relacionamento posterior do conjuge  (mulher)
-			iX = iSposeRelationsX
-			iY = iSposeRelationsY
-			i = 0
-			while (i < piSposeNextMaleOffspring): #Filhos homens do relacionamento
+				drawPerson(iX-int(piSize/2),iY-piSize,piSize,pbIndexIsMale)
+
+			#Relacionamento posterior do conjuge (mulher)
+			if pbSposeHadNextRelation: #Representa os filhos do relacionamento posterior do conjuge  (mulher)
+				iX = iSposeRelationsX
+				iY = iSposeRelationsY
+				i = 0
+				while (i < piSposeNextMaleOffspring): #Filhos homens do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX + int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
+					i = i+1
+				i = 0
+				while (i < piSposeNextFemaleOffspring): #Filhas mulheres do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX + int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
+					i = i+1
 				ctx.move_to(iX,iY)
-				iX = iX + int(1.5*piSize)
+				iX = iX + 2*piSize
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
-				i = i+1
-			i = 0
-			while (i < piSposeNextFemaleOffspring): #Filhas mulheres do relacionamento
 				ctx.move_to(iX,iY)
-				iX = iX + int(1.5*piSize)
+				iY = iY - 2*piSize - 12
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)		
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
-				i = i+1
-			ctx.move_to(iX,iY)
-			iX = iX + 2*piSize
-			ctx.line_to(iX,iY)			
-			ctx.move_to(iX,iY)			
-			iY = iY - 2*piSize - 12
-			ctx.line_to(iX,iY)
-			drawPerson(iX-int(piSize/2),iY-piSize,piSize,pbIndexIsMale)
-			#Representa os filhos do relacionamento anterior  (homem)
-			iX = piIndexX + int(piSize/2)
-			iY = piIndexY + 2*piSize + 6 + iMaxY
-			i = 0
-			while (i < piIndexPreviousFemaleOffspring): #Filhas mulheres do relacionamento
+				drawPerson(iX-int(piSize/2),iY-piSize,piSize,pbIndexIsMale)
+
+			#Relacionamento anterior (homem)
+			if pbIndexHadPreviousRelation: #Representa os filhos do relacionamento anterior  (homem)
+				iX = piIndexX + int(piSize/2)
+				iY = piIndexY + 2*piSize + 6 + iMaxY
+				i = 0
+				while (i < piIndexPreviousFemaleOffspring): #Filhas mulheres do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX - int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
+					i = i+1
+				i = 0
+				while (i < piIndexPreviousMaleOffspring): #Filhos homens do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX - int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
+					i = i+1
 				ctx.move_to(iX,iY)
-				iX = iX - int(1.5*piSize)
+				iX = iX - 2*piSize
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
-				i = i+1
-			i = 0
-			while (i < piIndexPreviousMaleOffspring): #Filhos homens do relacionamento
+				ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
+				ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
+				ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
+				ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
 				ctx.move_to(iX,iY)
-				iX = iX - int(1.5*piSize)
+				iY = iY - 2*piSize - 12
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)		
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
-				i = i+1
-			ctx.move_to(iX,iY)
-			iX = iX - 2*piSize
-			ctx.line_to(iX,iY)
-			ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
-			ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
-			ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
-			ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
-			ctx.move_to(iX,iY)			
-			iY = iY - 2*piSize - 12
-			ctx.line_to(iX,iY)
-			drawPerson(iX-int(piSize/2),iY-piSize,piSize,not pbIndexIsMale)
-			#Representa os filhos do relacionamento posterior  (homem)
-			iX = piIndexX + int(piSize/2)
-			iY = piIndexY + 6 + iMaxY
-			i = 0
-			while (i < piIndexNextMaleOffspring): #Filhos homens do relacionamento
+				drawPerson(iX-int(piSize/2),iY-piSize,piSize,not pbIndexIsMale)
+
+			# Relacionamento posterior (homem)
+			if pbIndexHadNextRelation: #Representa os filhos do relacionamento posterior  (homem)
+				iX = piIndexX + int(piSize/2)
+				iY = piIndexY + 6 + iMaxY
+				i = 0
+				while (i < piIndexNextMaleOffspring): #Filhos homens do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX + int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
+					i = i+1
+				i = 0
+				while (i < piIndexNextFemaleOffspring): #Filhas mulheres do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX + int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
+					i = i+1
 				ctx.move_to(iX,iY)
-				iX = iX + int(1.5*piSize)
+				iX = iX + 2*piSize
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
-				i = i+1
-			i = 0
-			while (i < piIndexNextFemaleOffspring): #Filhas mulheres do relacionamento
 				ctx.move_to(iX,iY)
-				iX = iX + int(1.5*piSize)
+				iY = iY - iTic
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)		
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
-				i = i+1
-			ctx.move_to(iX,iY)
-			iX = iX + 2*piSize
-			ctx.line_to(iX,iY)			
-			ctx.move_to(iX,iY)			
-			iY = iY - iTic
-			ctx.line_to(iX,iY)
-			drawPerson(iX-int(piSize/2),iY-piSize,piSize,not pbIndexIsMale)
+				drawPerson(iX-int(piSize/2),iY-piSize,piSize,not pbIndexIsMale)
 		else: #O conjunge e homem
-			#Representa os filhos do relacionamento anterior do conjuge  (homem)
-			iX = iSposeRelationsX
-			iY = iSposeRelationsY
-			i = 0
-			while (i < piSposePreviousFemaleOffspring): #Filhas mulheres do relacionamento
+			#Relacionamento anterior do conjuge (homem)
+			if pbSposeHadPreviousRelation: #Representa os filhos do relacionamento anterior do conjuge  (homem)
+				iX = iSposeRelationsX
+				iY = iSposeRelationsY
+				i = 0
+				while (i < piSposePreviousFemaleOffspring): #Filhas mulheres do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX - int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
+					i = i+1
+				i = 0
+				while (i < piSposePreviousMaleOffspring): #Filhos homens do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX - int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
+					i = i+1
 				ctx.move_to(iX,iY)
-				iX = iX - int(1.5*piSize)
+				iX = iX - 2*piSize
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
-				i = i+1
-			i = 0
-			while (i < piSposePreviousMaleOffspring): #Filhos homens do relacionamento
+				ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
+				ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
+				ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
+				ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
 				ctx.move_to(iX,iY)
-				iX = iX - int(1.5*piSize)
+				iY = iY - 2*piSize - 12
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)		
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
-				i = i+1
-			ctx.move_to(iX,iY)
-			iX = iX - 2*piSize
-			ctx.line_to(iX,iY)
-			ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
-			ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
-			ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
-			ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
-			ctx.move_to(iX,iY)			
-			iY = iY - 2*piSize - 12
-			ctx.line_to(iX,iY)
-			drawPerson(iX-int(piSize/2),iY-piSize,piSize,pbIndexIsMale)
-			#Representa os filhos do relacionamento posterior do conjuge  (homem)
-			iX = iSposeRelationsX
-			iY = iSposeRelationsY - 2*piSize
-			i = 0
-			while (i < piSposeNextMaleOffspring): #Filhos homens do relacionamento
+				drawPerson(iX-int(piSize/2),iY-piSize,piSize,pbIndexIsMale)
+
+			#Relacionamento posterior do conjuge (homem)
+			if pbSposeHadNextRelation: #Representa os filhos do relacionamento posterior do conjuge  (homem)
+				iX = iSposeRelationsX
+				iY = iSposeRelationsY - 2*piSize
+				i = 0
+				while (i < piSposeNextMaleOffspring): #Filhos homens do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX + int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
+					i = i+1
+				i = 0
+				while (i < piSposeNextFemaleOffspring): #Filhas mulheres do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX + int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
+					i = i+1
 				ctx.move_to(iX,iY)
-				iX = iX + int(1.5*piSize)
+				iX = iX + 2*piSize
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
-				i = i+1
-			i = 0
-			while (i < piSposeNextFemaleOffspring): #Filhas mulheres do relacionamento
 				ctx.move_to(iX,iY)
-				iX = iX + int(1.5*piSize)
+				iY = iY - iTic
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)		
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
-				i = i+1
-			ctx.move_to(iX,iY)
-			iX = iX + 2*piSize
-			ctx.line_to(iX,iY)			
-			ctx.move_to(iX,iY)			
-			iY = iY - iTic
-			ctx.line_to(iX,iY)
-			drawPerson(iX-int(piSize/2),iY-piSize,piSize,not pbIndexIsMale)
-			#Representa os filhos do relacionamento anterior  (mulher)
-			iX = piIndexX + int(piSize/2)
-			iY = piIndexY + 6 + iMaxY
-			i = 0
-			while (i < piIndexPreviousFemaleOffspring): #Filhas mulheres do relacionamento
+				drawPerson(iX-int(piSize/2),iY-piSize,piSize,not pbIndexIsMale)
+
+			#Relacionamento anterior (mulher)
+			if pbIndexHadPreviousRelation: #Representa os filhos do relacionamento anterior  (mulher)
+				iX = piIndexX + int(piSize/2)
+				iY = piIndexY + 6 + iMaxY
+				i = 0
+				while (i < piIndexPreviousFemaleOffspring): #Filhas mulheres do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX - int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
+					i = i+1
+				i = 0
+				while (i < piIndexPreviousMaleOffspring): #Filhos homens do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX - int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
+					i = i+1
 				ctx.move_to(iX,iY)
-				iX = iX - int(1.5*piSize)
+				iX = iX - 2*piSize
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
-				i = i+1
-			i = 0
-			while (i < piIndexPreviousMaleOffspring): #Filhos homens do relacionamento
+				ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
+				ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
+				ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
+				ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
 				ctx.move_to(iX,iY)
-				iX = iX - int(1.5*piSize)
+				iY = iY - iTic
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)		
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
-				i = i+1
-			ctx.move_to(iX,iY)
-			iX = iX - 2*piSize
-			ctx.line_to(iX,iY)
-			ctx.move_to(iX+int(piSize*0.4),iY+int(piSize*0.3))
-			ctx.line_to(iX+int(piSize*0.7),iY-int(piSize*0.3))
-			ctx.move_to(iX+int(piSize*0.6),iY+int(piSize*0.3))
-			ctx.line_to(iX+int(piSize*0.9),iY-int(piSize*0.3))
-			ctx.move_to(iX,iY)			
-			iY = iY - iTic
-			ctx.line_to(iX,iY)
-			drawPerson(iX-int(piSize/2),iY-piSize,piSize,not pbIndexIsMale)
-			#Representa os filhos do relacionamento posterior  (mulher)
-			iX = piIndexX + int(piSize/2)
-			iY = piIndexY + 2*piSize + 6 + iMaxY
-			i = 0
-			while (i < piIndexNextMaleOffspring): #Filhos homens do relacionamento
+				drawPerson(iX-int(piSize/2),iY-piSize,piSize,not pbIndexIsMale)
+
+			#Relacionamento posterior (mulher)
+			if pbIndexHadNextRelation: #Representa os filhos do relacionamento posterior  (mulher)
+				iX = piIndexX + int(piSize/2)
+				iY = piIndexY + 2*piSize + 6 + iMaxY
+				i = 0
+				while (i < piIndexNextMaleOffspring): #Filhos homens do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX + int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
+					i = i+1
+				i = 0
+				while (i < piIndexNextFemaleOffspring): #Filhas mulheres do relacionamento
+					ctx.move_to(iX,iY)
+					iX = iX + int(1.5*piSize)
+					ctx.line_to(iX,iY)
+					ctx.line_to(iX,iY+iTic)
+					drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
+					i = i+1
 				ctx.move_to(iX,iY)
-				iX = iX + int(1.5*piSize)
+				iX = iX + 2*piSize
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,False)
-				i = i+1
-			i = 0
-			while (i < piIndexNextFemaleOffspring): #Filhas mulheres do relacionamento
 				ctx.move_to(iX,iY)
-				iX = iX + int(1.5*piSize)
+				iY = iY - 2*piSize - 12
 				ctx.line_to(iX,iY)
-				ctx.line_to(iX,iY+iTic)		
-				drawPerson(iX-int(piSize/2),iY+iTic,piSize,True)
-				i = i+1
-			ctx.move_to(iX,iY)
-			iX = iX + 2*piSize
-			ctx.line_to(iX,iY)			
-			ctx.move_to(iX,iY)			
-			iY = iY - 2*piSize - 12
-			ctx.line_to(iX,iY)
-			drawPerson(iX-int(piSize/2),iY-piSize,piSize,not pbIndexIsMale)
-	
+				drawPerson(iX-int(piSize/2),iY-piSize,piSize,not pbIndexIsMale)
+
 	ctx.stroke()
 	return iSposeX,iSposeY
 
@@ -1078,7 +1109,7 @@ def main(paciente_id,analise_id):
 			avoPaternaR_filhosDepois = avoPaternaR.filhosDepois
 			avoPaternaR_filhasDepois =  avoPaternaR.filhasDepois
 
-	iFinalX,iFinalY,iFinalFatherX,iFinalFatherY = drawFatherParents(170,50,16,"Separado",
+	iFinalX,iFinalY,iFinalFatherX,iFinalFatherY = drawFatherParents(170,50,16,avoPaternoR.relacao,
 																	avoPaternoR.filhos,avoPaternoR.filhas,
 																	avoPaternoR_relacaoAntes,avoPaternoR_filhosAntes,avoPaternoR.filhasAntes,
 																	avoPaternoR_relacaoDepois,avoPaternoR_filhosDepois,avoPaternoR_filhasDepois,
@@ -1150,7 +1181,7 @@ def main(paciente_id,analise_id):
 			avoMaternaR_filhasDepois =  avoMaternaR.filhasDepois
 
 
-	iFinalX,iFinalY,iFinalMotherX,iFinalMotherY = drawMotherParents(iFinalX+40,iFinalY,16,"Casado",
+	iFinalX,iFinalY,iFinalMotherX,iFinalMotherY = drawMotherParents(iFinalX+40,iFinalY,16,avoMaternoR.relacao,
 																	avoMaternoR.filhos,avoMaternoR.filhas,
 																	avoMaternoR_relacaoAntes,avoMaternoR_filhosAntes,avoMaternoR.filhasAntes,
 																	avoMaternoR_relacaoDepois,avoMaternoR_filhosDepois,avoMaternoR_filhasDepois,
@@ -1183,7 +1214,7 @@ def main(paciente_id,analise_id):
 		falecimento=str(mae.falecimento)
 		mae_falecimento_ano = falecimento.split("-")[0]
 
-	drawPersonOfInterst(iFinalFatherX,iFinalFatherY+8,16,False,True,pai_falecimento,pai_ano,pai_falecimento_ano,pai_nome)
+	drawPersonOfInterst(iFinalFatherX,iFinalFatherY,16,False,True,pai_falecimento,pai_ano,pai_falecimento_ano,pai_nome)
 	drawPersonOfInterst(iFinalMotherX,iFinalMotherY+8,16,False,False,mae_falecimento,mae_ano,mae_falecimento_ano,mae_nome)
 
 	paiR = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Pai")
@@ -1232,7 +1263,7 @@ def main(paciente_id,analise_id):
 
 
 
-	iSubjectX,iSubjectY = drawBeginingFamily(iFinalFatherX,iFinalFatherY,iFinalMotherX,iFinalMotherY,16,"Divorciado",paiR.filhos,paiR.filhas,
+	iSubjectX,iSubjectY = drawBeginingFamily(iFinalFatherX,iFinalFatherY,iFinalMotherX,iFinalMotherY,16,paiR.relacao,paiR.filhos,paiR.filhas,
 											 paciente_sexo,paiR_relacaoAntes,paiR_filhosAntes,paiR_filhasAntes,
 											 paiR_relacaoDepois,paiR_filhosDepois,paiR_filhasDepois,
 											 maeR_relacaoAntes,maeR_filhosAntes,maeR_filhasAntes,
@@ -1289,7 +1320,7 @@ def main(paciente_id,analise_id):
 			conjugeR_filhasDepois =  conjugeR.filhasDepois
 
 
-	iSposeX,iSposeY = drawIndexFamily(iSubjectX,iSubjectY,paciente_sexo,16,"Casado",
+	iSposeX,iSposeY = drawIndexFamily(iSubjectX,iSubjectY,paciente_sexo,16,pacienteR.relacao,
 									  pacienteR.filhos,pacienteR.filhas,
 									  pacienteR_relacaoAntes,pacienteR_filhosAntes,pacienteR_filhasAntes,
 									  pacienteR_relacaoDepois,pacienteR_filhosDepois,pacienteR_filhasDepois,
