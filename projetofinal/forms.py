@@ -574,7 +574,7 @@ class RelacionamentoAvosMaternos(forms.Form):
         error_messages={'required':'Este campo é obrigatório'}
     )
     filhos = forms.IntegerField(min_value=0,label="Seus avós maternos tiveram quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
-    filhas = forms.IntegerField(min_value=0,label="Seus avós maternos tiveram quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
+    filhas = forms.IntegerField(min_value=1,label="Seus avós maternos tiveram quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
     relacaoAvoMaternoAntes = forms.ChoiceField(
         label="Seu avô materno era separado/divorciado quando se relacionava com sua avó?",
         choices = (
@@ -634,7 +634,7 @@ class RelacionamentoAvosPaternos(forms.Form):
         widget = forms.RadioSelect,
         error_messages={'required':'Este campo é obrigatório'}
     )
-    filhos = forms.IntegerField(min_value=0,label="Seus avós paternos tiveram quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
+    filhos = forms.IntegerField(min_value=1,label="Seus avós paternos tiveram quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
     filhas = forms.IntegerField(min_value=0,label="Seus avós paternos tiveram quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
     relacaoAvoPaternoAntes = forms.ChoiceField(
         label="Seu avô paterno era separado/divorciado quando se relacionava com sua avó?",

@@ -60,8 +60,8 @@
                             Olá, {{user.first_name|capfirst}}
                         </div>
                             <li><a href="">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-                            <li class="active" ><a href="/psicologo/paciente/{{view.paciente}}/analise">Análise<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-edit"></span></a></li>
-                            <li ><a href="/psicologo/paciente/{{view.paciente}}/genograma">Genograma<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+                            <li ><a href="/psicologo/paciente/{{view.paciente}}/analise">Análise<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-edit"></span></a></li>
+                            <li class="active"><a href="/psicologo/paciente/{{view.paciente}}/genograma">Genograma<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
                             <li ><a href="#">Relatório<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
                             <li ><a href="#">Estatística<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-stats"></span></a></li>
                             <li ><a href="{% url 'projetofinal.views.LogoutPsicologo' %}">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
@@ -86,7 +86,7 @@
             {% for analise in view.anamnesia %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="/psicologo/paciente/{{view.paciente}}/{{ analise.id }}">{{analise.inicio|date:'d-m-Y H:i'}}</a>
+                <td><a href="/pdf/{{view.paciente}}/{{analise.id}}">{{analise.inicio|date:'d-m-Y H:i'}}</a>
                 </td>
             </tr>
             {% endfor %}

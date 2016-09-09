@@ -433,6 +433,82 @@ class ResetDone(generic.TemplateView):
 reset_done = ResetDone.as_view()
 
 #Views da Análise
+class ResumoAreaAfetiva(TemplateView):
+    template_name = "projetofinal/analise/resumo/areaAfetiva.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ResumoAreaAfetiva, self).dispatch(*args, **kwargs)
+
+class ResumoRelacionamento(TemplateView):
+    template_name = "projetofinal/analise/resumo/relacionamento.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ResumoRelacionamento, self).dispatch(*args, **kwargs)
+
+    def anamnesia(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+        return anamnesia
+
+class ResumoIndiferenciacao(TemplateView):
+    template_name = "projetofinal/analise/resumo/indiferenciacao.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ResumoIndiferenciacao, self).dispatch(*args, **kwargs)
+
+    def anamnesia(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+        return anamnesia
+
+class ResumoSeletiva(TemplateView):
+    template_name = "projetofinal/analise/resumo/seletiva.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ResumoSeletiva, self).dispatch(*args, **kwargs)
+
+    def anamnesia(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+        return anamnesia
+
+
+class ResumoInterventiva(TemplateView):
+    template_name = "projetofinal/analise/resumo/interventiva.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ResumoInterventiva, self).dispatch(*args, **kwargs)
+
+    def anamnesia(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+        return anamnesia
+
 class InserirAnalise(SessionWizardView):
     template_name = "projetofinal/analise/inserir.html"
     form_list = [PerguntasAreaAfetiva]
@@ -784,7 +860,7 @@ class InserirAnaliseRelacionamento(SessionWizardView):
     def done(self, form_list, form_dict, **kwargs):
         paciente_id = self.kwargs['paciente_id']
         analise_id = self.kwargs['analise_id']
-        return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/indiferenciacao')
+        return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/indiferenciacao')
 
 class InserirAnaliseIndiferenciacao(SessionWizardView):
     template_name = "projetofinal/analise/inserir.html"
@@ -822,6 +898,18 @@ class InserirAnaliseIndiferenciacao(SessionWizardView):
                 if indiferenciacao.resposta.padrao == "criativo":
                     criativo = criativo+1
                 indiferenciacao.save()
+
+            lista = [(adaptativo,"a"),(reativo,"b"),(criativo, "c")]
+            minimo = min(lista, key=lambda x: x[0])
+            if minimo[0] == adaptativo:
+                anamnesia.padrao = "adaptativo"
+            if minimo[0] == reativo:
+                anamnesia.padrao = "reativo"
+            if minimo[0] ==  criativo:
+                anamnesia.padrao = "criativo"
+            anamnesia.save()
+            indiferenciacao.save()
+
         return form.data
 
     def done(self, form_list, form_dict, **kwargs):
@@ -909,7 +997,7 @@ class InserirAnaliseSeletiva(SessionWizardView):
     def done(self, form_list, form_dict, **kwargs):
         paciente_id = self.kwargs['paciente_id']
         analise_id = self.kwargs['analise_id']
-        return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/interventiva')
+        return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/interventiva')
 
 class InserirAnaliseInterventiva(SessionWizardView):
     template_name = "projetofinal/analise/inserir.html"
@@ -1621,25 +1709,25 @@ def ProsseguindoAnalise(request,paciente_id,analise_id):
     parentes = ["AvoMaterno","AvoMaterna","AvoPaterno","AvoPaterna","Pai","Mae","Paciente","Conjuge"]
     for parente in parentes:
         if not Relacionamento.objects.filter(anamnesia_id = analise_id, parente=parente).exists():
-            return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/relacionamentos')
+            return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/relacionamentos')
     relacionamentos = Relacionamento.objects.filter(anamnesia_id = analise_id)
     for relacionamento in relacionamentos:
         if relacionamento.parente == "Paciente":
             relacao = relacionamento.relacao
             if relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is None:
-                return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/relacionamentos')
+                return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/relacionamentos')
             if (relacionamento.relacao == "Separado(a)" or relacionamento.relacao == "Divorciado(a)") and\
                     (relacionamento.filhosDepois is None):
-                return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/relacionamentos')
+                return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/relacionamentos')
         if relacionamento.parente == "Conjuge":
             if relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is None:
-                return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/relacionamentos')
+                return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/relacionamentos')
 
     if not GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id = analise_id).exists():
-        return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/indiferenciacao')
+        return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/indiferenciacao')
 
     if not Seletiva.objects.filter(anamnesia_id = analise_id).exists():
-        return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/seletiva')
+        return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/seletiva')
 
     verificador = False
     selecionadas = []
@@ -1652,10 +1740,10 @@ def ProsseguindoAnalise(request,paciente_id,analise_id):
         if Seletiva.objects.filter(anamnesia_id = analise_id,resposta_id=selecionada).exists():
             verificador = True
     if verificador == False and (relacao == "Casado(a)" or relacao == "Mora junto"):
-        return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/seletiva')
+        return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/seletiva')
 
     if not Interventiva.objects.filter(anamnesia_id = analise_id).exists():
-        return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/interventiva')
+        return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/interventiva')
 
 @login_required()
 def RemoverAnalise(request, paciente_id):
@@ -2834,3 +2922,181 @@ class ConsultandoAnalisePaciente(SessionWizardView):
                 form.fields[field].widget.attrs['disabled'] = True
                 form.fields[field].required = False
             return form
+
+class GenogramaPaciente(TemplateView):
+    template_name="projetofinal/psicologo/paciente/genograma.html"
+
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(GenogramaPaciente, self).dispatch(*args, **kwargs)
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+            try:
+                paciente = Paciente.objects.get(usuario_id=paciente_id)
+            except Paciente.DoesNotExist:
+                raise Http404("Paciente não existe")
+        return paciente_id
+
+    def anamnesia(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id,padrao__isnull= False)
+        for analise in anamnesia:
+            analise_id = str(analise.id)
+            print(analise_id)
+            main(paciente_id,analise_id)
+        print("aqui")
+        return anamnesia
+
+    def grafico(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = {
+        }
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id,padrao__isnull= False)
+        for analise in anamnesia:
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id).order_by('resposta_id')
+            A=[0]
+            for respostas in area:
+                resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
+                A.append(resposta.valor)
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/15)
+            produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)
+            organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
+            espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
+            socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
+
+
+        grafico = simplejson.dumps(dados)
+        return grafico
+
+    def graficoRadar(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = {
+        }
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id,padrao__isnull= False)
+        criativo=0
+        reativo=0
+        adaptativo=0
+        for analise in anamnesia:
+            indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
+            for opcao in indiferenciacao:
+                resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
+                if resposta.padrao == "adaptativo":
+                    adaptativo=adaptativo+1
+                if resposta.padrao == "reativo":
+                    reativo=reativo+1
+                if resposta.padrao == "criativo":
+                    criativo=criativo+1
+
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        adaptativoMin=0
+        adaptativoMax=0
+        criativoMin=0
+        criativoMax=0
+        reativoMin=0
+        reativoMax=0
+
+        if idade >=0 and idade <=3:
+            adaptativoMin=14
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=2
+            reativoMin=0
+            reativoMax=2
+        if idade >=4 and idade <=7:
+            adaptativoMin=12
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=3
+            reativoMin=2
+            reativoMax=6
+        if idade >=8 and idade <=12:
+            adaptativoMin=8
+            adaptativoMax=13
+            criativoMin=2
+            criativoMax=5
+            reativoMin=6
+            reativoMax=10
+        if idade >=13 and idade <=19:
+            adaptativoMin=4
+            adaptativoMax=8
+            criativoMin=6
+            criativoMax=8
+            reativoMin=10
+            reativoMax=15
+        if idade >=20 and idade <=24:
+            adaptativoMin=1
+            adaptativoMax=3
+            criativoMin=9
+            criativoMax=11
+            reativoMin=8
+            reativoMax=12
+        if idade >=25 and idade <=32:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=11
+            criativoMax=15
+            reativoMin=3
+            reativoMax=7
+        if idade >=33:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=16
+            criativoMax=19
+            reativoMin=0
+            reativoMax=2
+
+        dados['Limite Inferior'] = [adaptativoMin]
+        dados['Limite Inferior'].append(reativoMin)
+        dados['Limite Inferior'].append(criativoMin)
+        dados['Limite Superior'] = [adaptativoMax]
+        dados['Limite Superior'].append(reativoMax)
+        dados['Limite Superior'].append(criativoMax)
+
+        grafico = simplejson.dumps(dados)
+        return grafico
+
+    def pacienteGrafico(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = { 'paciente': paciente.nome
+        }
+
+        paciente = simplejson.dumps(dados)
+        return paciente
