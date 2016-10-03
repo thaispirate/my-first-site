@@ -433,6 +433,14 @@ class ResetDone(generic.TemplateView):
 reset_done = ResetDone.as_view()
 
 #Views da Análise
+
+class ResumoInicio(TemplateView):
+    template_name = "projetofinal/analise/resumo/inicio.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ResumoInicio, self).dispatch(*args, **kwargs)
+
 class ResumoAreaAfetiva(TemplateView):
     template_name = "projetofinal/analise/resumo/areaAfetiva.html"
 
@@ -860,7 +868,7 @@ class InserirAnaliseRelacionamento(SessionWizardView):
     def done(self, form_list, form_dict, **kwargs):
         paciente_id = self.kwargs['paciente_id']
         analise_id = self.kwargs['analise_id']
-        return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/indiferenciacao')
+        return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/indiferenciacao')
 
 class InserirAnaliseIndiferenciacao(SessionWizardView):
     template_name = "projetofinal/analise/inserir.html"
