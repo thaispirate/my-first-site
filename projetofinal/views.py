@@ -79,7 +79,7 @@ def LoginPaciente(request):
 
 def LogoutView(request):
     logout(request)
-    return render(request, 'projetofinal/home.html', {})
+    return render(request, 'projetofinal/sair.html', {})
 
 def Erro404(request):
     return render(request,'404.html')
@@ -434,12 +434,6 @@ reset_done = ResetDone.as_view()
 
 #Views da Análise
 
-class ResumoInicio(TemplateView):
-    template_name = "projetofinal/analise/resumo/inicio.html"
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(ResumoInicio, self).dispatch(*args, **kwargs)
 
 class ResumoAreaAfetiva(TemplateView):
     template_name = "projetofinal/analise/resumo/areaAfetiva.html"
@@ -2344,7 +2338,7 @@ class RecomendacaoIndiferenciacao(TemplateView):
 def pdf_view(request, paciente_id,analise_id):
     paciente_id=paciente_id
     analise_id=analise_id
-    return FileResponse(open("/home/thais/projetos/django/genograma-"+paciente_id+"-"+analise_id+".pdf", 'rb'), content_type='application/pdf')
+    return FileResponse(open("/home/thaispirate/genograma-"+paciente_id+"-"+analise_id+".pdf", 'rb'), content_type='application/pdf')
 
 #Views do Psicólogo
 def PsicologoAdministracao(request):
