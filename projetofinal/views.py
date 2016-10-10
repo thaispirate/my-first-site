@@ -719,11 +719,24 @@ class InserirAnaliseRelacionamento(SessionWizardView):
 
         return super(InserirAnaliseRelacionamento, self).dispatch(*args, **kwargs)
 
+    def get_form(self, step=None, data=None, files=None):
+        form = super(InserirAnaliseRelacionamento, self).get_form(step, data, files)
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+            try:
+                paciente = Paciente.objects.get(usuario_id=paciente_id)
+            except Paciente.DoesNotExist:
+                raise Http404("Paciente não existe")
+        if step is None:
+            step = self.steps.current
+        if step == "8":
+            form = RelacionamentoPais(paciente_sexo=paciente.sexo,step=step,data=data)
+        return form
+
     def get_form_step_data(self, form):
         paciente_id = self.kwargs['paciente_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         analise_id =  self.kwargs['analise_id']
-
 
         self.initial_dict['passo']=int(self.steps.step1)+2
 
@@ -2949,9 +2962,7 @@ class GenogramaPaciente(TemplateView):
         anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id,padrao__isnull= False)
         for analise in anamnesia:
             analise_id = str(analise.id)
-            print(analise_id)
             main(paciente_id,analise_id)
-        print("aqui")
         return anamnesia
 
     def grafico(self):
