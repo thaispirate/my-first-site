@@ -691,11 +691,15 @@ class RelacionamentoPais(forms.Form):
         filhas=0
         filhos=0
         step=str(step)
+        step=step+"-"
+        if step == "None-":
+            step=""
         if paciente_sexo == "Feminino":
             filhas=1
         if paciente_sexo == "Masculino":
             filhos=1
-        self.fields[step+"-relacao"] = forms.ChoiceField(
+        print(step)
+        self.fields[step+"relacao"] = forms.ChoiceField(
             label="Seus pais são:",
             choices = (
                 ('Casados', "Casados"),
@@ -706,9 +710,9 @@ class RelacionamentoPais(forms.Form):
             widget = forms.RadioSelect,
             error_messages={'required':'Este campo é obrigatório'}
         )
-        self.fields[step+"-filhos"] = forms.IntegerField(min_value=filhos,label="Seus pais tiveram quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
-        self.fields[step+"-filhas"] = forms.IntegerField(min_value=filhas,label="Seus pais tiveram quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
-        self.fields[step+"-relacaoPaiAntes"] = forms.ChoiceField(
+        self.fields[step+"filhos"] = forms.IntegerField(min_value=filhos,label="Seus pais tiveram quantos filhos homens?",error_messages={'required':'Este campo é obrigatório'})
+        self.fields[step+"filhas"] = forms.IntegerField(min_value=filhas,label="Seus pais tiveram quantas filhas mulheres?",error_messages={'required':'Este campo é obrigatório'})
+        self.fields[step+"relacaoPaiAntes"] = forms.ChoiceField(
             label="Seu pai era separado/divorciado quando se relacionava com sua mãe?",
             choices = (
                 ('Sim', "Sim"),
@@ -717,7 +721,7 @@ class RelacionamentoPais(forms.Form):
             widget = forms.RadioSelect,
             error_messages={'required':'Este campo é obrigatório'}
         )
-        self.fields[step+"-relacaoMaeAntes"] = forms.ChoiceField(
+        self.fields[step+"relacaoMaeAntes"] = forms.ChoiceField(
             label="Sua mãe era separada/divorciada quando se relacionava com seu pai?",
             choices = (
                 ('Sim', "Sim"),

@@ -1420,6 +1420,7 @@ class ConsultandoAnalise(SessionWizardView):
                                                                     "filhas": relacionamento.filhas,
                                                                     "relacaoPaiAntes":relacionamento.relacaoAntes,
                                                                     "relacaoMaeAntes":relacionamentomae.relacaoAntes})
+            print(form)
             for field in form.fields:
                 form.fields[field].widget.attrs['disabled'] = True
                 form.fields[field].required = False
