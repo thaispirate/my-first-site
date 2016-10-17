@@ -9,7 +9,7 @@ from .views import CadastroWizard, EditarCadastro, PsicologoPaciente, CadastroPs
     InserirAnalise,InserirAnaliseRelacionamento,InserirAnaliseIndiferenciacao,InserirAnaliseSeletiva,InserirAnaliseInterventiva,\
     ConsultarAnalise, ConsultandoAnalise,AnalisePaciente, ConsultandoAnalisePaciente, GenogramaPaciente, \
     ProsseguirAnalise, ProsseguindoAnalise,Recomendacoes,RecomendacaoAreaAfetiva, RecomendacaoIndiferenciacao,\
-    ResumoAreaAfetiva, ResumoRelacionamento, ResumoIndiferenciacao, ResumoSeletiva, ResumoInterventiva
+    ResumoAreaAfetiva, ResumoRelacionamento, ResumoSeletiva, ResumoInterventiva
 
 handler404="views.erro404"
 
@@ -36,7 +36,6 @@ urlpatterns = [
 
     url(r'^analise/resumo/(?P<paciente_id>\d+)/areaafetiva$', ResumoAreaAfetiva.as_view()),
     url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/relacionamentos$', ResumoRelacionamento.as_view()),
-    url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/indiferenciacao$', ResumoIndiferenciacao.as_view()),
     url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/seletiva$', ResumoSeletiva.as_view()),
     url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/interventiva$', ResumoInterventiva.as_view()),
     url(r'^analise/inserir/(?P<paciente_id>\d+)/$', InserirAnalise.as_view()),
