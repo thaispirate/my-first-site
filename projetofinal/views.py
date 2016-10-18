@@ -1,4 +1,5 @@
 import datetime
+import math
 from datetime import datetime, timedelta
 import json
 from django.shortcuts import render
@@ -1453,7 +1454,6 @@ class ConsultandoAnalise(SessionWizardView):
                                                                     "filhas": relacionamento.filhas,
                                                                     "relacaoPaiAntes":relacionamento.relacaoAntes,
                                                                     "relacaoMaeAntes":relacionamentomae.relacaoAntes})
-            print(form)
             for field in form.fields:
                 form.fields[field].widget.attrs['disabled'] = True
                 form.fields[field].required = False
@@ -2108,6 +2108,101 @@ class RecomendacaoAreaAfetiva(TemplateView):
         indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise_id)
 
         return indiferenciacao
+
+    def media(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        soma=0.0
+        contador=0.0
+        desvio=0.0
+        variancia=0.0
+        areaafetiva = AreaAfetiva.objects.filter(paciente_id=paciente.id,anamnesia_id=analise_id)
+
+        for item in areaafetiva:
+            resposta = RespostaAreaAfetiva.objects.get(id=item.resposta_id)
+
+            if idade >=0 and idade <=7:
+                soma = soma + resposta.nivel1
+                if resposta.nivel1 != 0:
+                    contador = contador+1
+            if idade >=8 and idade <=12:
+                soma = soma + resposta.nivel2
+                if resposta.nivel2 != 0:
+                    contador = contador+1
+            if idade >=13 and idade <=19:
+                soma = soma + resposta.nivel3
+                if resposta.nivel3 != 0:
+                    contador = contador+1
+            if idade >=20 and idade <=24:
+                soma = soma + resposta.nivel4
+                if resposta.nivel4 != 0:
+                    contador = contador+1
+            if idade >=25 and idade <=32:
+                soma = soma + resposta.nivel5
+                if resposta.nivel5 != 0:
+                    contador = contador+1
+
+        media = soma/contador
+        contador=0
+        for item in areaafetiva:
+            resposta = RespostaAreaAfetiva.objects.get(id=item.resposta_id)
+
+            if idade >=0 and idade <=7:
+                soma = soma + resposta.nivel1
+                if resposta.nivel1 != 0:
+                    contador = contador+1
+                    variancia= variancia + ((resposta.nivel1 - media)*(resposta.nivel1 - media))
+            if idade >=8 and idade <=12:
+                soma = soma + resposta.nivel2
+                if resposta.nivel2 != 0:
+                    contador = contador+1
+                    variancia= variancia + ((resposta.nivel2 - media)*(resposta.nivel2 - media))
+            if idade >=13 and idade <=19:
+                soma = soma + resposta.nivel3
+                if resposta.nivel3 != 0:
+                    contador = contador+1
+                    variancia= variancia + ((resposta.nivel3 - media)*(resposta.nivel3 - media))
+            if idade >=20 and idade <=24:
+                soma = soma + resposta.nivel4
+                if resposta.nivel4 != 0:
+                    contador = contador+1
+                    variancia= variancia + ((resposta.nivel4 - media)*(resposta.nivel4 - media))
+            if idade >=25 and idade <=32:
+                soma = soma + resposta.nivel5
+                if resposta.nivel5 != 0:
+                    contador = contador+1
+                    variancia= variancia + ((resposta.nivel5 - media)*(resposta.nivel5 - media))
+
+        desvio = math.sqrt(variancia/(contador-1))
+        dict={
+            "media":media,
+            "desvio":desvio
+        }
+        return dict
+
 
 class RecomendacaoIndiferenciacao(TemplateView):
 
