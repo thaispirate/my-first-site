@@ -17,6 +17,9 @@
               <hr class="featurette-divider">
              <div class="col-md-12 text-center">
               <a type="submit" href="/analise/recomendacao/{{user.id}}/{{view.anamnesia.id}}/areaafetiva" class="btn btn-default">Anterior</a>
+            {% if view.interventiva%}
+              <a type="submit" href="/analise/recomendacao/{{user.id}}/{{view.anamnesia.id}}/interventiva" class="btn btn-default">Próximo</a>
+            {% endif %}
              </div>
            </div>
            </div>

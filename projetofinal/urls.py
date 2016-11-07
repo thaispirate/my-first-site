@@ -9,7 +9,7 @@ from .views import CadastroWizard, EditarCadastro, PsicologoPaciente, CadastroPs
     InserirAnalise,InserirAnaliseRelacionamento,InserirAnaliseIndiferenciacao,InserirAnaliseSeletiva,InserirAnaliseInterventiva,\
     ConsultarAnalise, ConsultandoAnalise,AnalisePaciente, ConsultandoAnalisePaciente, GenogramaPaciente, \
     ProsseguirAnalise, ProsseguindoAnalise,Recomendacoes,RecomendacaoAreaAfetiva, RecomendacaoIndiferenciacao,\
-    ResumoAreaAfetiva, ResumoRelacionamento, ResumoSeletiva, ResumoInterventiva
+    RecomendacaoInterventiva, ResumoAreaAfetiva, ResumoRelacionamento, ResumoSeletiva, ResumoInterventiva
 
 handler404="views.erro404"
 
@@ -57,6 +57,8 @@ urlpatterns = [
     url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/areaafetiva$', RecomendacaoAreaAfetiva.as_view(template_name="projetofinal/analise/recomendacao/areaAfetiva.html")),
     url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/indiferenciacao$', RecomendacaoIndiferenciacao.as_view(template_name="projetofinal/analise/recomendacao/indiferenciacao.html")),
     url(r'^pdf/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', views.pdf_view),
+    url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/interventiva$', RecomendacaoInterventiva.as_view(template_name="projetofinal/analise/recomendacao/interventiva.html")),
+
 
     #Psicólogo
     url(r'^psicologo/administracao$', views.PsicologoAdministracao),
