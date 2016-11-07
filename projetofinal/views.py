@@ -1083,8 +1083,11 @@ class InserirAnaliseInterventiva(SessionWizardView):
         return form.data
 
     def done(self, form_list, form_dict, **kwargs):
-        return redirect(AnaliseFinalizada)
+        paciente_id = self.kwargs['paciente_id']
+        analise_id = self.kwargs['analise_id']
+        return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/recomendacao/interventiva')
 
+@login_required()
 def AnaliseFinalizada(request):
     return render(request, 'projetofinal/analise/inserida.html', {})
 
@@ -1121,12 +1124,12 @@ class ConsultarAnalise(TemplateView):
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
             socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
+
             dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
             dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
             dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
             dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
             dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
-
 
         grafico = simplejson.dumps(dados)
         return grafico
@@ -2546,7 +2549,6 @@ class RecomendacaoInterventiva(TemplateView):
                 if resposta.nivel3 != 0:
                     contador = contador+1
             if idade >=20 and idade <=24:
-                print(resposta.nivel4)
                 soma = soma + resposta.nivel4
                 if resposta.nivel4 != 0:
                     contador = contador+1
@@ -2573,7 +2575,6 @@ class RecomendacaoInterventiva(TemplateView):
                 if resposta.nivel3 != 0:
                     contador = contador+1
             if idade >=20 and idade <=24:
-                print(resposta.nivel4)
                 soma = soma + resposta.nivel4
                 if resposta.nivel4 != 0:
                     contador = contador+1
@@ -2600,7 +2601,6 @@ class RecomendacaoInterventiva(TemplateView):
                 if resposta.nivel3 != 0:
                     contador = contador+1
             if idade >=20 and idade <=24:
-                print(resposta.nivel4)
                 soma = soma + resposta.nivel4
                 if resposta.nivel4 != 0:
                     contador = contador+1
