@@ -2163,7 +2163,7 @@ class RecomendacaoAreaAfetiva(TemplateView):
                 soma = soma + resposta.nivel4
                 if resposta.nivel4 != 0:
                     contador = contador+1
-            if idade >=25 and idade <=32:
+            if idade >=25:
                 soma = soma + resposta.nivel5
                 if resposta.nivel5 != 0:
                     contador = contador+1
@@ -2189,7 +2189,7 @@ class RecomendacaoAreaAfetiva(TemplateView):
                 if resposta.nivel4 != 0:
                     contador = contador+1
                     variancia= variancia + ((resposta.nivel4 - media)*(resposta.nivel4 - media))
-            if idade >=25 and idade <=32:
+            if idade >=25:
                 if resposta.nivel5 != 0:
                     contador = contador+1
                     variancia= variancia + ((resposta.nivel5 - media)*(resposta.nivel5 - media))
@@ -2604,7 +2604,7 @@ class RecomendacaoInterventiva(TemplateView):
                 soma = soma + resposta.nivel4
                 if resposta.nivel4 != 0:
                     contador = contador+1
-            if idade >=25 and idade <=32:
+            if idade >=25:
                 soma = soma + resposta.nivel5
                 if resposta.nivel5 != 0:
                     contador = contador+1
@@ -2631,7 +2631,7 @@ class RecomendacaoInterventiva(TemplateView):
                 if resposta.nivel4 != 0:
                     contador = contador+1
                     variancia= variancia + ((resposta.nivel4 - media)*(resposta.nivel4 - media))
-            if idade >=25 and idade <=32:
+            if idade >=25:
                 if resposta.nivel5 != 0:
                     contador = contador+1
                     variancia= variancia + ((resposta.nivel5 - media)*(resposta.nivel5 - media))
@@ -2655,7 +2655,7 @@ class RecomendacaoInterventiva(TemplateView):
                 if resposta.nivel4 != 0:
                     contador = contador+1
                     variancia= variancia + ((resposta.nivel4 - media)*(resposta.nivel4 - media))
-            if idade >=25 and idade <=32:
+            if idade >=25:
                 if resposta.nivel5 != 0:
                     contador = contador+1
                     variancia= variancia + ((resposta.nivel5 - media)*(resposta.nivel5 - media))
@@ -2679,7 +2679,7 @@ class RecomendacaoInterventiva(TemplateView):
                 if resposta.nivel4 != 0:
                     contador = contador+1
                     variancia= variancia + ((resposta.nivel4 - media)*(resposta.nivel4 - media))
-            if idade >=25 and idade <=32:
+            if idade >=25:
                 if resposta.nivel5 != 0:
                     contador = contador+1
                     variancia= variancia + ((resposta.nivel5 - media)*(resposta.nivel5 - media))
