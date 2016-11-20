@@ -968,45 +968,39 @@ class InserirAnaliseIndiferenciacao(SessionWizardView):
 
 class InserirAnaliseSeletiva(SessionWizardView):
     template_name = "projetofinal/analise/inserir.html"
-    form_list = [PerguntasSeletivas,PerguntasSeletivasCondicionadas]
+    form_list = [PerguntasSeletivas]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-
-        self.form_list.clear()
-        self.form_list.update({'0':PerguntasSeletivas})
-        self.form_list.update({'1':PerguntasSeletivasCondicionadas})
-
-        self.initial_dict['passo']= 19
-        analise_id = self.kwargs['analise_id']
-        self.initial_dict['verificador'] = False
-        relacionamento = Relacionamento.objects.get(anamnesia_id= analise_id,parente= "Paciente")
-        if relacionamento.relacao == "Solteiro(a)" or relacionamento.relacao == "Separado(a)" or relacionamento.relacao == "Divorciado(a)":
-            self.initial_dict['verificador'] = True
-            for key, value in self.form_list.items():
-                if value == PerguntasSeletivasCondicionadas:
-                    self.form_list.pop(key)
-        if Seletiva.objects.filter(anamnesia_id = analise_id).exists():
-            for key, value in self.form_list.items():
-                if value == PerguntasSeletivas:
-                    self.form_list.pop(key)
-
         return super(InserirAnaliseSeletiva, self).dispatch(*args, **kwargs)
+
+    def passos(self):
+        return 19
+
+    def get_form(self, step=None, data=None, files=None):
+        form = super(InserirAnaliseSeletiva, self).get_form(step, data, files)
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+
+        relacionamento = Relacionamento.objects.get(anamnesia_id= analise_id,parente= "Paciente")
+        relacao = relacionamento.relacao
+        form = PerguntasSeletivas(relacao=relacao, data=data)
+        return form
 
     def get_form_step_data(self, form):
         paciente_id = self.kwargs['paciente_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         analise_id =  self.kwargs['analise_id']
 
-        if self.initial_dict['verificador'] == False:
-            self.initial_dict['passo']= 20
         if form.data['inserir_analise_seletiva-current_step'] == '0':
             anamnesia = Anamnesia.objects.get(id=analise_id)
             seletivas = {}
-            if "0-S01" in form.data:
+            if "S01" in form.data:
                 for item in form.data:
-                    if item[0] == "0":
-                        seletivas.update({item.split("-")[1]:form.data[item]})
+                    if item[0] == "S":
+                        seletivas.update({item:form.data[item]})
                 for perguntas in seletivas:
                     if perguntas != "S03" and perguntas != "S04":
                         seletiva = Seletiva()
@@ -1016,6 +1010,7 @@ class InserirAnaliseSeletiva(SessionWizardView):
                         seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=seletivas[perguntas])
                         seletiva.save()
                     else:
+                        seletivas[perguntas] = form.data.getlist(perguntas)
                         for resposta in seletivas[perguntas]:
                             seletiva = Seletiva()
                             seletiva.paciente = paciente
@@ -1024,24 +1019,7 @@ class InserirAnaliseSeletiva(SessionWizardView):
                             seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=resposta)
                             seletiva.save()
 
-        if form.data['inserir_analise_seletiva-current_step'] == '1':
-            anamnesia = Anamnesia.objects.get(id=analise_id)
-            seletivas = {}
-            if "1-S34" in form.data:
-                for item in form.data:
-                    if item[0] == "1":
-                        seletivas.update({item.split("-")[1]:form.data[item]})
-                for perguntas in seletivas:
-                    seletiva = Seletiva()
-                    seletiva.paciente = paciente
-                    seletiva.anamnesia = anamnesia
-                    pergunta = PerguntaSeletiva.objects.get(numero=perguntas)
-                    seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=seletivas[perguntas])
-                    seletiva.save()
         return form.data
-
-    def passos(self):
-        return self.initial_dict['passo']
 
     def done(self, form_list, form_dict, **kwargs):
         paciente_id = self.kwargs['paciente_id']
@@ -1057,7 +1035,7 @@ class InserirAnaliseInterventiva(SessionWizardView):
         return super(InserirAnaliseInterventiva, self).dispatch(*args, **kwargs)
 
     def passos(self):
-        return 21
+        return 20
 
     def get_form_step_data(self, form):
         paciente_id = self.kwargs['paciente_id']

@@ -838,8 +838,12 @@ class GrauDeIndeferenciacao(forms.Form):
 class PerguntasSeletivas(forms.Form):
 
     def __init__(self,*args,**kwargs):
+        relacao = kwargs.pop('relacao',None)
         super(PerguntasSeletivas, self).__init__(*args,**kwargs)
-        pergunta = PerguntaSeletiva.objects.filter(tipo=None)
+        if relacao == "Solteiro(a)" or relacao == "Separado(a)" or relacao == "Divorciado(a)":
+            pergunta = PerguntaSeletiva.objects.filter(tipo=None)
+        else:
+            pergunta = PerguntaSeletiva.objects.filter()
         for item in pergunta:
             if item.numero != "S03" and item.numero != "S04":
                 resposta = RespostaSeletiva.objects.filter(pergunta_id=item.id)
@@ -853,7 +857,7 @@ class PerguntasSeletivas(forms.Form):
                     widget = forms.RadioSelect,
                 )
             else:
-                resposta = RespostaSeletiva.objects.filter(pergunta_id=item.id,tipo= None)
+                resposta = RespostaSeletiva.objects.filter(pergunta_id=item.id)
                 RESPOSTAS = []
                 for resp in resposta:
                     RESPOSTAS.append((resp.letra, resp.resposta))
@@ -862,23 +866,6 @@ class PerguntasSeletivas(forms.Form):
                     choices = RESPOSTAS,
                     error_messages={'required':'Você esqueceu de marcar'},
                     widget = forms.CheckboxSelectMultiple,
-                )
-
-class PerguntasSeletivasCondicionadas(forms.Form):
-
-    def __init__(self,*args,**kwargs):
-        super(PerguntasSeletivasCondicionadas, self).__init__(*args,**kwargs)
-        pergunta = PerguntaSeletiva.objects.filter(tipo ="condicionada")
-        for item in pergunta:
-            resposta = RespostaSeletiva.objects.filter(pergunta_id=item.id,tipo="condicionada")
-            RESPOSTAS = []
-            for resp in resposta:
-                RESPOSTAS.append((resp.letra, resp.resposta))
-            self.fields[item.numero] = forms.ChoiceField(
-                    label= item.numero + ". " + item.pergunta,
-                    choices = RESPOSTAS,
-                    error_messages={'required':'Você esqueceu de marcar'},
-                    widget = forms.RadioSelect,
                 )
 
 class ConsultarPerguntasSeletivas(forms.Form):
