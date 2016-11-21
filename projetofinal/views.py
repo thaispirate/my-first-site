@@ -11,7 +11,7 @@ from .forms import ConsultarAreaAfetiva,CadastroPaciente,CadastroConjuge,Cadastr
     RelacionamentoAvosPaternos, RelacionamentoAvoPaternoAntes, RelacionamentoAvoPaternaAntes, RelacionamentoAvosPaternosDepois,\
     RelacionamentoPais, RelacionamentoPaiAntes,RelacionamentoMaeAntes,RelacionamentoPaisDepois, RelacionamentoPaciente,\
     RelacionamentoPacienteAntes, RelacionamentoConjugeAntes, RelacionamentoPacienteDepois,GrauDeIndeferenciacao,\
-    PerguntasSeletivas,PerguntasSeletivasCondicionadas, ConsultarPerguntasSeletivas,\
+    PerguntasSeletivas, ConsultarPerguntasSeletivas,\
     PerguntasInterventivas, ConsultarPerguntasInterventivas
 
 from .models import Paciente,User,Familia, Psicologo, AreaAfetiva, Anamnesia, PerguntaAreaAfetiva,RespostaAreaAfetiva,\
@@ -105,6 +105,7 @@ class CadastroWizard(SessionWizardView):
         paciente.nascimento = form_data[0]['nascimento']
         paciente.sexo = form_data[0]['sexo']
         paciente.escolaridade = form_data[0]['escolaridade']
+        paciente.psicologo = form_data[0]['psicologo']
         paciente.save()
         familia = Familia()
         familia.usuario = paciente
@@ -239,6 +240,7 @@ class EditarCadastro(SessionWizardView):
         paciente.nascimento = form_data[0]['nascimento']
         paciente.sexo = form_data[0]['sexo']
         paciente.escolaridade = form_data[0]['escolaridade']
+        paciente.psicologo = form_data[0]['psicologo']
         paciente.save()
         familia = Familia.objects.get(usuario_id=paciente.id,parente="conjuge")
         familia.nome = form_data[1]['nomeConjuge']
@@ -2717,6 +2719,7 @@ def CadastroPsicologoRealizado(request):
 
 @login_required()
 def PsicologoHome(request):
+
     paciente = Paciente.objects.all()
     return render(request, 'projetofinal/psicologo/home.html', {'pacientes':paciente})
 

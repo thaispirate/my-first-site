@@ -1,6 +1,6 @@
 import random
 from django import forms
-from .models import User,Paciente, Familia, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva,\
+from .models import User,Paciente, Psicologo, Familia, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva,\
     Anamnesia, GrauIndiferenciacao, PerguntaSeletiva, RespostaSeletiva,Seletiva,\
     PerguntaInterventiva, RespostaInterventiva, Interventiva
 from django.contrib.auth.forms import UserCreationForm
@@ -30,7 +30,7 @@ class UserCreationForm(forms.ModelForm):
     password.
     """
     error_messages = {
-        'duplicate_username': _("Já existe um usuário com este nome."),
+        'duplicate_username': _("Já existe um usuário com este email."),
         'password_mismatch': _("As senhas precisam ser iguais"),
     }
     username = forms.EmailField(label=_("Email"),
@@ -129,6 +129,12 @@ class CadastroPaciente(UserCreationForm):
         ),
         widget = forms.RadioSelect,
         required=False
+
+    )
+
+    psicologo = forms.ModelChoiceField(
+        label="Psicólogo",
+        queryset = Psicologo.objects.all()
 
     )
 
@@ -376,6 +382,12 @@ class EdicaoPaciente(forms.Form):
             ),
             widget = forms.RadioSelect,
             initial = paciente.escolaridade,
+            required=False
+        )
+        self.fields['psicologo'] = forms.ModelChoiceField(
+            label= "Psicólogo",
+            queryset= Psicologo.objects.all(),
+            initial = paciente.psicologo,
             required=False
         )
 

@@ -50,10 +50,12 @@
                 <th>Paciente</th>
             </tr>
             {% for paciente in pacientes %}
+              {% if paciente.psicologo.nome == user.first_name %}
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td><a href="/psicologo/paciente/{{ paciente.usuario_id }}">{{paciente.nome}}</a></td>
             </tr>
+              {%endif%}
             {% endfor %}
           </table>
           </div>

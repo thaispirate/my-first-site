@@ -7,6 +7,14 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class Psicologo(models.Model):
+    usuario = models.OneToOneField(User)
+    email = models.EmailField()
+    nome = models.CharField(max_length=50,null=True)
+
+    def __str__(self):
+        return self.usuario.first_name
+
 class Paciente(models.Model):
     usuario = models.OneToOneField(User)
     email = models.EmailField()
@@ -14,6 +22,7 @@ class Paciente(models.Model):
     nascimento = models.DateField(null=True)
     sexo = models.CharField(max_length=10,null=True)
     escolaridade = models.CharField(max_length=15, null=True,blank=True)
+    psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return self.usuario.first_name
@@ -41,14 +50,6 @@ class Familia(models.Model):
     def __str__(self):
         return self.usuario.nome + "-" + self.parente
 
-
-class Psicologo(models.Model):
-    usuario = models.OneToOneField(User)
-    email = models.EmailField()
-    nome = models.CharField(max_length=50,null=True)
-
-    def __str__(self):
-        return self.usuario.first_name
 
 class PerguntaAreaAfetiva(models.Model):
     numero = models.CharField(max_length=10,null=True)
