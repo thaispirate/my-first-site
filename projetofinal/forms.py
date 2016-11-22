@@ -134,7 +134,8 @@ class CadastroPaciente(UserCreationForm):
 
     psicologo = forms.ModelChoiceField(
         label="Psicólogo",
-        queryset = Psicologo.objects.all()
+        queryset = Psicologo.objects.all(),
+        required=False
 
     )
 

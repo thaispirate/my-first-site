@@ -530,16 +530,16 @@ class InserirAnalise(SessionWizardView):
             socioCultural=(A['08']+A['10']+A['20']+A['22']+A['23'])/5
 
             lista = [(organico,"a"),(produtividade, "b"),(afetivoRelacional,"c"),(socioCultural,"d"),(espiritual,"e")]
-            maximo = max(lista, key=lambda x: x[0])
-            if maximo[0] == afetivoRelacional:
+            minimo = min(lista, key=lambda x: x[0])
+            if minimo[0] == afetivoRelacional:
                 anamnesia.areaAfetiva = "AfetivoRelacional"
-            if maximo[0] == produtividade:
+            if minimo[0] == produtividade:
                 anamnesia.areaAfetiva = "Produtividade"
-            if maximo[0] == organico:
+            if minimo[0] == organico:
                 anamnesia.areaAfetiva = "Organico"
-            if maximo[0] ==  espiritual:
+            if minimo[0] ==  espiritual:
                 anamnesia.areaAfetiva = "Espiritual"
-            if maximo[0] == socioCultural:
+            if minimo[0] == socioCultural:
                 anamnesia.areaAfetiva = "SocioCultural"
 
 
@@ -2066,7 +2066,7 @@ class RecomendacaoAreaAfetiva(TemplateView):
         if socioCultural >= 0 and socioCultural < 1.5:
             SOCIOCULTURAL = Recomendacao.objects.get(nome="sociocultural",intervalo="Mínimo")
 
-        lista = [(espiritual,"a"),(socioCultural,"b"),(produtividade, "c"),(organico,"d")]
+        lista = [(organico,"a"),(produtividade,"b"),(socioCultural, "c"),(espiritual,"d")]
         minimo = min(lista, key=lambda x: x[0])
         if minimo[0] == produtividade:
             area = PRODUTIVIDADE.texto
