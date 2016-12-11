@@ -1,0 +1,85 @@
+{% extends 'projetofinal/analise/recomendacao/base.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+           <div class="panel panel-info">
+            <div class="panel-heading">Recomendações</div>
+                <div class="panel-body">
+
+                <p>{{view.anamnesia.inicio|date:'d-m-Y H:i' }}</p>
+
+
+              <div id="container" style="min-width: 100px; height: 400px; margin: 0 auto"></div>
+               <hr class="featurette-divider">
+              {{ view.textoAreaAfetiva }}
+              <hr class="featurette-divider">
+              {% if view.indiferenciacao %}
+                    <div id="radar" style="min-width: 100px;min-height: 100px;height: 500px; margin: 0 auto"></div>
+                    <hr class="featurette-divider">
+                    {{ view.textoIndiferenciacao }}
+               {%endif%}
+           </div>
+           </div>
+
+
+
+
+<script text="text/javascript">
+dados = {{ view.graficoAreaAfetiva|safe }};
+dadosRadar = {{ view.graficoIndiferenciacao|safe }};
+
+paciente = {{ view.paciente|safe }};
+
+var radar = {
+            colors: ["#7cb5ec","#f7a35c","#ff095c","#FFDAB9","#FF0000","#AB82FF","#ADFF2F","#FF69B4"],
+            chart: {
+                polar: true,
+                type: 'line',
+                renderTo:'radar'
+            },
+
+            title: {
+                text: "Grau de Indiferenciação<br>"+paciente['paciente'],
+            },
+
+            xAxis: {
+                categories: ['Adaptativo', 'Reativo', 'Criativo'],
+                tickmarkPlacement: 'on',
+                lineWidth: 0
+            },
+
+            yAxis: {
+                gridLineInterpolation: 'polygon',
+                lineWidth: 0,
+                min: 0
+            },
+
+            tooltip: {
+                shared: true,
+                pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+            },
+
+            legend: {
+                align: 'bottom',
+                layout: 'vertical'
+            },
+
+            series:[]
+
+            }
+
+        var chart2 = new Highcharts.Chart(radar);
+        for(var item in dados){
+            chart2.addSeries({
+                name:item,
+                data:dados[item],
+                pointPlacement: 'on'
+            });
+        }
+</script>
+
+{% endblock %}
+
+

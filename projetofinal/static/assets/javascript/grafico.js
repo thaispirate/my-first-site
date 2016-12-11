@@ -49,7 +49,10 @@ $(document).ready(function () {
                 data:dados[item]
             });
         }
-        var radar = {
+
+        // split the data set into ohlc and volume
+
+   var radar = {
             colors: ["#7cb5ec","#f7a35c","#ff095c","#FFDAB9","#FF0000","#AB82FF","#ADFF2F","#FF69B4"],
             chart: {
                 polar: true,
@@ -98,3 +101,4 @@ $(document).ready(function () {
     });
 
 });
+

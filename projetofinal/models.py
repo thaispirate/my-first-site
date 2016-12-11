@@ -39,7 +39,7 @@ class Familia(models.Model):
         ("conjuge","Cônjuge"),
 
     )
-    usuario = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
     parente = models.CharField(max_length=10,choices=parentes,null=True)
     nome = models.CharField(max_length=50,null=True,blank=True)
     nascimento = models.DateField(null=True,blank=True)

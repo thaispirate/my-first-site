@@ -8,7 +8,7 @@ from .forms import CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,Cada
 from .views import CadastroWizard, EditarCadastro, PsicologoPaciente, CadastroPsicologoWizard,\
     InserirAnalise,InserirAnaliseRelacionamento,InserirAnaliseIndiferenciacao,InserirAnaliseSeletiva,InserirAnaliseInterventiva,\
     ConsultarAnalise, ConsultandoAnalise,AnalisePaciente, ConsultandoAnalisePaciente, GenogramaPaciente, \
-    ProsseguirAnalise, ProsseguindoAnalise,Recomendacoes,RecomendacaoAreaAfetiva, RecomendacaoIndiferenciacao,\
+    ProsseguirAnalise, ProsseguindoAnalise,Recomendacoes,ConsultandoRecomendacoes, RecomendacaoAreaAfetiva, RecomendacaoIndiferenciacao,\
     RecomendacaoInterventiva, ResumoAreaAfetiva, ResumoRelacionamento, ResumoSeletiva, ResumoInterventiva
 
 handler404="views.erro404"
@@ -54,6 +54,7 @@ urlpatterns = [
     url(r'^analise/prosseguir/(?P<paciente_id>\d+)/remover$', views.RemoverAnalise, name="remover"),
     url(r'^analise/consultar/(?P<paciente_id>\d+)/remover$', views.RemoverAnalise, name="remover"),
     url(r'^analise/recomendacao/(?P<paciente_id>\d+)/$', Recomendacoes.as_view()),
+    url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/$', ConsultandoRecomendacoes.as_view()),
     url(r'^analise/recomendacao/(?P<paciente_id>\d+)/remover$', views.RemoverAnalise, name="remover"),
     url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/areaafetiva$', RecomendacaoAreaAfetiva.as_view(template_name="projetofinal/analise/recomendacao/areaAfetiva.html")),
     url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/indiferenciacao$', RecomendacaoIndiferenciacao.as_view(template_name="projetofinal/analise/recomendacao/indiferenciacao.html")),

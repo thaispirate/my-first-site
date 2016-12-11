@@ -1955,6 +1955,486 @@ class Recomendacoes(TemplateView):
         paciente = simplejson.dumps(dados)
         return paciente
 
+class ConsultandoRecomendacoes(TemplateView):
+    template_name= "projetofinal/analise/recomendacao/consultando.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ConsultandoRecomendacoes, self).dispatch(*args, **kwargs)
+
+    def anamnesia(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+        return anamnesia
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = { 'paciente': paciente.nome
+        }
+
+        paciente = simplejson.dumps(dados)
+        return paciente
+
+    def graficoAreaAfetiva(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = {
+        }
+        anamnesia = Anamnesia.objects.filter(id=analise_id)
+        for analise in anamnesia:
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id).order_by('resposta_id')
+            A=[0]
+            for respostas in area:
+                resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
+                A.append(resposta.valor)
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/15)
+            produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)
+            organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
+            espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
+            socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
+
+
+        grafico = simplejson.dumps(dados)
+        return grafico
+
+    def textoAreaAfetiva(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = {
+        }
+        anamnesia = Anamnesia.objects.filter(id=analise_id)
+        for analise in anamnesia:
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id).order_by('resposta_id')
+            A=[0]
+            for respostas in area:
+                resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
+                A.append(resposta.valor)
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/15)
+            produtividade=((A[5]+A[16]+A[20]+A[22]+A[23])/5)
+            organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
+            espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
+            socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
+
+        texto=""
+        if afetivoRelacional >= 3 and afetivoRelacional <= 4:
+            complementox = Recomendacao.objects.get(nome="complementox",intervalo="Máximo")
+            complementoy = Recomendacao.objects.get(nome="complementoy",intervalo="Máximo")
+        if afetivoRelacional >= 1.5 and afetivoRelacional < 3:
+            complementox = Recomendacao.objects.get(nome="complementox",intervalo="Médio")
+            complementoy = Recomendacao.objects.get(nome="complementoy",intervalo="Médio")
+        if afetivoRelacional >= 0 and afetivoRelacional < 1.5:
+            complementox = Recomendacao.objects.get(nome="complementox",intervalo="Mínimo")
+            complementoy = Recomendacao.objects.get(nome="complementoy",intervalo="Mínimo")
+        if produtividade >= 3 and produtividade <= 4:
+            PRODUTIVIDADE = Recomendacao.objects.get(nome="produtividade",intervalo="Máximo")
+        if produtividade >= 1.5 and produtividade < 3:
+            PRODUTIVIDADE = Recomendacao.objects.get(nome="produtividade",intervalo="Médio")
+        if produtividade >= 0 and produtividade < 1.5:
+            PRODUTIVIDADE = Recomendacao.objects.get(nome="produtividade",intervalo="Mínimo")
+        if organico >= 3 and organico <= 4:
+            ORGANICO = Recomendacao.objects.get(nome="organico",intervalo="Máximo")
+        if organico >= 1.5 and organico < 3:
+            ORGANICO = Recomendacao.objects.get(nome="organico",intervalo="Médio")
+        if organico >= 0 and organico < 1.5:
+            ORGANICO = Recomendacao.objects.get(nome="organico",intervalo="Mínimo")
+        if espiritual >= 3 and espiritual <= 4:
+            ESPIRITUAL = Recomendacao.objects.get(nome="espiritual",intervalo="Máximo")
+        if espiritual >= 1.5 and espiritual < 3:
+            ESPIRITUAL = Recomendacao.objects.get(nome="espiritual",intervalo="Médio")
+        if espiritual >= 0 and espiritual < 1.5:
+            ESPIRITUAL = Recomendacao.objects.get(nome="espiritual",intervalo="Mínimo")
+        if socioCultural >= 3 and socioCultural <= 4:
+            SOCIOCULTURAL = Recomendacao.objects.get(nome="sociocultural",intervalo="Máximo")
+        if socioCultural >= 1.5 and socioCultural < 3:
+            SOCIOCULTURAL = Recomendacao.objects.get(nome="sociocultural",intervalo="Médio")
+        if socioCultural >= 0 and socioCultural < 1.5:
+            SOCIOCULTURAL = Recomendacao.objects.get(nome="sociocultural",intervalo="Mínimo")
+
+        lista = [(organico,"a"),(produtividade,"b"),(socioCultural, "c"),(espiritual,"d")]
+        minimo = min(lista, key=lambda x: x[0])
+        if minimo[0] == produtividade:
+            area = PRODUTIVIDADE.texto
+        if minimo[0] == organico:
+            area = ORGANICO.texto
+        if minimo[0] ==  espiritual:
+            area = ESPIRITUAL.texto
+        if minimo[0] == socioCultural:
+            area = SOCIOCULTURAL.texto
+
+        parte1 = Recomendacao.objects.get(nome="afetivorelacional",intervalo="parte1")
+        parte2 = Recomendacao.objects.get(nome="afetivorelacional",intervalo="parte2")
+        parte3 = Recomendacao.objects.get(nome="afetivorelacional",intervalo="parte3")
+        AFETIVORELACIONAL= parte1.texto+ complementox.texto+parte2.texto+complementoy.texto+parte3.texto
+        texto = AFETIVORELACIONAL + area
+
+        return texto
+
+    def indiferenciacao(self):
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise_id)
+
+        return indiferenciacao
+
+    def media(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        soma=0.0
+        contador=0.0
+        desvio=0.0
+        variancia=0.0
+        areaafetiva = AreaAfetiva.objects.filter(paciente_id=paciente.id,anamnesia_id=analise_id)
+
+        for item in areaafetiva:
+            resposta = RespostaAreaAfetiva.objects.get(id=item.resposta_id)
+
+            if idade >=0 and idade <=7:
+                soma = soma + resposta.nivel1
+                if resposta.nivel1 != 0:
+                    contador = contador+1
+            if idade >=8 and idade <=12:
+                soma = soma + resposta.nivel2
+                if resposta.nivel2 != 0:
+                    contador = contador+1
+            if idade >=13 and idade <=19:
+                soma = soma + resposta.nivel3
+                if resposta.nivel3 != 0:
+                    contador = contador+1
+            if idade >=20 and idade <=24:
+                soma = soma + resposta.nivel4
+                if resposta.nivel4 != 0:
+                    contador = contador+1
+            if idade >=25:
+                soma = soma + resposta.nivel5
+                if resposta.nivel5 != 0:
+                    contador = contador+1
+
+        media = soma/contador
+        contador=0
+        for item in areaafetiva:
+            resposta = RespostaAreaAfetiva.objects.get(id=item.resposta_id)
+
+            if idade >=0 and idade <=7:
+                if resposta.nivel1 != 0:
+                    contador = contador+1
+                    variancia= variancia + ((resposta.nivel1 - media)*(resposta.nivel1 - media))
+            if idade >=8 and idade <=12:
+                if resposta.nivel2 != 0:
+                    contador = contador+1
+                    variancia= variancia + ((resposta.nivel2 - media)*(resposta.nivel2 - media))
+            if idade >=13 and idade <=19:
+                if resposta.nivel3 != 0:
+                    contador = contador+1
+                    variancia= variancia + ((resposta.nivel3 - media)*(resposta.nivel3 - media))
+            if idade >=20 and idade <=24:
+                if resposta.nivel4 != 0:
+                    contador = contador+1
+                    variancia= variancia + ((resposta.nivel4 - media)*(resposta.nivel4 - media))
+            if idade >=25:
+                if resposta.nivel5 != 0:
+                    contador = contador+1
+                    variancia= variancia + ((resposta.nivel5 - media)*(resposta.nivel5 - media))
+
+        desvio = math.sqrt(variancia/(contador-1))
+        dict={
+            "media":media,
+            "desvio":desvio
+        }
+        return dict
+
+    def graficoIndiferenciacao(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = {
+        }
+        anamnesia = Anamnesia.objects.filter(id=analise_id)
+        criativo=0
+        reativo=0
+        adaptativo=0
+        for analise in anamnesia:
+            indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
+            for opcao in indiferenciacao:
+                resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
+                if resposta.padrao == "adaptativo":
+                    adaptativo=adaptativo+1
+                if resposta.padrao == "reativo":
+                    reativo=reativo+1
+                if resposta.padrao == "criativo":
+                    criativo=criativo+1
+
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
+            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        adaptativoMin=0
+        adaptativoMax=0
+        criativoMin=0
+        criativoMax=0
+        reativoMin=0
+        reativoMax=0
+
+        if idade >=0 and idade <=3:
+            adaptativoMin=14
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=2
+            reativoMin=0
+            reativoMax=2
+        if idade >=4 and idade <=7:
+            adaptativoMin=12
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=3
+            reativoMin=2
+            reativoMax=6
+        if idade >=8 and idade <=12:
+            adaptativoMin=8
+            adaptativoMax=13
+            criativoMin=2
+            criativoMax=5
+            reativoMin=6
+            reativoMax=10
+        if idade >=13 and idade <=19:
+            adaptativoMin=4
+            adaptativoMax=8
+            criativoMin=6
+            criativoMax=8
+            reativoMin=10
+            reativoMax=15
+        if idade >=20 and idade <=24:
+            adaptativoMin=1
+            adaptativoMax=3
+            criativoMin=9
+            criativoMax=11
+            reativoMin=8
+            reativoMax=12
+        if idade >=25 and idade <=32:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=11
+            criativoMax=15
+            reativoMin=3
+            reativoMax=7
+        if idade >=33:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=16
+            criativoMax=19
+            reativoMin=0
+            reativoMax=2
+
+        dados['Limite Inferior'] = [adaptativoMin]
+        dados['Limite Inferior'].append(reativoMin)
+        dados['Limite Inferior'].append(criativoMin)
+        dados['Limite Superior'] = [adaptativoMax]
+        dados['Limite Superior'].append(reativoMax)
+        dados['Limite Superior'].append(criativoMax)
+
+        grafico = simplejson.dumps(dados)
+        return grafico
+
+    def textoIndiferenciacao(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(id=analise_id)
+
+        criativo=0
+        reativo=0
+        adaptativo=0
+        for analise in anamnesia:
+            indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
+            for opcao in indiferenciacao:
+                resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
+                if resposta.padrao == "adaptativo":
+                    adaptativo=adaptativo+1
+                if resposta.padrao == "reativo":
+                    reativo=reativo+1
+                if resposta.padrao == "criativo":
+                    criativo=criativo+1
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        adaptativoMin=0
+        adaptativoMax=0
+        criativoMin=0
+        criativoMax=0
+        reativoMin=0
+        reativoMax=0
+
+        if idade >=0 and idade <=3:
+            adaptativoMin=14
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=2
+            reativoMin=0
+            reativoMax=2
+        if idade >=4 and idade <=7:
+            adaptativoMin=12
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=3
+            reativoMin=2
+            reativoMax=6
+        if idade >=8 and idade <=12:
+            adaptativoMin=8
+            adaptativoMax=13
+            criativoMin=2
+            criativoMax=5
+            reativoMin=6
+            reativoMax=10
+        if idade >=13 and idade <=19:
+            adaptativoMin=4
+            adaptativoMax=8
+            criativoMin=6
+            criativoMax=8
+            reativoMin=10
+            reativoMax=15
+        if idade >=20 and idade <=24:
+            adaptativoMin=1
+            adaptativoMax=3
+            criativoMin=9
+            criativoMax=11
+            reativoMin=8
+            reativoMax=12
+        if idade >=25 and idade <=32:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=11
+            criativoMax=15
+            reativoMin=3
+            reativoMax=7
+        if idade >=33:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=16
+            criativoMax=19
+            reativoMin=0
+            reativoMax=2
+
+        tudo_dentro=""
+        abaixo_adaptativo=""
+        acima_adaptativo=""
+        abaixo_criativo=""
+        acima_criativo=""
+        abaixo_reativo=""
+        acima_reativo=""
+        texto=""
+        if adaptativo>adaptativoMin and adaptativo<adaptativoMax and\
+                        reativo>reativoMin and reativo<reativoMax and\
+                        criativo>criativoMin and criativo<criativoMax:
+            tudo_dentro = Recomendacao.objects.get(nome='tudo_dentro')
+            texto= tudo_dentro.texto
+        if adaptativo<adaptativoMin:
+            abaixo_adaptativo = Recomendacao.objects.get(nome='intervalo_adaptativo',intervalo="abaixo")
+            texto=texto+abaixo_adaptativo.texto
+        if adaptativo>adaptativoMax:
+            acima_adaptativo = Recomendacao.objects.get(nome='intervalo_adaptativo',intervalo="acima")
+            texto=texto+acima_adaptativo.texto
+        if reativo<reativoMin:
+            abaixo_reativo = Recomendacao.objects.get(nome='intervalo_reativo',intervalo="abaixo")
+            texto=texto+abaixo_reativo.texto
+        if reativo>reativoMax:
+            acima_reativo = Recomendacao.objects.get(nome='intervalo_reativo',intervalo="acima")
+            texto=texto+acima_reativo.texto
+        if criativo<criativoMin:
+            abaixo_criativo = Recomendacao.objects.get(nome='intervalo_criativo',intervalo="abaixo")
+            texto=texto+abaixo_criativo.texto
+        if criativo>criativoMax:
+            acima_criativo = Recomendacao.objects.get(nome='intervalo_criativo',intervalo="acima")
+            texto=texto+acima_criativo.texto
+
+        return texto
+
+    def interventiva(self):
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        interventiva = Interventiva.objects.filter(anamnesia_id=analise_id)
+
+        return interventiva
+
+
 class RecomendacaoAreaAfetiva(TemplateView):
 
     @method_decorator(login_required)
@@ -2466,6 +2946,263 @@ def pdf_view(request, paciente_id,analise_id):
     analise_id=analise_id
     return FileResponse(open("/home/thaispirate/genograma-"+paciente_id+"-"+analise_id+".pdf", 'rb'), content_type='application/pdf')
 
+
+class RecomendacaoSeletiva(TemplateView):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(RecomendacaoSeletiva, self).dispatch(*args, **kwargs)
+
+    def anamnesia(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+        return anamnesia
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        dados = { 'paciente': paciente.nome
+        }
+
+        paciente = simplejson.dumps(dados)
+        return paciente
+
+    def texto(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(id=analise_id)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        relacionamento=""
+        diferenciacao1=""
+        diferenciacao2=""
+        autonomia1=""
+        autonomia2=""
+        assertividade1=""
+        assertividade2=""
+        autoEstima=""
+
+        perguntasrelacionamento=["S34","S35","S36"]
+        perguntasdiferenciacao1=["S05","S06","S15","S16"]
+        perguntasdiferenciacao2=["S24","S25"]
+        perguntasautonomia1=["S01","S07","S08","S09"]
+        perguntasautonomia2=["S10","S11","S12","S13","S28"]
+        perguntasassertiva1=["S14","S18","S20","S21","S33"]
+        perguntasassertiva2=["S30","S31","S32"]
+        perguntasautoEstima=["S02","S17","S19","S22","S23","S26","S27","S29"]
+
+        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
+        for item in seletiva:
+            resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+            pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
+
+            if pergunta.numero in perguntasrelacionamento:
+                if idade >=0 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel1 < 3:
+                            relacionamento="relacionamento"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel2 < 3:
+                            relacionamento="relacionamento"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel3 < 3:
+                            relacionamento="relacionamento"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel4 < 3:
+                            relacionamento="relacionamento"
+                if idade >=25:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel5 < 3:
+                            relacionamento="relacionamento"
+
+            if pergunta.numero in perguntasdiferenciacao1:
+                if idade >=0 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel1 < 3:
+                            diferenciacao1="diferenciacao1"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel2 < 3:
+                            diferenciacao1="diferenciacao1"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel3 < 3:
+                            diferenciacao1="diferenciacao1"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel4 < 3:
+                            diferenciacao1="diferenciacao1"
+                if idade >=25:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel5 < 3:
+                            diferenciacao1="diferenciacao1"
+
+            if pergunta.numero in perguntasdiferenciacao2:
+                if idade >=0 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel1 < 3:
+                            diferenciacao2="diferenciacao2"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel2 < 3:
+                            diferenciacao2="diferenciacao2"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel3 < 3:
+                            diferenciacao2="diferenciacao2"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel4 < 3:
+                            diferenciacao2="diferenciacao2"
+                if idade >=25:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel5 < 3:
+                            diferenciacao2="diferenciacao2"
+
+            if pergunta.numero in perguntasautonomia1:
+                if idade >=0 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel1 < 3:
+                            autonomia1="autonomia1"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel2 < 3:
+                            autonomia1="autonomia1"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel3 < 3:
+                            autonomia1="autonomia1"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel4 < 3:
+                            autonomia1="autonomia1"
+                if idade >=25:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel5 < 3:
+                            autonomia1="autonomia1"
+
+            if pergunta.numero in perguntasautonomia2:
+                if idade >=0 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel1 < 3:
+                            autonomia2="autonomia2"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel2 < 3:
+                            autonomia2="autonomia2"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel3 < 3:
+                            autonomia2="autonomia2"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel4 < 3:
+                            autonomia2="autonomia2"
+                if idade >=25:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel5 < 3:
+                            autonomia2="autonomia2"
+
+            if pergunta.numero in perguntasassertiva1:
+                if idade >=0 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel1 < 3:
+                            assertividade1="assertividade1"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel2 < 3:
+                            assertividade1="assertividade1"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel3 < 3:
+                            assertividade1="assertividade1"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel4 < 3:
+                            assertividade1="assertividade1"
+                if idade >=25:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel5 < 3:
+                            assertividade1="assertividade1"
+
+            if pergunta.numero in perguntasassertiva2:
+                if idade >=0 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel1 < 3:
+                            assertividade2="assertividade2"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel2 < 3:
+                            assertividade2="assertividade2"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel3 < 3:
+                            assertividade2="assertividade2"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel4 < 3:
+                            assertividade2="assertividade2"
+                if idade >=25:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel5 < 3:
+                            assertividade2="assertividade2"
+
+            if pergunta.numero in perguntasautoEstima:
+                if idade >=0 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel1 < 3:
+                            autoEstima="autoEstima"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel2 < 3:
+                            autoEstima="autoEstima"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel3 < 3:
+                            autoEstima="autoEstima"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel4 < 3:
+                            autoEstima="autoEstima"
+                if idade >=25:
+                    if resposta.nivel1 != 0:
+                        if resposta.nivel5 < 3:
+                            autoEstima="autoEstima"
+
+        texto = relacionamento + diferenciacao1 + diferenciacao2 + autonomia1 + autonomia2 + assertividade1 + assertividade2 + autoEstima
+
+
+        return texto
+
 class RecomendacaoInterventiva(TemplateView):
 
     @method_decorator(login_required)
@@ -2532,7 +3269,7 @@ class RecomendacaoInterventiva(TemplateView):
                 soma = soma + resposta.nivel4
                 if resposta.nivel4 != 0:
                     contador = contador+1
-            if idade >=25 and idade <=32:
+            if idade >=25:
                 soma = soma + resposta.nivel5
                 if resposta.nivel5 != 0:
                     contador = contador+1
@@ -2558,7 +3295,7 @@ class RecomendacaoInterventiva(TemplateView):
                 soma = soma + resposta.nivel4
                 if resposta.nivel4 != 0:
                     contador = contador+1
-            if idade >=25 and idade <=32:
+            if idade >=25:
                 soma = soma + resposta.nivel5
                 if resposta.nivel5 != 0:
                     contador = contador+1
