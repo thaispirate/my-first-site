@@ -836,12 +836,14 @@ class RelacionamentoPacienteDepois(forms.Form):
 
 class GrauDeIndeferenciacao(forms.Form):
 
+    def __init__(self,*args,**kwargs):
+        super(GrauDeIndeferenciacao, self).__init__(*args,**kwargs)
         resposta = GrauIndiferenciacao.objects.all()
         RESPOSTAS = []
         for item in resposta:
             RESPOSTAS.append((item.id,item.resposta))
         random.shuffle(RESPOSTAS)
-        grauIndiferenciacao = forms.MultipleChoiceField(
+        self.fields['grauIndiferenciacao'] = forms.MultipleChoiceField(
             label= "Assinale as características que coincidem com o seu comportamento.",
             choices = RESPOSTAS,
             error_messages={'required':'Você esqueceu de marcar'},
