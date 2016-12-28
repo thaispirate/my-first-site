@@ -1,4 +1,4 @@
-{% extends 'projetofinal/analise/recomendacao/base.html' %}
+{% extends 'projetofinal/analise/base.html' %}
 {% load crispy_forms_tags %}
 {% load staticfiles %}
 {% load i18n %}
@@ -9,38 +9,21 @@
                 <div class="panel-body">
 
                 <p>{{view.anamnesia.inicio|date:'d-m-Y H:i' }}</p>
-
-
-              <div id="container" style="min-width: 100px; height: 400px; margin: 0 auto"></div>
-               <hr class="featurette-divider">
-              {{ view.textoAreaAfetiva }}
               <hr class="featurette-divider">
-              {% if view.indiferenciacao %}
-                    <a href="/pdf/{{user.id}}/{{view.anamnesia.id}}">Genograma</a>
-                    <div id="radar" style="min-width: 100px;min-height: 100px;height: 500px; margin: 0 auto"></div>
-                    <hr class="featurette-divider">
-                    {{ view.textoIndiferenciacao }}
-               {%endif%}
-               {%if view.seletiva%}
-                    <hr class="featurette-divider">
-                        <h3>Seletiva</h3>
-                    {% for key,value in view.textoSeletiva.items %}
-                    <br>
-                        <h5>{{ key }}</h5>
-                        <h5>{{value}}</h5>
-                    {%endfor%}
-               {%endif%}
+              {{ view.texto }}
+              <hr class="featurette-divider">
+             <div class="col-md-12 text-center">
+              <a type="submit" href="/analise/resumo/{{user.id}}/{{view.anamnesia.id}}/interventiva" class="btn btn-default">Continuar atendimento</a>
+             </div>
            </div>
            </div>
-
 
 
 
 <script text="text/javascript">
-dados = {{ view.graficoAreaAfetiva|safe }};
-dadosRadar = {{ view.graficoIndiferenciacao|safe }};
-
+dados = {{ view.grafico|safe }};
 paciente = {{ view.paciente|safe }};
+
 
 var radar = {
             colors: ["#7cb5ec","#f7a35c","#ff095c","#FFDAB9","#FF0000","#AB82FF","#ADFF2F","#FF69B4"],
@@ -91,5 +74,4 @@ var radar = {
 </script>
 
 {% endblock %}
-
 

@@ -166,11 +166,13 @@ class RespostaSeletiva(models.Model):
     letra = models.CharField(max_length=1,null=True)
     resposta = models.TextField(null=True)
     tipo = models.CharField(max_length=10,null=True,blank=True)
+    nivel0 = models.FloatField(null=True,blank=True)
     nivel1 = models.FloatField(null=True,blank=True)
     nivel2 = models.FloatField(null=True,blank=True)
     nivel3 = models.FloatField(null=True,blank=True)
     nivel4 = models.FloatField(null=True,blank=True)
     nivel5 = models.FloatField(null=True,blank=True)
+    nivel6 = models.FloatField(null=True,blank=True)
 
     def __str__(self):
         return self.pergunta.numero+"-"+self.letra
@@ -200,6 +202,7 @@ class RespostaInterventiva(models.Model):
     nivel3 = models.FloatField(null=True,blank=True)
     nivel4 = models.FloatField(null=True,blank=True)
     nivel5 = models.FloatField(null=True,blank=True)
+    nivel6 = models.FloatField(null=True,blank=True)
 
     def __str__(self):
         return self.pergunta.numero+"-"+self.letra

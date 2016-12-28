@@ -196,37 +196,37 @@ class EditarCadastro(SessionWizardView):
             form = EdicaoPaciente(paciente_id=paciente_id, data=data)
             return form
         if step == "1":
-            familia = Familia.objects.get(usuario_id=paciente.id,parente="conjuge")
+            familia = Familia.objects.get(paciente_id=paciente.id,parente="conjuge")
             form = CadastroConjuge(data= data,initial = { "nomeConjuge":familia.nome,"nascimentoConjuge":familia.nascimento,
                                              "sexoConjuge":familia.sexo,"escolaridadeConjuge":familia.escolaridade})
             return form
         if step == "2":
-            familia = Familia.objects.get(usuario_id=paciente.id,parente="pai")
+            familia = Familia.objects.get(paciente_id=paciente.id,parente="pai")
             form = CadastroPai(data=data,initial = { "nomePai":familia.nome,"nascimentoPai":familia.nascimento,
                                              "falecimentoPai":familia.falecimento,"escolaridadePai":familia.escolaridade})
             return form
         if step == "3":
-            familia = Familia.objects.get(usuario_id=paciente.id,parente="mae")
+            familia = Familia.objects.get(paciente_id=paciente.id,parente="mae")
             form = CadastroMae(data=data,initial = { "nomeMae":familia.nome,"nascimentoMae":familia.nascimento,
                                              "falecimentoMae":familia.falecimento,"escolaridadeMae":familia.escolaridade})
             return form
         if step == "4":
-            familia = Familia.objects.get(usuario_id=paciente.id,parente="avoPaterno")
+            familia = Familia.objects.get(paciente_id=paciente.id,parente="avoPaterno")
             form = CadastroAvoPaterno(data=data,initial = { "nomeAvoPaterno":familia.nome,"nascimentoAvoPaterno":familia.nascimento,
                                              "falecimentoAvoPaterno":familia.falecimento,"escolaridadeAvoPaterno":familia.escolaridade})
             return form
         if step == "5":
-            familia = Familia.objects.get(usuario_id=paciente.id,parente="avoPaterna")
+            familia = Familia.objects.get(paciente_id=paciente.id,parente="avoPaterna")
             form = CadastroAvoPaterna(data=data,initial = { "nomeAvoPaterna":familia.nome,"nascimentoAvoPaterna":familia.nascimento,
                                              "falecimentoAvoPaterna":familia.falecimento,"escolaridadeAvoPaterna":familia.escolaridade})
             return form
         if step == "6":
-            familia = Familia.objects.get(usuario_id=paciente.id,parente="avoMaterno")
+            familia = Familia.objects.get(paciente_id=paciente.id,parente="avoMaterno")
             form = CadastroAvoMaterno(data=data,initial = { "nomeAvoMaterno":familia.nome,"nascimentoAvoMaterno":familia.nascimento,
                                              "falecimentoAvoMaterno":familia.falecimento,"escolaridadeAvoMaterno":familia.escolaridade})
             return form
         if step == "7":
-            familia = Familia.objects.get(usuario_id=paciente.id,parente="avoMaterna")
+            familia = Familia.objects.get(paciente_id=paciente.id,parente="avoMaterna")
             form = CadastroAvoMaterna(data=data,initial = { "nomeAvoMaterna":familia.nome,"nascimentoAvoMaterna":familia.nascimento,
                                              "falecimentoAvoMaterna":familia.falecimento,"escolaridadeAvoMaterna":familia.escolaridade})
             return form
@@ -242,43 +242,43 @@ class EditarCadastro(SessionWizardView):
         paciente.escolaridade = form_data[0]['escolaridade']
         paciente.psicologo = form_data[0]['psicologo']
         paciente.save()
-        familia = Familia.objects.get(usuario_id=paciente.id,parente="conjuge")
+        familia = Familia.objects.get(paciente_id=paciente.id,parente="conjuge")
         familia.nome = form_data[1]['nomeConjuge']
         familia.nascimento = form_data[1]['nascimentoConjuge']
         familia.sexo = form_data[1]['sexoConjuge']
         familia.escolaridade = form_data[1]['escolaridadeConjuge']
         familia.save()
-        familia = Familia.objects.get(usuario_id=paciente.id,parente="pai")
+        familia = Familia.objects.get(paciente_id=paciente.id,parente="pai")
         familia.nome = form_data[2]['nomePai']
         familia.nascimento = form_data[2]['nascimentoPai']
         familia.falecimento = form_data[2]['falecimentoPai']
         familia.escolaridade = form_data[2]['escolaridadePai']
         familia.save()
-        familia = Familia.objects.get(usuario_id=paciente.id,parente="mae")
+        familia = Familia.objects.get(paciente_id=paciente.id,parente="mae")
         familia.nome = form_data[3]['nomeMae']
         familia.nascimento = form_data[3]['nascimentoMae']
         familia.falecimento = form_data[3]['falecimentoMae']
         familia.escolaridade = form_data[3]['escolaridadeMae']
         familia.save()
-        familia = Familia.objects.get(usuario_id=paciente.id,parente="avoPaterno")
+        familia = Familia.objects.get(paciente_id=paciente.id,parente="avoPaterno")
         familia.nome = form_data[4]['nomeAvoPaterno']
         familia.nascimento = form_data[4]['nascimentoAvoPaterno']
         familia.falecimento = form_data[4]['falecimentoAvoPaterno']
         familia.escolaridade = form_data[4]['escolaridadeAvoPaterno']
         familia.save()
-        familia = Familia.objects.get(usuario_id=paciente.id,parente="avoPaterna")
+        familia = Familia.objects.get(paciente_id=paciente.id,parente="avoPaterna")
         familia.nome = form_data[5]['nomeAvoPaterna']
         familia.nascimento = form_data[5]['nascimentoAvoPaterna']
         familia.falecimento = form_data[5]['falecimentoAvoPaterna']
         familia.escolaridade = form_data[5]['escolaridadeAvoPaterna']
         familia.save()
-        familia = Familia.objects.get(usuario_id=paciente.id,parente="avoMaterno")
+        familia = Familia.objects.get(paciente_id=paciente.id,parente="avoMaterno")
         familia.nome = form_data[6]['nomeAvoMaterno']
         familia.nascimento = form_data[6]['nascimentoAvoMaterno']
         familia.falecimento = form_data[6]['falecimentoAvoMaterno']
         familia.escolaridade = form_data[6]['escolaridadeAvoMaterno']
         familia.save()
-        familia = Familia.objects.get(usuario_id=paciente.id,parente="avoMaterna")
+        familia = Familia.objects.get(paciente_id=paciente.id,parente="avoMaterna")
         familia.nome = form_data[7]['nomeAvoMaterna']
         familia.nascimento = form_data[7]['nascimentoAvoMaterna']
         familia.falecimento = form_data[7]['falecimentoAvoMaterna']
@@ -698,30 +698,25 @@ class InserirAnaliseRelacionamento(SessionWizardView):
                     if value == RelacionamentoPaciente:
                         self.form_list.pop(key)
                         self.initial_dict['passo'] = 15
-                if relacionamento.relacao == "Separado(a)" or relacionamento.relacao == "Divorciado(a)" or relacionamento.relacao == "Solteiro(a)":
-                    for key, value in self.form_list.items():
-                        if value == PerguntasSeletivasCondicionadas:
-                            self.form_list.pop(key)
-                            self.initial_dict['passo'] = 16
                 if (relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
                     for key, value in self.form_list.items():
                         if value == RelacionamentoPacienteAntes:
                             self.form_list.pop(key)
-                            self.initial_dict['passo'] = 17
+                            self.initial_dict['passo'] = 16
             if relacionamento.parente == "Conjuge":
                 if(relacionamento.filhosAntes is None and (relacionamento.relacaoAntes == "Não" or relacionamento.relacaoAntes == "Não se aplica" ))\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
                     for key, value in self.form_list.items():
                         if value == RelacionamentoConjugeAntes:
                             self.form_list.pop(key)
-                            self.initial_dict['passo'] = 18
+                            self.initial_dict['passo'] = 17
                 if(relacionamento.filhosDepois is None and (relacionamento.relacao == "Casado(a)" or relacionamento.relacao == "Mora junto" or relacionamento.relacao == "Solteiro(a)"))\
                         or ((relacionamento.relacao == "Separado(a)" or relacionamento.relacao == "Divorciado(a)") and relacionamento.filhosDepois is not None):
                     for key, value in self.form_list.items():
                         if value == RelacionamentoPacienteDepois:
                             self.form_list.pop(key)
-                            self.initial_dict['passo'] = 19
+                            self.initial_dict['passo'] = 18
 
         return super(InserirAnaliseRelacionamento, self).dispatch(*args, **kwargs)
 
@@ -1026,7 +1021,7 @@ class InserirAnaliseSeletiva(SessionWizardView):
     def done(self, form_list, form_dict, **kwargs):
         paciente_id = self.kwargs['paciente_id']
         analise_id = self.kwargs['analise_id']
-        return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/interventiva')
+        return HttpResponseRedirect('/analise/recomendacao/'+paciente_id+'/'+analise_id+'/seletiva')
 
 class InserirAnaliseInterventiva(SessionWizardView):
     template_name = "projetofinal/analise/inserir.html"
@@ -1971,6 +1966,13 @@ class ConsultandoRecomendacoes(TemplateView):
         anamnesia = Anamnesia.objects.get(id=analise_id)
         return anamnesia
 
+    def usuario(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        return paciente
+
     def paciente(self):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
@@ -2426,6 +2428,380 @@ class ConsultandoRecomendacoes(TemplateView):
             texto=texto+acima_criativo.texto
 
         return texto
+
+    def textoSeletiva(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        texto={}
+        relacionamento="Não há recomendações"
+        diferenciacao="Não há recomendações"
+        autonomia="Não há recomendações"
+        assertividade="Não há recomendações"
+        autoEstima="Não há recomendações"
+        somarelacionamento=0
+        somadiferenciacao=0
+        somaautonomia=0
+        somaassertividade=0
+        somaautoestima=0
+
+        perguntasrelacionamento=["S34","S35","S36"]
+        perguntasdiferenciacao=["S05","S06","S15","S16","S24","S25"]
+        perguntasautonomia=["S01","S07","S08","S09","S10","S11","S12","S13","S28"]
+        perguntasassertiva=["S14","S18","S20","S21","S30","S31","S32","S33",]
+        perguntasautoEstima=["S02","S17","S19","S22","S23","S26","S27","S29"]
+
+        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
+        for item in seletiva:
+            resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+            pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
+
+            if pergunta.numero in perguntasrelacionamento:
+                nome="relacionamento"
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel0")
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel1")
+                            relacionamento=relacionamento.texto
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel2")
+                            relacionamento=relacionamento.texto
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel3")
+                            relacionamento=relacionamento.texto
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel4")
+                            relacionamento=relacionamento.texto
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel5")
+                            relacionamento=relacionamento.texto
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel6")
+                            relacionamento=relacionamento.texto
+
+            if pergunta.numero in perguntasdiferenciacao:
+                nome="diferenciacao"
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel0")
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel1")
+                            diferenciacao=diferenciacao.texto
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel2")
+                            diferenciacao=diferenciacao.texto
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel3")
+                            diferenciacao=diferenciacao.texto
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel4")
+                            diferenciacao=diferenciacao.texto
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel5")
+                            diferenciacao=diferenciacao.texto
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel6")
+                            diferenciacao=diferenciacao.texto
+
+            if pergunta.numero in perguntasautonomia:
+                nome="autonomia"
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel0")
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel1")
+                            autonomia=autonomia.texto
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel2")
+                            autonomia=autonomia.texto
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel3")
+                            autonomia=autonomia.texto
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel4")
+                            autonomia=autonomia.texto
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel5")
+                            autonomia=autonomia.texto
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel6")
+                            autonomia=autonomia.texto
+
+            if pergunta.numero in perguntasassertiva:
+                nome="assertividade"
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel0")
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel1")
+                            assertividade=assertividade.texto
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel2")
+                            assertividade=assertividade.texto
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel3")
+                            assertividade=assertividade.texto
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel4")
+                            assertividade=assertividade.texto
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel5")
+                            assertividade=assertividade.texto
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel6")
+                            assertividade=assertividade.texto
+
+            if pergunta.numero in perguntasautoEstima:
+                nome="autoestima"
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel0")
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel1")
+                            autoEstima=autoEstima.texto
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel2")
+                            autoEstima=autoEstima.texto
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel3")
+                            autoEstima=autoEstima.texto
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel4")
+                            autoEstima=autoEstima.texto
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel5")
+                            autoEstima=autoEstima.texto
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel6")
+                            autoEstima=autoEstima.texto
+
+        if somarelacionamento/len(perguntasrelacionamento) < 3:
+            nome="relacionamento"
+            if idade >=0 and idade <=3:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >=4 and idade <=7:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+            if idade >=8 and idade <=12:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+            if idade >=13 and idade <=19:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+            if idade >=20 and idade <=24:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+            if idade >=25 and idade <=32:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+            if idade >=33:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+            relacionamento=relacionamento.texto
+
+        if somadiferenciacao/len(perguntasdiferenciacao) < 3:
+            nome="diferenciacao"
+            if idade >=0 and idade <=3:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >=4 and idade <=7:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+            if idade >=8 and idade <=12:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+            if idade >=13 and idade <=19:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+            if idade >=20 and idade <=24:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+            if idade >=25 and idade <=32:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+            if idade >=33:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+            diferenciacao=diferenciacao.texto
+
+        if somaautonomia/len(perguntasautonomia) < 3:
+            nome="autonomia"
+            if idade >=0 and idade <=3:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >=4 and idade <=7:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+            if idade >=8 and idade <=12:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+            if idade >=13 and idade <=19:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+            if idade >=20 and idade <=24:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+            if idade >=25 and idade <=32:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+            if idade >=33:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+            autonomia=autonomia.texto
+
+        if somaassertividade/len(perguntasassertiva) < 3:
+            nome="assertividade"
+            if idade >=0 and idade <=3:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >=4 and idade <=7:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+            if idade >=8 and idade <=12:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+            if idade >=13 and idade <=19:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+            if idade >=20 and idade <=24:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+            if idade >=25 and idade <=32:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+            if idade >=33:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+            assertividade=assertividade.texto
+
+        if somaautoestima/len(perguntasautoEstima) < 3:
+            nome="autoestima"
+            if idade >=0 and idade <=3:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >=4 and idade <=7:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+            if idade >=8 and idade <=12:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+            if idade >=13 and idade <=19:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+            if idade >=20 and idade <=24:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+            if idade >=25 and idade <=32:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+            if idade >=33:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+            autoEstima=autoEstima.texto
+
+        texto["relacionamento"]=relacionamento
+        texto["diferenciacao"]=diferenciacao
+        texto["autonomia"]=autonomia
+        texto["assertividade"]=assertividade
+        texto["autoestima"]=autoEstima
+        return texto
+
+    def seletiva(self):
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        seletiva = Seletiva.objects.filter(anamnesia_id=analise_id)
+
+        return seletiva
 
     def interventiva(self):
         if 'analise_id' in self.kwargs:
@@ -2978,7 +3354,7 @@ class RecomendacaoSeletiva(TemplateView):
         if 'analise_id' in self.kwargs:
             analise_id = self.kwargs['analise_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
-        anamnesia = Anamnesia.objects.filter(id=analise_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
 
         nascimento=str(paciente.nascimento)
         ano = int(nascimento.split("-")[0])
@@ -2999,22 +3375,22 @@ class RecomendacaoSeletiva(TemplateView):
             if dia < diaAtual:
                 idade = anoAtual-ano
 
-        relacionamento=""
-        diferenciacao1=""
-        diferenciacao2=""
-        autonomia1=""
-        autonomia2=""
-        assertividade1=""
-        assertividade2=""
-        autoEstima=""
+        texto={}
+        relacionamento="Não há recomendações"
+        diferenciacao="Não há recomendações"
+        autonomia="Não há recomendações"
+        assertividade="Não há recomendações"
+        autoEstima="Não há recomendações"
+        somarelacionamento=0
+        somadiferenciacao=0
+        somaautonomia=0
+        somaassertividade=0
+        somaautoestima=0
 
         perguntasrelacionamento=["S34","S35","S36"]
-        perguntasdiferenciacao1=["S05","S06","S15","S16"]
-        perguntasdiferenciacao2=["S24","S25"]
-        perguntasautonomia1=["S01","S07","S08","S09"]
-        perguntasautonomia2=["S10","S11","S12","S13","S28"]
-        perguntasassertiva1=["S14","S18","S20","S21","S33"]
-        perguntasassertiva2=["S30","S31","S32"]
+        perguntasdiferenciacao=["S05","S06","S15","S16","S24","S25"]
+        perguntasautonomia=["S01","S07","S08","S09","S10","S11","S12","S13","S28"]
+        perguntasassertiva=["S14","S18","S20","S21","S30","S31","S32","S33",]
         perguntasautoEstima=["S02","S17","S19","S22","S23","S26","S27","S29"]
 
         seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
@@ -3023,185 +3399,322 @@ class RecomendacaoSeletiva(TemplateView):
             pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
 
             if pergunta.numero in perguntasrelacionamento:
-                if idade >=0 and idade <=7:
+                nome="relacionamento"
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel0")
+                if idade >=4 and idade <=7:
                     if resposta.nivel1 != 0:
-                        if resposta.nivel1 < 3:
-                            relacionamento="relacionamento"
+                        somarelacionamento=somarelacionamento+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel1")
+                            relacionamento=relacionamento.texto
                 if idade >=8 and idade <=12:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel2 < 3:
-                            relacionamento="relacionamento"
+                    if resposta.nivel2 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel2")
+                            relacionamento=relacionamento.texto
                 if idade >=13 and idade <=19:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel3 < 3:
-                            relacionamento="relacionamento"
+                    if resposta.nivel3 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel3")
+                            relacionamento=relacionamento.texto
                 if idade >=20 and idade <=24:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel4 < 3:
-                            relacionamento="relacionamento"
-                if idade >=25:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel5 < 3:
-                            relacionamento="relacionamento"
+                    if resposta.nivel4 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel4")
+                            relacionamento=relacionamento.texto
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel5")
+                            relacionamento=relacionamento.texto
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            relacionamento=Recomendacao.objects.get(nome=nome,intervalo="nivel6")
+                            relacionamento=relacionamento.texto
 
-            if pergunta.numero in perguntasdiferenciacao1:
-                if idade >=0 and idade <=7:
+            if pergunta.numero in perguntasdiferenciacao:
+                nome="diferenciacao"
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel0")
+                if idade >=4 and idade <=7:
                     if resposta.nivel1 != 0:
-                        if resposta.nivel1 < 3:
-                            diferenciacao1="diferenciacao1"
+                        somadiferenciacao=somadiferenciacao+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel1")
+                            diferenciacao=diferenciacao.texto
                 if idade >=8 and idade <=12:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel2 < 3:
-                            diferenciacao1="diferenciacao1"
+                    if resposta.nivel2 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel2")
+                            diferenciacao=diferenciacao.texto
                 if idade >=13 and idade <=19:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel3 < 3:
-                            diferenciacao1="diferenciacao1"
+                    if resposta.nivel3 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel3")
+                            diferenciacao=diferenciacao.texto
                 if idade >=20 and idade <=24:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel4 < 3:
-                            diferenciacao1="diferenciacao1"
-                if idade >=25:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel5 < 3:
-                            diferenciacao1="diferenciacao1"
+                    if resposta.nivel4 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel4")
+                            diferenciacao=diferenciacao.texto
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel5")
+                            diferenciacao=diferenciacao.texto
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            diferenciacao=Recomendacao.objects.get(nome=nome,intervalo="nivel6")
+                            diferenciacao=diferenciacao.texto
 
-            if pergunta.numero in perguntasdiferenciacao2:
-                if idade >=0 and idade <=7:
+            if pergunta.numero in perguntasautonomia:
+                nome="autonomia"
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel0")
+                if idade >=4 and idade <=7:
                     if resposta.nivel1 != 0:
-                        if resposta.nivel1 < 3:
-                            diferenciacao2="diferenciacao2"
+                        somaautonomia=somaautonomia+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel1")
+                            autonomia=autonomia.texto
                 if idade >=8 and idade <=12:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel2 < 3:
-                            diferenciacao2="diferenciacao2"
+                    if resposta.nivel2 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel2")
+                            autonomia=autonomia.texto
                 if idade >=13 and idade <=19:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel3 < 3:
-                            diferenciacao2="diferenciacao2"
+                    if resposta.nivel3 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel3")
+                            autonomia=autonomia.texto
                 if idade >=20 and idade <=24:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel4 < 3:
-                            diferenciacao2="diferenciacao2"
-                if idade >=25:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel5 < 3:
-                            diferenciacao2="diferenciacao2"
+                    if resposta.nivel4 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel4")
+                            autonomia=autonomia.texto
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel5")
+                            autonomia=autonomia.texto
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            autonomia=Recomendacao.objects.get(nome=nome,intervalo="nivel6")
+                            autonomia=autonomia.texto
 
-            if pergunta.numero in perguntasautonomia1:
-                if idade >=0 and idade <=7:
+            if pergunta.numero in perguntasassertiva:
+                nome="assertividade"
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel0")
+                if idade >=4 and idade <=7:
                     if resposta.nivel1 != 0:
-                        if resposta.nivel1 < 3:
-                            autonomia1="autonomia1"
+                        somaassertividade=somaassertividade+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel1")
+                            assertividade=assertividade.texto
                 if idade >=8 and idade <=12:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel2 < 3:
-                            autonomia1="autonomia1"
+                    if resposta.nivel2 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel2")
+                            assertividade=assertividade.texto
                 if idade >=13 and idade <=19:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel3 < 3:
-                            autonomia1="autonomia1"
+                    if resposta.nivel3 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel3")
+                            assertividade=assertividade.texto
                 if idade >=20 and idade <=24:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel4 < 3:
-                            autonomia1="autonomia1"
-                if idade >=25:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel5 < 3:
-                            autonomia1="autonomia1"
-
-            if pergunta.numero in perguntasautonomia2:
-                if idade >=0 and idade <=7:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel1 < 3:
-                            autonomia2="autonomia2"
-                if idade >=8 and idade <=12:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel2 < 3:
-                            autonomia2="autonomia2"
-                if idade >=13 and idade <=19:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel3 < 3:
-                            autonomia2="autonomia2"
-                if idade >=20 and idade <=24:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel4 < 3:
-                            autonomia2="autonomia2"
-                if idade >=25:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel5 < 3:
-                            autonomia2="autonomia2"
-
-            if pergunta.numero in perguntasassertiva1:
-                if idade >=0 and idade <=7:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel1 < 3:
-                            assertividade1="assertividade1"
-                if idade >=8 and idade <=12:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel2 < 3:
-                            assertividade1="assertividade1"
-                if idade >=13 and idade <=19:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel3 < 3:
-                            assertividade1="assertividade1"
-                if idade >=20 and idade <=24:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel4 < 3:
-                            assertividade1="assertividade1"
-                if idade >=25:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel5 < 3:
-                            assertividade1="assertividade1"
-
-            if pergunta.numero in perguntasassertiva2:
-                if idade >=0 and idade <=7:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel1 < 3:
-                            assertividade2="assertividade2"
-                if idade >=8 and idade <=12:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel2 < 3:
-                            assertividade2="assertividade2"
-                if idade >=13 and idade <=19:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel3 < 3:
-                            assertividade2="assertividade2"
-                if idade >=20 and idade <=24:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel4 < 3:
-                            assertividade2="assertividade2"
-                if idade >=25:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel5 < 3:
-                            assertividade2="assertividade2"
+                    if resposta.nivel4 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel4")
+                            assertividade=assertividade.texto
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel5")
+                            assertividade=assertividade.texto
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            assertividade=Recomendacao.objects.get(nome=nome,intervalo="nivel6")
+                            assertividade=assertividade.texto
 
             if pergunta.numero in perguntasautoEstima:
-                if idade >=0 and idade <=7:
+                nome="autoestima"
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel0")
+                if idade >=4 and idade <=7:
                     if resposta.nivel1 != 0:
-                        if resposta.nivel1 < 3:
-                            autoEstima="autoEstima"
+                        somaautoestima=somaautoestima+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel1")
+                            autoEstima=autoEstima.texto
                 if idade >=8 and idade <=12:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel2 < 3:
-                            autoEstima="autoEstima"
+                    if resposta.nivel2 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel2")
+                            autoEstima=autoEstima.texto
                 if idade >=13 and idade <=19:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel3 < 3:
-                            autoEstima="autoEstima"
+                    if resposta.nivel3 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel3")
+                            autoEstima=autoEstima.texto
                 if idade >=20 and idade <=24:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel4 < 3:
-                            autoEstima="autoEstima"
-                if idade >=25:
-                    if resposta.nivel1 != 0:
-                        if resposta.nivel5 < 3:
-                            autoEstima="autoEstima"
+                    if resposta.nivel4 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel4")
+                            autoEstima=autoEstima.texto
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel5")
+                            autoEstima=autoEstima.texto
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel6")
+                            autoEstima=autoEstima.texto
 
-        texto = relacionamento + diferenciacao1 + diferenciacao2 + autonomia1 + autonomia2 + assertividade1 + assertividade2 + autoEstima
+        if somarelacionamento/len(perguntasrelacionamento) < 3:
+            nome="relacionamento"
+            if idade >=0 and idade <=3:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >=4 and idade <=7:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+            if idade >=8 and idade <=12:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+            if idade >=13 and idade <=19:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+            if idade >=20 and idade <=24:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+            if idade >=25 and idade <=32:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+            if idade >=33:
+                relacionamento= Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+            relacionamento=relacionamento.texto
 
+        if somadiferenciacao/len(perguntasdiferenciacao) < 3:
+            nome="diferenciacao"
+            if idade >=0 and idade <=3:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >=4 and idade <=7:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+            if idade >=8 and idade <=12:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+            if idade >=13 and idade <=19:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+            if idade >=20 and idade <=24:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+            if idade >=25 and idade <=32:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+            if idade >=33:
+                diferenciacao= Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+            diferenciacao=diferenciacao.texto
 
+        if somaautonomia/len(perguntasautonomia) < 3:
+            nome="autonomia"
+            if idade >=0 and idade <=3:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >=4 and idade <=7:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+            if idade >=8 and idade <=12:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+            if idade >=13 and idade <=19:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+            if idade >=20 and idade <=24:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+            if idade >=25 and idade <=32:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+            if idade >=33:
+                autonomia= Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+            autonomia=autonomia.texto
+
+        if somaassertividade/len(perguntasassertiva) < 3:
+            nome="assertividade"
+            if idade >=0 and idade <=3:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >=4 and idade <=7:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+            if idade >=8 and idade <=12:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+            if idade >=13 and idade <=19:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+            if idade >=20 and idade <=24:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+            if idade >=25 and idade <=32:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+            if idade >=33:
+                assertividade= Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+            assertividade=assertividade.texto
+
+        if somaautoestima/len(perguntasautoEstima) < 3:
+            nome="autoestima"
+            if idade >=0 and idade <=3:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >=4 and idade <=7:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+            if idade >=8 and idade <=12:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+            if idade >=13 and idade <=19:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+            if idade >=20 and idade <=24:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+            if idade >=25 and idade <=32:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+            if idade >=33:
+                autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+            autoEstima=autoEstima.texto
+
+        texto["relacionamento"]=relacionamento
+        texto["diferenciacao"]=diferenciacao
+        texto["autonomia"]=autonomia
+        texto["assertividade"]=assertividade
+        texto["autoestima"]=autoEstima
         return texto
+
 
 class RecomendacaoInterventiva(TemplateView):
 

@@ -1055,7 +1055,7 @@ def main(paciente_id,analise_id):
 	paciente= Paciente.objects.get(usuario_id=paciente_id)
 
 
-	avoPaterno = Familia.objects.get(usuario_id=paciente.id,parente="avoPaterno")
+	avoPaterno = Familia.objects.get(paciente_id=paciente.id,parente="avoPaterno")
 	avoPaterno_nome = avoPaterno.nome.split(" ")[0]
 	nascimento=str(avoPaterno.nascimento)
 	avoPaterno_ano = nascimento.split("-")[0]
@@ -1067,7 +1067,7 @@ def main(paciente_id,analise_id):
 		falecimento=str(avoPaterno.falecimento)
 		avoPaterno_falecimento_ano = falecimento.split("-")[0]
 
-	avoPaterna = Familia.objects.get(usuario_id=paciente.id,parente="avoPaterna")
+	avoPaterna = Familia.objects.get(paciente_id=paciente.id,parente="avoPaterna")
 	avoPaterna_nome = avoPaterna.nome.split(" ")[0]
 	nascimento=str(avoPaterna.nascimento)
 	avoPaterna_ano = nascimento.split("-")[0]
@@ -1126,7 +1126,7 @@ def main(paciente_id,analise_id):
 																	avoPaternaR_relacaoDepois,avoPaternaR_filhosDepois,avoPaternaR_filhasDepois,
 																	avoPaterno_falecimento,avoPaterno_ano,avoPaterno_falecimento_ano,avoPaterno_nome,avoPaterna_falecimento,avoPaterna_ano,avoPaterna_falecimento_ano,avoPaterna_nome)
 
-	avoMaterno = Familia.objects.get(usuario_id=paciente.id,parente="avoMaterno")
+	avoMaterno = Familia.objects.get(paciente_id=paciente.id,parente="avoMaterno")
 	avoMaterno_nome = avoMaterno.nome.split(" ")[0]
 	nascimento=str(avoMaterno.nascimento)
 	avoMaterno_ano = nascimento.split("-")[0]
@@ -1138,7 +1138,7 @@ def main(paciente_id,analise_id):
 		falecimento=str(avoMaterno.falecimento)
 		avoMaterno_falecimento_ano = falecimento.split("-")[0]
 
-	avoMaterna = Familia.objects.get(usuario_id=paciente.id,parente="avoMaterna")
+	avoMaterna = Familia.objects.get(paciente_id=paciente.id,parente="avoMaterna")
 	avoMaterna_nome = avoMaterna.nome.split(" ")[0]
 	nascimento=str(avoMaterna.nascimento)
 	avoMaterna_ano = nascimento.split("-")[0]
@@ -1199,7 +1199,7 @@ def main(paciente_id,analise_id):
 																	avoMaterno_falecimento,avoMaterno_ano,avoMaterno_falecimento_ano,avoMaterno_nome,avoMaterna_falecimento,avoMaterna_ano,avoMaterna_falecimento_ano,avoMaterna_nome)
 
 
-	pai = Familia.objects.get(usuario_id=paciente.id,parente="pai")
+	pai = Familia.objects.get(paciente_id=paciente.id,parente="pai")
 	pai_nome = pai.nome.split(" ")[0]
 	nascimento=str(pai.nascimento)
 	pai_ano = nascimento.split("-")[0]
@@ -1211,7 +1211,7 @@ def main(paciente_id,analise_id):
 		falecimento=str(pai.falecimento)
 		pai_falecimento_ano = falecimento.split("-")[0]
 
-	mae = Familia.objects.get(usuario_id=paciente.id,parente="mae")
+	mae = Familia.objects.get(paciente_id=paciente.id,parente="mae")
 	mae_nome = mae.nome.split(" ")[0]
 	nascimento=str(mae.nascimento)
 	mae_ano = nascimento.split("-")[0]
@@ -1338,7 +1338,7 @@ def main(paciente_id,analise_id):
 
 
 
-	conjuge = Familia.objects.get(usuario_id=paciente.id,parente="conjuge")
+	conjuge = Familia.objects.get(paciente_id=paciente.id,parente="conjuge")
 	conjuge_nome = conjuge.nome.split(" ")[0]
 	nascimento=str(conjuge.nascimento)
 	conjuge_ano = nascimento.split("-")[0]
