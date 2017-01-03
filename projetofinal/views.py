@@ -2789,11 +2789,11 @@ class ConsultandoRecomendacoes(TemplateView):
                 autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel6")
             autoEstima=autoEstima.texto
 
-        texto["relacionamento"]=relacionamento
-        texto["diferenciacao"]=diferenciacao
-        texto["autonomia"]=autonomia
-        texto["assertividade"]=assertividade
-        texto["autoestima"]=autoEstima
+        texto["Relacionamento"]=relacionamento
+        texto["Diferenciacao"]=diferenciacao
+        texto["Autonomia"]=autonomia
+        texto["Assertividade"]=assertividade
+        texto["Autoestima"]=autoEstima
         return texto
 
     def seletiva(self):
@@ -3708,11 +3708,11 @@ class RecomendacaoSeletiva(TemplateView):
                 autoEstima= Recomendacao.objects.get(nome=nome, intervalo="nivel6")
             autoEstima=autoEstima.texto
 
-        texto["relacionamento"]=relacionamento
-        texto["diferenciacao"]=diferenciacao
-        texto["autonomia"]=autonomia
-        texto["assertividade"]=assertividade
-        texto["autoestima"]=autoEstima
+        texto["Relacionamento"]=relacionamento
+        texto["Diferenciacao"]=diferenciacao
+        texto["Autonomia"]=autonomia
+        texto["Assertividade"]=assertividade
+        texto["Autoestima"]=autoEstima
         return texto
 
 

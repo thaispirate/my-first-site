@@ -14,8 +14,8 @@ $(document).ready(function () {
                     'Afetivo-Relacional',
                     'Produtividade',
                     'Orgânico',
-                    'Socio-Cultural',
                     'Espiritual',
+                    'Socio-Cultural',
                 ],
                 crosshair: true
             },
