@@ -52,49 +52,65 @@ $(document).ready(function () {
 
         // split the data set into ohlc and volume
 
-   var radar = {
-            colors: ["#7cb5ec","#f7a35c","#ff095c","#FFDAB9","#FF0000","#AB82FF","#ADFF2F","#FF69B4"],
+ var radar = {
+            xAxis: [{
+                categories: ['Adaptativo','Reativo', 'Criativo']
+            }],
             chart: {
-                polar: true,
-                type: 'line',
-                renderTo:'radar'
+                zoomType: 'xy',
+                renderTo: 'radar'
             },
-
             title: {
-                text: "Grau de Indiferenciação<br>"+paciente['paciente'],
+                text: 'Grau de Indiferenciação<br>'+ paciente['paciente']
             },
-            xAxis: {
-                categories: ['Adaptativo', 'Reativo', 'Criativo'],
-                tickmarkPlacement: 'on',
-                lineWidth: 0
-            },
-
-            yAxis: {
-                gridLineInterpolation: 'polygon',
-                lineWidth: 0,
-                min: 0
-            },
+            yAxis: [{
+                labels: {
+                    style: {
+                        color: ["#7cb5ec","#f7a35c","#ff095c","#FFDAB9","#FF0000","#AB82FF","#ADFF2F","#FF69B4"]
+                    }
+                },
+                title: {
+                    text: 'Pontuação',
+                    style: {
+                        color: ["#7cb5ec","#f7a35c","#ff095c","#FFDAB9","#FF0000","#AB82FF","#ADFF2F","#FF69B4"],
+                    }
+                }
+            }],
 
             tooltip: {
-                shared: true,
-                pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+                shared: true
             },
 
+            series: []
+}
 
-            series:[]
-
-            }
 
         var chart2 = new Highcharts.Chart(radar);
 
         for(var item in dadosRadar){
-            chart2.addSeries({
-                name:item,
-                data:dadosRadar[item],
-                pointPlacement: 'on'
-            });
+            if (item[0] != "L"){
+                chart2.addSeries({
+                    type:'bubble',
+                    name:item,
+                    data:dadosRadar[item],
+                    tooltip: {
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}:</td>' +
+                        '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                    }
+                });
+                }
         }
+        chart2.addSeries({
+                name: 'Limites',
+                type: 'errorbar',
+                data: [[dadosRadar['Limite Inferior Adaptativo'],dadosRadar['Limite Superior Adaptativo']],
+                [dadosRadar['Limite Inferior Reativo'],dadosRadar['Limite Superior Reativo']],
+                [dadosRadar['Limite Inferior Criativo'],dadosRadar['Limite Superior Criativo']]],
+                tooltip: {
+                pointFormat:  '(Limites esperados: Inferior={point.low} Superior={point.high})<br/>'
+                }
 
+        });
 
     $("#selectAll").click(function() {
         $( this ).closest('form').find(':checkbox').prop( 'checked' , this.checked ? true : false );
