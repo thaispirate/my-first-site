@@ -7,6 +7,12 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class Chave(models.Model):
+    chave = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.chave
+
 class Psicologo(models.Model):
     usuario = models.OneToOneField(User)
     email = models.EmailField()
@@ -23,6 +29,7 @@ class Paciente(models.Model):
     sexo = models.CharField(max_length=10,null=True)
     escolaridade = models.CharField(max_length=15, null=True,blank=True)
     psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE,null=True)
+    retornos = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.usuario.first_name
@@ -48,7 +55,7 @@ class Familia(models.Model):
     escolaridade = models.CharField(max_length=15, null=True,blank=True)
 
     def __str__(self):
-        return self.usuario.nome + "-" + self.parente
+        return self.paciente.nome + "-" + self.parente
 
 
 class PerguntaAreaAfetiva(models.Model):
@@ -193,28 +200,16 @@ class PerguntaInterventiva(models.Model):
     def __str__(self):
         return self.numero
 
-class RespostaInterventiva(models.Model):
-    pergunta =  models.ForeignKey(PerguntaInterventiva, on_delete=models.CASCADE,null=True)
-    letra = models.CharField(max_length=1,null=True)
-    resposta = models.TextField(null=True)
-    nivel1 = models.FloatField(null=True,blank=True)
-    nivel2 = models.FloatField(null=True,blank=True)
-    nivel3 = models.FloatField(null=True,blank=True)
-    nivel4 = models.FloatField(null=True,blank=True)
-    nivel5 = models.FloatField(null=True,blank=True)
-    nivel6 = models.FloatField(null=True,blank=True)
-
-    def __str__(self):
-        return self.pergunta.numero+"-"+self.letra
 
 class Interventiva(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE,null=True)
     anamnesia = models.ForeignKey(Anamnesia, on_delete=models.CASCADE,null=True)
-    resposta = models.ForeignKey(RespostaInterventiva, on_delete=models.CASCADE,null=True)
+    resposta = models.TextField(null=True)
+    pergunta = models.ForeignKey(PerguntaInterventiva,on_delete=models.CASCADE,null=True)
 
 
     def __str__(self):
-        return self.paciente.nome+" "+self.resposta.pergunta.numero+"-"+self.resposta.letra+" "+self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")
+        return self.paciente.nome+" "+self.anamnesia.inicio.strftime("%Y-%m-%d %H:%M:%S")+" "+self.pergunta.numero
 
 class Recomendacao(models.Model):
 

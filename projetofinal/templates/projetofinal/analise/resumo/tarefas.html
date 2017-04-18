@@ -1,0 +1,53 @@
+{% extends 'projetofinal/analise/resumo/base.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+<div class="col-md-12 text-center">
+        <h2>Você já resolveu seus exercícios?</h2>
+        <label class="radio-inline">
+          <input type="radio" name="inlineRadioOptions" id="radio1" value="option1" > Sim
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="inlineRadioOptions" id="radio2" value="option2"> Não
+        </label>
+        <br>
+    <br>
+              <a type="submit" id="button" href="/analise/resumo/{{user.id}}/{{view.anamnesia.id}}/interventiva" class="btn btn-default">Próxima</a>
+    <div id="texto" >
+    <h3>Resolva os exercícios antes de seguir para a etapa final</h3>
+    </div>
+</div>
+
+<script text="text/javascript">
+if (document.getElementById('radio1').checked)
+{
+  console.log("sim")
+  document.getElementById("button").className = 'show btn btn-default';
+}
+
+$(document).ready(function() {
+
+    var $submit1 = $("#button").hide(),
+        $cbs1 = $('#radio2').click(function() {
+            $submit1.toggle( $cbs1.is(":checked") );
+        });
+    var $submit1 = $("#button").hide(),
+        $cbs1 = $('#radio1').click(function() {
+            $submit1.toggle( $cbs1.is(":checked") );
+        });
+    var $submit2 = $("#texto").hide(),
+        $cbs2 = $('#radio1').click(function() {
+            $submit2.toggle( $cbs2.is(":checked") );
+        });
+    var $submit2 = $("#texto").hide(),
+        $cbs2 = $('#radio2').click(function() {
+            $submit2.toggle( $cbs2.is(":checked") );
+        });
+
+});
+</script>
+{% endblock %}
+
+

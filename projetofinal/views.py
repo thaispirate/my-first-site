@@ -17,7 +17,7 @@ from .forms import ConsultarAreaAfetiva,CadastroPaciente,CadastroConjuge,Cadastr
 from .models import Paciente,User,Familia, Psicologo, AreaAfetiva, Anamnesia, PerguntaAreaAfetiva,RespostaAreaAfetiva,\
     Relacionamento,GrauIndiferenciacao, GrauIndiferenciacaoPaciente,\
     Seletiva, PerguntaSeletiva,RespostaSeletiva, PerguntaSeletiva,\
-    Interventiva, PerguntaInterventiva, RespostaInterventiva, Recomendacao
+    Interventiva, PerguntaInterventiva, Recomendacao
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404, HttpResponseRedirect, HttpResponse, FileResponse
 from django.template import RequestContext
@@ -54,9 +54,18 @@ from .genograma import main
 def is_member(user):
     return user.groups.filter(name='paciente').exists()
 
-@user_passes_test(is_member)
-def Home(request):
-    return render(request, 'projetofinal/home.html', {})
+class Home(TemplateView):
+    template_name = "projetofinal/home.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(Home, self).dispatch(*args, **kwargs)
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        return paciente
 
 def LoginPaciente(request):
     username = password = ''
@@ -70,7 +79,8 @@ def LoginPaciente(request):
             if user.is_active and user.groups.filter(name='paciente').exists():
                 login(request, user)
                 state = "You're successfully logged in!"
-                return HttpResponseRedirect('home')
+                paciente_id=str(user.id)
+                return HttpResponseRedirect('home/'+ paciente_id +'/')
             else:
                 state = 1
         else:
@@ -96,6 +106,7 @@ class CadastroWizard(SessionWizardView):
         user.email = form_data[0]['username']
         user.first_name = form_data[0]['nome']
         user.save()
+        group = Group.objects.get_or_create(name='paciente')
         group = Group.objects.get(name='paciente')
         user.groups.add(group)
         paciente = Paciente()
@@ -106,6 +117,7 @@ class CadastroWizard(SessionWizardView):
         paciente.sexo = form_data[0]['sexo']
         paciente.escolaridade = form_data[0]['escolaridade']
         paciente.psicologo = form_data[0]['psicologo']
+        paciente.retornos=0
         paciente.save()
         familia = Familia()
         familia.usuario = paciente
@@ -445,6 +457,13 @@ class ResumoAreaAfetiva(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(ResumoAreaAfetiva, self).dispatch(*args, **kwargs)
 
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        return paciente
+
 class ResumoRelacionamento(TemplateView):
     template_name = "projetofinal/analise/resumo/relacionamento.html"
 
@@ -498,6 +517,23 @@ class ResumoInterventiva(TemplateView):
         anamnesia = Anamnesia.objects.get(id=analise_id)
         return anamnesia
 
+class ResumoTarefas(TemplateView):
+    template_name = "projetofinal/analise/resumo/tarefas.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ResumoTarefas, self).dispatch(*args, **kwargs)
+
+    def anamnesia(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+        return anamnesia
+
 class InserirAnalise(SessionWizardView):
     template_name = "projetofinal/analise/inserir.html"
     form_list = [PerguntasAreaAfetiva]
@@ -505,6 +541,7 @@ class InserirAnalise(SessionWizardView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(InserirAnalise, self).dispatch(*args, **kwargs)
+
 
     def passos(self):
         return 1
@@ -542,27 +579,32 @@ class InserirAnalise(SessionWizardView):
             if minimo[0] == socioCultural:
                 anamnesia.areaAfetiva = "SocioCultural"
 
+            if paciente.retornos == 0:
+                inicio=anamnesia.inicio=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                anamnesia.retornos=1
+                anamnesia.save()
+                anamnesia = Anamnesia.objects.get(inicio=inicio)
+                self.initial_dict['anamnesia_id']=anamnesia.id
 
-            inicio=anamnesia.inicio=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            anamnesia.save()
-            anamnesia = Anamnesia.objects.get(inicio=inicio)
-            self.initial_dict['anamnesia_id']=anamnesia.id
+                for item in form.data:
+                    if item[0] == "0":
+                        pergunta = PerguntaAreaAfetiva.objects.get(numero=item.split("-")[1])
+                        resposta = RespostaAreaAfetiva.objects.get(pergunta_id=pergunta.id,letra=form.data[item])
+                        areaAfetiva = AreaAfetiva()
+                        areaAfetiva.paciente = paciente
+                        areaAfetiva.resposta = resposta
+                        areaAfetiva.anamnesia = anamnesia
+                        areaAfetiva.save()
 
-            for item in form.data:
-                if item[0] == "0":
-                    pergunta = PerguntaAreaAfetiva.objects.get(numero=item.split("-")[1])
-                    resposta = RespostaAreaAfetiva.objects.get(pergunta_id=pergunta.id,letra=form.data[item])
-                    areaAfetiva = AreaAfetiva()
-                    areaAfetiva.paciente = paciente
-                    areaAfetiva.resposta = resposta
-                    areaAfetiva.anamnesia = anamnesia
-                    areaAfetiva.save()
 
         return form.data
 
 
     def done(self, form_list, form_dict, **kwargs):
         paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        paciente.retornos = 1
+
         return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+str(self.initial_dict['anamnesia_id'])+'/recomendacao/areaafetiva')
 
 class InserirAnaliseRelacionamento(SessionWizardView):
@@ -1046,12 +1088,14 @@ class InserirAnaliseInterventiva(SessionWizardView):
                 for item in form.data:
                     if item[0] == "0":
                         interventivas.update({item.split("-")[1]:form.data[item]})
+                print (interventivas)
                 for perguntas in interventivas:
                     interventiva = Interventiva()
                     interventiva.paciente = paciente
                     interventiva.anamnesia = anamnesia
                     pergunta = PerguntaInterventiva.objects.get(numero=perguntas)
-                    interventiva.resposta = RespostaInterventiva.objects.get(pergunta_id=pergunta.id,letra=interventivas[perguntas])
+                    interventiva.resposta = interventivas[perguntas]
+                    interventiva.pergunta = pergunta
                     interventiva.save()
                     anamnesia.fim = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     anamnesia.save()
@@ -1060,7 +1104,7 @@ class InserirAnaliseInterventiva(SessionWizardView):
     def done(self, form_list, form_dict, **kwargs):
         paciente_id = self.kwargs['paciente_id']
         analise_id = self.kwargs['analise_id']
-        return HttpResponseRedirect('/analise/inserir/'+paciente_id+'/'+analise_id+'/recomendacao/interventiva')
+        return HttpResponseRedirect('/analise/finalizada')
 
 @login_required()
 def AnaliseFinalizada(request):
@@ -1770,7 +1814,7 @@ def ProsseguindoAnalise(request,paciente_id,analise_id):
         return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/seletiva')
 
     if not Interventiva.objects.filter(anamnesia_id = analise_id).exists():
-        return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/interventiva')
+        return HttpResponseRedirect('/analise/resumo/'+paciente_id+'/'+analise_id+'/tarefas')
 
 @login_required()
 def RemoverAnalise(request, paciente_id):
@@ -1965,9 +2009,6 @@ class ConsultandoRecomendacoes(TemplateView):
             analise_id = self.kwargs['analise_id']
         anamnesia = Anamnesia.objects.get(id=analise_id)
         return anamnesia
-
-    def image(self):
-        return
 
     def usuario(self):
         if 'paciente_id' in self.kwargs:
@@ -2806,13 +2847,531 @@ class ConsultandoRecomendacoes(TemplateView):
 
         return seletiva
 
-    def interventiva(self):
+
+    def tarefaAreaAfetiva(self):
+        texto={}
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
         if 'analise_id' in self.kwargs:
             analise_id = self.kwargs['analise_id']
-        interventiva = Interventiva.objects.filter(anamnesia_id=analise_id)
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
+        for analise in anamnesia:
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id).order_by('resposta_id')
+            A=[0]
+            for respostas in area:
+                resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
+                A.append(resposta.valor)
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/15)
 
-        return interventiva
+        texto["amor"]="Pedro"
+        if afetivoRelacional >=1.5 and afetivoRelacional < 3:
+            texto["afetivo"]="pdfafetivo1"
+        if afetivoRelacional >= 0 and afetivoRelacional < 1.5:
+            texto["afetivo"]="pdfafetivo2"
+        return texto
 
+    def tarefaIndiferenciacao(self):
+        texto={}
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+
+        criativo=0
+        reativo=0
+        adaptativo=0
+        for analise in anamnesia:
+            indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
+            for opcao in indiferenciacao:
+                resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
+                if resposta.padrao == "adaptativo":
+                    adaptativo=adaptativo+1
+                if resposta.padrao == "reativo":
+                    reativo=reativo+1
+                if resposta.padrao == "criativo":
+                    criativo=criativo+1
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        adaptativoMin=0
+        adaptativoMax=0
+        criativoMin=0
+        criativoMax=0
+        reativoMin=0
+        reativoMax=0
+
+        if idade >=0 and idade <=3:
+            adaptativoMin=14
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=2
+            reativoMin=0
+            reativoMax=2
+        if idade >=4 and idade <=7:
+            adaptativoMin=12
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=3
+            reativoMin=2
+            reativoMax=6
+        if idade >=8 and idade <=12:
+            adaptativoMin=8
+            adaptativoMax=13
+            criativoMin=2
+            criativoMax=5
+            reativoMin=6
+            reativoMax=10
+        if idade >=13 and idade <=19:
+            adaptativoMin=4
+            adaptativoMax=8
+            criativoMin=6
+            criativoMax=8
+            reativoMin=10
+            reativoMax=15
+        if idade >=20 and idade <=24:
+            adaptativoMin=1
+            adaptativoMax=3
+            criativoMin=9
+            criativoMax=11
+            reativoMin=8
+            reativoMax=12
+        if idade >=25 and idade <=32:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=11
+            criativoMax=15
+            reativoMin=3
+            reativoMax=7
+        if idade >=33:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=16
+            criativoMax=19
+            reativoMin=0
+            reativoMax=2
+
+        tudo_dentro=""
+        abaixo_adaptativo=""
+        acima_adaptativo=""
+        abaixo_criativo=""
+        acima_criativo=""
+        abaixo_reativo=""
+        acima_reativo=""
+        texto=""
+        if adaptativo>adaptativoMin and adaptativo<adaptativoMax and\
+                        reativo>reativoMin and reativo<reativoMax and\
+                        criativo>criativoMin and criativo<criativoMax:
+            texto["geral"]= "pdfindiferenciacao"
+        return texto
+
+    def tarefaRelacionamento(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        somarelacionamento=0
+
+        perguntasrelacionamento=["S34","S35","S36"]
+
+        texto=""
+        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
+        for item in seletiva:
+            resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+            pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
+
+            if pergunta.numero in perguntasrelacionamento:
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            texto="pdfrelacionamento"
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            texto="pdfrelacionamento"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            texto="pdfrelacionamento"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            texto="pdfrelacionamento"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            texto="pdfrelacionamento"
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            texto="pdfrelacionamento"
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            texto="pdfrelacionamento"
+
+        if somarelacionamento/len(perguntasrelacionamento) < 3:
+            texto="pdfrelacionamento"
+
+        return texto
+
+    def tarefaDiferenciacao(self):
+        texto=""
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        somadiferenciacao=0
+        perguntasdiferenciacao=["S05","S06","S15","S16","S24","S25"]
+        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
+        for item in seletiva:
+            resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+            pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
+
+            if pergunta.numero in perguntasdiferenciacao:
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            texto="pdfdiferenciacao"
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            texto="pdfdiferenciacao"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            texto="pdfdiferenciacao"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            texto="pdfdiferenciacao"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            texto="pdfdiferenciacao"
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            texto="pdfdiferenciacao"
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            texto="pdfdiferenciacao"
+        if somadiferenciacao/len(perguntasdiferenciacao) < 3:
+            texto="pdfdiferenciacao"
+
+        return texto
+
+    def tarefaAutonomia(self):
+        texto=""
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        somaautonomia=0
+        perguntasautonomia=["S01","S07","S08","S09","S10","S11","S12","S13","S28"]
+
+        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
+        for item in seletiva:
+            resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+            pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
+
+            if pergunta.numero in perguntasautonomia:
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            texto="pdfautonomia"
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            texto="pdfautonomia"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            texto="pdfautonomia"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            texto="pdfautonomia"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            texto="pdfautonomia"
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            texto="pdfautonomia"
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            texto="pdfautonomia"
+
+        if somaautonomia/len(perguntasautonomia) < 3:
+            texto="pdfautonomia"
+
+        return texto
+
+    def tarefaAssertividade(self):
+        texto=""
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        somaassertividade=0
+        perguntasassertiva=["S14","S18","S20","S21","S30","S31","S32","S33",]
+
+
+        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
+        for item in seletiva:
+            resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+            pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
+
+            if pergunta.numero in perguntasassertiva:
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            texto="pdfassertividade"
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            texto="pdfassertividade"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            texto="pdfassertividade"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            texto="pdfassertividade"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            texto="pdfassertividade"
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            texto="pdfassertividade"
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            texto="pdfassertividade"
+        if somaassertividade/len(perguntasassertiva) < 3:
+            texto="pdfassertividade"
+
+        return texto
+
+    def tarefaAutoestima(self):
+        texto=""
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        somaautoestima=0
+        perguntasautoEstima=["S02","S17","S19","S22","S23","S26","S27","S29"]
+
+        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
+        for item in seletiva:
+            resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+            pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
+            if pergunta.numero in perguntasautoEstima:
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            texto="pdfautoestima"
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            texto="pdfautoestima"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            texto="pdfautoestima"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            texto="pdfautoestima"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            texto="pdfautoestima"
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel5")
+                            texto="pdfautoestima"
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            texto="pdfautoestima"
+
+        if somaautoestima/len(perguntasautoEstima) < 3:
+            texto="pdfautoestima"
+
+        return texto
 
 class RecomendacaoAreaAfetiva(TemplateView):
 
@@ -3718,12 +4277,11 @@ class RecomendacaoSeletiva(TemplateView):
         texto["Autoestima"]=autoEstima
         return texto
 
-
-class RecomendacaoInterventiva(TemplateView):
+class RecomendacaoTarefas(TemplateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(RecomendacaoInterventiva, self).dispatch(*args, **kwargs)
+        return super(RecomendacaoTarefas, self).dispatch(*args, **kwargs)
 
     def anamnesia(self):
         if 'paciente_id' in self.kwargs:
@@ -3732,15 +4290,53 @@ class RecomendacaoInterventiva(TemplateView):
         if 'analise_id' in self.kwargs:
             analise_id = self.kwargs['analise_id']
         anamnesia = Anamnesia.objects.get(id=analise_id)
-        main(paciente_id,analise_id)
         return anamnesia
 
-    def media(self):
+    def tarefaAreaAfetiva(self):
+        texto={}
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
         if 'analise_id' in self.kwargs:
             analise_id = self.kwargs['analise_id']
-        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
+        for analise in anamnesia:
+            area= AreaAfetiva.objects.filter(anamnesia_id=analise.id).order_by('resposta_id')
+            A=[0]
+            for respostas in area:
+                resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
+                A.append(resposta.valor)
+            afetivoRelacional=((A[1]+A[2]+A[4]+A[6]+A[9]+A[13]+A[15]+A[17]+A[19]+A[20]+A[21]+A[22]+A[23]+A[25]+A[28])/15)
+
+        texto["amor"]="Pedro"
+        if afetivoRelacional >=1.5 and afetivoRelacional < 3:
+            texto["afetivo"]="pdfafetivo1"
+        if afetivoRelacional >= 0 and afetivoRelacional < 1.5:
+            texto["afetivo"]="pdfafetivo2"
+        return texto
+
+    def tarefaIndiferenciacao(self):
+        texto={}
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+
+        criativo=0
+        reativo=0
+        adaptativo=0
+        for analise in anamnesia:
+            indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
+            for opcao in indiferenciacao:
+                resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
+                if resposta.padrao == "adaptativo":
+                    adaptativo=adaptativo+1
+                if resposta.padrao == "reativo":
+                    reativo=reativo+1
+                if resposta.padrao == "criativo":
+                    criativo=criativo+1
 
         nascimento=str(paciente.nascimento)
         ano = int(nascimento.split("-")[0])
@@ -3761,168 +4357,488 @@ class RecomendacaoInterventiva(TemplateView):
             if dia < diaAtual:
                 idade = anoAtual-ano
 
-        soma=0.0
-        contador=0.0
-        desvio=0.0
-        variancia=0.0
-        areaafetiva = AreaAfetiva.objects.filter(paciente_id=paciente.id,anamnesia_id=analise_id)
+        adaptativoMin=0
+        adaptativoMax=0
+        criativoMin=0
+        criativoMax=0
+        reativoMin=0
+        reativoMax=0
 
-        for item in areaafetiva:
-            resposta = RespostaAreaAfetiva.objects.get(id=item.resposta_id)
-            if idade >=0 and idade <=7:
-                soma = soma + resposta.nivel1
-                if resposta.nivel1 != 0:
-                    contador = contador+1
-            if idade >=8 and idade <=12:
-                soma = soma + resposta.nivel2
-                if resposta.nivel2 != 0:
-                    contador = contador+1
-            if idade >=13 and idade <=19:
-                soma = soma + resposta.nivel3
-                if resposta.nivel3 != 0:
-                    contador = contador+1
-            if idade >=20 and idade <=24:
-                soma = soma + resposta.nivel4
-                if resposta.nivel4 != 0:
-                    contador = contador+1
-            if idade >=25:
-                soma = soma + resposta.nivel5
-                if resposta.nivel5 != 0:
-                    contador = contador+1
+        if idade >=0 and idade <=3:
+            adaptativoMin=14
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=2
+            reativoMin=0
+            reativoMax=2
+        if idade >=4 and idade <=7:
+            adaptativoMin=12
+            adaptativoMax=17
+            criativoMin=0
+            criativoMax=3
+            reativoMin=2
+            reativoMax=6
+        if idade >=8 and idade <=12:
+            adaptativoMin=8
+            adaptativoMax=13
+            criativoMin=2
+            criativoMax=5
+            reativoMin=6
+            reativoMax=10
+        if idade >=13 and idade <=19:
+            adaptativoMin=4
+            adaptativoMax=8
+            criativoMin=6
+            criativoMax=8
+            reativoMin=10
+            reativoMax=15
+        if idade >=20 and idade <=24:
+            adaptativoMin=1
+            adaptativoMax=3
+            criativoMin=9
+            criativoMax=11
+            reativoMin=8
+            reativoMax=12
+        if idade >=25 and idade <=32:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=11
+            criativoMax=15
+            reativoMin=3
+            reativoMax=7
+        if idade >=33:
+            adaptativoMin=0
+            adaptativoMax=2
+            criativoMin=16
+            criativoMax=19
+            reativoMin=0
+            reativoMax=2
 
-        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=analise_id)
+        tudo_dentro=""
+        abaixo_adaptativo=""
+        acima_adaptativo=""
+        abaixo_criativo=""
+        acima_criativo=""
+        abaixo_reativo=""
+        acima_reativo=""
+        texto=""
+        if adaptativo>adaptativoMin and adaptativo<adaptativoMax and\
+                        reativo>reativoMin and reativo<reativoMax and\
+                        criativo>criativoMin and criativo<criativoMax:
+            texto["geral"]= "pdfindiferenciacao"
+        return texto
 
+    def tarefaRelacionamento(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        somarelacionamento=0
+
+        perguntasrelacionamento=["S34","S35","S36"]
+
+        texto=""
+        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
         for item in seletiva:
             resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+            pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
 
-            if idade >=0 and idade <=7:
-                soma = soma + resposta.nivel1
-                if resposta.nivel1 != 0:
-                    contador = contador+1
-            if idade >=8 and idade <=12:
-                soma = soma + resposta.nivel2
-                if resposta.nivel2 != 0:
-                    contador = contador+1
-            if idade >=13 and idade <=19:
-                soma = soma + resposta.nivel3
-                if resposta.nivel3 != 0:
-                    contador = contador+1
-            if idade >=20 and idade <=24:
-                soma = soma + resposta.nivel4
-                if resposta.nivel4 != 0:
-                    contador = contador+1
-            if idade >=25:
-                soma = soma + resposta.nivel5
-                if resposta.nivel5 != 0:
-                    contador = contador+1
+            if pergunta.numero in perguntasrelacionamento:
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            texto="pdfrelacionamento"
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            texto="pdfrelacionamento"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            texto="pdfrelacionamento"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            texto="pdfrelacionamento"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            texto="pdfrelacionamento"
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            texto="pdfrelacionamento"
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somarelacionamento=somarelacionamento+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            texto="pdfrelacionamento"
 
-        interventiva = Interventiva.objects.filter(paciente_id=paciente.id,anamnesia_id=analise_id)
+        if somarelacionamento/len(perguntasrelacionamento) < 3:
+            texto="pdfrelacionamento"
 
-        for item in interventiva:
-            resposta = RespostaInterventiva.objects.get(id=item.resposta_id)
+        return texto
 
-            if idade >=0 and idade <=7:
-                soma = soma + resposta.nivel1
-                if resposta.nivel1 != 0:
-                    contador = contador+1
-            if idade >=8 and idade <=12:
-                soma = soma + resposta.nivel2
-                if resposta.nivel2 != 0:
-                    contador = contador+1
-            if idade >=13 and idade <=19:
-                soma = soma + resposta.nivel3
-                if resposta.nivel3 != 0:
-                    contador = contador+1
-            if idade >=20 and idade <=24:
-                soma = soma + resposta.nivel4
-                if resposta.nivel4 != 0:
-                    contador = contador+1
-            if idade >=25:
-                soma = soma + resposta.nivel5
-                if resposta.nivel5 != 0:
-                    contador = contador+1
+    def tarefaDiferenciacao(self):
+        texto=""
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
 
-        media = soma/contador
-        contador=0
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
 
-        for item in areaafetiva:
-            resposta = RespostaAreaAfetiva.objects.get(id=item.resposta_id)
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
 
-            if idade >=0 and idade <=7:
-                if resposta.nivel1 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel1 - media)*(resposta.nivel1 - media))
-            if idade >=8 and idade <=12:
-                if resposta.nivel2 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel2 - media)*(resposta.nivel2 - media))
-            if idade >=13 and idade <=19:
-                if resposta.nivel3 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel3 - media)*(resposta.nivel3 - media))
-            if idade >=20 and idade <=24:
-                if resposta.nivel4 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel4 - media)*(resposta.nivel4 - media))
-            if idade >=25:
-                if resposta.nivel5 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel5 - media)*(resposta.nivel5 - media))
-
+        somadiferenciacao=0
+        perguntasdiferenciacao=["S05","S06","S15","S16","S24","S25"]
+        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
         for item in seletiva:
             resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+            pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
 
-            if idade >=0 and idade <=7:
-                if resposta.nivel1 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel1 - media)*(resposta.nivel1 - media))
-            if idade >=8 and idade <=12:
-                if resposta.nivel2 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel2 - media)*(resposta.nivel2 - media))
-            if idade >=13 and idade <=19:
-                if resposta.nivel3 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel3 - media)*(resposta.nivel3 - media))
-            if idade >=20 and idade <=24:
-                if resposta.nivel4 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel4 - media)*(resposta.nivel4 - media))
-            if idade >=25:
-                if resposta.nivel5 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel5 - media)*(resposta.nivel5 - media))
+            if pergunta.numero in perguntasdiferenciacao:
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            texto="pdfdiferenciacao"
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            texto="pdfdiferenciacao"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            texto="pdfdiferenciacao"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            texto="pdfdiferenciacao"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            texto="pdfdiferenciacao"
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            texto="pdfdiferenciacao"
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somadiferenciacao=somadiferenciacao+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            texto="pdfdiferenciacao"
+        if somadiferenciacao/len(perguntasdiferenciacao) < 3:
+            texto="pdfdiferenciacao"
 
-        for item in interventiva:
-            resposta = RespostaInterventiva.objects.get(id=item.resposta_id)
+        return texto
 
-            if idade >=0 and idade <=7:
-                if resposta.nivel1 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel1 - media)*(resposta.nivel1 - media))
-            if idade >=8 and idade <=12:
-                if resposta.nivel2 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel2 - media)*(resposta.nivel2 - media))
-            if idade >=13 and idade <=19:
-                if resposta.nivel3 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel3 - media)*(resposta.nivel3 - media))
-            if idade >=20 and idade <=24:
-                if resposta.nivel4 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel4 - media)*(resposta.nivel4 - media))
-            if idade >=25:
-                if resposta.nivel5 != 0:
-                    contador = contador+1
-                    variancia= variancia + ((resposta.nivel5 - media)*(resposta.nivel5 - media))
+    def tarefaAutonomia(self):
+        texto=""
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
 
-        desvio = math.sqrt(variancia/(contador-1))
-        dict={
-            "media":media,
-            "desvio":desvio
-        }
-        return dict
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        somaautonomia=0
+        perguntasautonomia=["S01","S07","S08","S09","S10","S11","S12","S13","S28"]
+
+        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
+        for item in seletiva:
+            resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+            pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
+
+            if pergunta.numero in perguntasautonomia:
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            texto="pdfautonomia"
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            texto="pdfautonomia"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            texto="pdfautonomia"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            texto="pdfautonomia"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            texto="pdfautonomia"
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            texto="pdfautonomia"
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somaautonomia=somaautonomia+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            texto="pdfautonomia"
+
+        if somaautonomia/len(perguntasautonomia) < 3:
+            texto="pdfautonomia"
+
+        return texto
+
+    def tarefaAssertividade(self):
+        texto=""
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        somaassertividade=0
+        perguntasassertiva=["S14","S18","S20","S21","S30","S31","S32","S33",]
+
+
+        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
+        for item in seletiva:
+            resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+            pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
+
+            if pergunta.numero in perguntasassertiva:
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            texto="pdfassertividade"
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            texto="pdfassertividade"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            texto="pdfassertividade"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            texto="pdfassertividade"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            texto="pdfassertividade"
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            texto="pdfassertividade"
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somaassertividade=somaassertividade+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            texto="pdfassertividade"
+        if somaassertividade/len(perguntasassertiva) < 3:
+            texto="pdfassertividade"
+
+        return texto
+
+    def tarefaAutoestima(self):
+        texto=""
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        paciente= Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+
+        nascimento=str(paciente.nascimento)
+        ano = int(nascimento.split("-")[0])
+        mes=int(nascimento.split("-")[1])
+        dia=int(nascimento.split("-")[2])
+        atual=datetime.now()
+        anoAtual=atual.year
+        mesAtual=atual.month
+        diaAtual=atual.day
+
+        if mes > mesAtual:
+            idade = anoAtual-ano-1
+        if mes < mesAtual:
+            idade = anoAtual-ano
+        if mes == mesAtual:
+            if dia >= diaAtual:
+                idade = anoAtual-ano-1
+            if dia < diaAtual:
+                idade = anoAtual-ano
+
+        somaautoestima=0
+        perguntasautoEstima=["S02","S17","S19","S22","S23","S26","S27","S29"]
+
+        seletiva = Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=anamnesia.id)
+        for item in seletiva:
+            resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+            pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
+            if pergunta.numero in perguntasautoEstima:
+                if idade >=0 and idade <=3:
+                    if resposta.nivel0 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel0
+                        if resposta.nivel0 <=1:
+                            texto="pdfautoestima"
+                if idade >=4 and idade <=7:
+                    if resposta.nivel1 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel1
+                        if resposta.nivel1 <=1:
+                            texto="pdfautoestima"
+                if idade >=8 and idade <=12:
+                    if resposta.nivel2 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel2
+                        if resposta.nivel2 <=1:
+                            texto="pdfautoestima"
+                if idade >=13 and idade <=19:
+                    if resposta.nivel3 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel3
+                        if resposta.nivel3 <=1:
+                            texto="pdfautoestima"
+                if idade >=20 and idade <=24:
+                    if resposta.nivel4 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel4
+                        if resposta.nivel4 <=1:
+                            texto="pdfautoestima"
+                if idade >=25 and idade <=32:
+                    if resposta.nivel5 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel5
+                        if resposta.nivel5 <=1:
+                            autoEstima=Recomendacao.objects.get(nome=nome,intervalo="nivel5")
+                            texto="pdfautoestima"
+                if idade >=33:
+                    if resposta.nivel6 != 0:
+                        somaautoestima=somaautoestima+resposta.nivel6
+                        if resposta.nivel6 <=1:
+                            texto="pdfautoestima"
+
+        if somaautoestima/len(perguntasautoEstima) < 3:
+            texto="pdfautoestima"
+
+        return texto
+
+class RecomendacaoInterventiva(TemplateView):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(RecomendacaoInterventiva, self).dispatch(*args, **kwargs)
+
+    def anamnesia(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+        main(paciente_id,analise_id)
+        return anamnesia
+
+def pdf_view(request, paciente_id,analise_id):
+    paciente_id=paciente_id
+    analise_id=analise_id
+    return FileResponse(open("/home/thaispirate/genograma-"+paciente_id+"-"+analise_id+".pdf", 'rb'), content_type='application/pdf')
+
+
 
 #Views do Psicólogo
 def PsicologoAdministracao(request):
@@ -3958,7 +4874,8 @@ class CadastroPsicologoWizard(SessionWizardView):
         user.email = form_data[0]['username']
         user.first_name = form_data[0]['nome']
         user.save()
-        group = Group.objects.get(name='psicologo')
+        group = Group.objects.get_or_create(name="psicologo")
+        group = Group.objects.get(name="psicologo")
         user.groups.add(group)
         psicologo = Psicologo()
         psicologo.usuario = user

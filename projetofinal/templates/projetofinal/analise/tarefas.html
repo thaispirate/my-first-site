@@ -1,0 +1,60 @@
+{% extends 'projetofinal/analise/base.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+           <div class="panel panel-info">
+            <div class="panel-heading">Recomendações</div>
+                <div class="panel-body">
+
+                <p>{{view.anamnesia.inicio|date:'d-m-Y H:i' }}</p>
+              <hr class="featurette-divider">
+                    <h3>Tarefas</h3>
+                    <h5>Estes exercícios foram escolhidos para você de acordo com suas respostas nas fases anteriores.</h5>
+                    <h5>...</h5>
+                    {% for key,value in view.tarefaAreaAfetiva.items %}
+                    {%if key == "afetivo" and value == "pdfafetivo1"%}
+                                <a href = "{% static 'pdf/crid.pdf' %}">Exercício da área afetivo relacional</a>
+                    {%endif%}
+                    {%if key == "afetivo" and value == "pdfafetivo2"%}
+                                <a href = "{% static 'pdf/crid.pdf' %}">Exercício da área afetivo relacional</a>
+                    <br>
+                    {%endif%}
+                    {%endfor%}
+                    {% for key,value in view.tarefaAreaAfetiva.items %}
+                    {%if key == "geral" and value == "pdfindiferenciacao"%}
+                    <br>
+                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício do padrão de indiferenciação</a>
+                    {%endif%}
+                    {%endfor%}
+                    {%if view.tarefaRelacionamento == "pdfrelacionamento"%}
+                    <br>
+                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício da area seletiva(Relacionamento)</a>
+                    {%endif%}
+                    {%if view.tarefaDiferenciacao == "pdfdiferenciacao"%}
+                    <br>
+                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício da area seletiva(Diferenciação)</a>
+                    {%endif%}
+                    {%if view.tarefaAutonomia == "pdfautonomia"%}
+                    <br>
+                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício da area seletiva(Autonomia)</a>
+                    {%endif%}
+                    {%if view.tarefaAssertividade == "pdfassertividade"%}
+                    <br>
+                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício da area seletiva(Assertividade)</a>
+                    {%endif%}
+                    {%if view.tarefaAutoestima == "pdfautoestima"%}
+                    <br>
+                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício da area seletiva(Auto Estima)</a>
+                    {%endif%}
+              <hr class="featurette-divider">
+             <div class="col-md-12 text-center">
+              <a type="submit" href="/analise/resumo/{{user.id}}/{{view.anamnesia.id}}/tarefas" class="btn btn-default">Continuar atendimento</a>
+             </div>
+           </div>
+           </div>
+
+
+{% endblock %}
+

@@ -1,8 +1,8 @@
 import random
 from django import forms
-from .models import User,Paciente, Psicologo, Familia, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva,\
+from .models import User, Chave, Paciente, Psicologo, Familia, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva,\
     Anamnesia, GrauIndiferenciacao, PerguntaSeletiva, RespostaSeletiva,Seletiva,\
-    PerguntaInterventiva, RespostaInterventiva, Interventiva
+    PerguntaInterventiva, Interventiva
 from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
@@ -32,6 +32,7 @@ class UserCreationForm(forms.ModelForm):
     error_messages = {
         'duplicate_username': _("Já existe um usuário com este email."),
         'password_mismatch': _("As senhas precisam ser iguais"),
+        'chave_acesso': _("Chave de acesso inválida"),
     }
     username = forms.EmailField(label=_("Email"),
         error_messages={
@@ -50,6 +51,11 @@ class UserCreationForm(forms.ModelForm):
         error_messages={
             'required': _("Este campo é obrigatório")
         })
+    code = forms.CharField(label=_("Chave de acesso"),
+        error_messages={
+            'required': _("Este campo é obrigatório")
+        })
+
 
     class Meta:
         model = User
@@ -77,6 +83,15 @@ class UserCreationForm(forms.ModelForm):
                 code='password_mismatch',
             )
         return password2
+
+    def clean_code(self):
+        code = self.cleaned_data.get("code")
+        if not Chave.objects.filter(chave = code).exists():
+            raise forms.ValidationError(
+                self.error_messages['chave_acesso'],
+                code='chave_acesso',
+            )
+        return code
 
     def save(self, commit=True):
         user = super(UserCreationForm, self).save(commit=False)
@@ -925,15 +940,10 @@ class PerguntasInterventivas(forms.Form):
         super(PerguntasInterventivas, self).__init__(*args,**kwargs)
         pergunta = PerguntaInterventiva.objects.all()
         for item in pergunta:
-            resposta = RespostaInterventiva.objects.filter(pergunta_id=item.id)
-            RESPOSTAS = []
-            for resp in resposta:
-                RESPOSTAS.append((resp.letra, resp.resposta))
-            self.fields[item.numero] = forms.ChoiceField(
+            self.fields[item.numero] = forms.CharField(
                 label= item.numero + ". " + item.pergunta,
-                choices = RESPOSTAS,
-                error_messages={'required':'Você esqueceu de marcar'},
-                widget = forms.RadioSelect,
+                error_messages={'required':'Você esqueceu de responder'},
+                widget=forms.Textarea(attrs={'rows': 2, 'cols': 40})
             )
 
 class ConsultarPerguntasInterventivas(forms.Form):
@@ -942,19 +952,12 @@ class ConsultarPerguntasInterventivas(forms.Form):
         analise_id = kwargs.pop('analise_id', None)
         super(ConsultarPerguntasInterventivas, self).__init__(*args,**kwargs)
         pergunta = PerguntaInterventiva.objects.all()
-        pacienteResposta = Interventiva.objects.filter(anamnesia_id=analise_id).order_by('resposta')
+        pacienteResposta = Interventiva.objects.filter(anamnesia_id=analise_id).order_by('pergunta')
         for item,resposta in zip(pergunta,pacienteResposta):
-            respostas = RespostaInterventiva.objects.filter(pergunta_id=item.id)
-            RESPOSTAS = []
-            for resp in respostas:
-                RESPOSTAS.append((resp.letra, resp.resposta))
-            escolhida = RespostaInterventiva.objects.get(id=resposta.resposta_id)
             self.fields[item.id] = forms.ChoiceField(
                 label= item.numero + ". " + item.pergunta,
-                choices = RESPOSTAS,
-                widget = forms.RadioSelect,
-                initial= escolhida.letra,
-
+                widget=forms.Textarea(attrs={'rows': 2, 'cols': 40}),
+                initial= resposta.resposta
             )
 
 

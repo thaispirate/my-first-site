@@ -1,5 +1,5 @@
 import math
-import cairocffi as cairo
+import cairo as cairocffi
 from .models import Familia,Paciente,Relacionamento
 
 ########################### Desenha uma pessoa chave na familia

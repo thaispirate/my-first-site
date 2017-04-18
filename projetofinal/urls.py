@@ -2,19 +2,20 @@ from django.conf.urls import url
 from . import views
 from .forms import CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,CadastroAvoPaterna,\
     CadastroAvoMaterno, CadastroAvoMaterna,EdicaoPaciente, CadastroPsicologoForm
-from .views import CadastroWizard, EditarCadastro, PsicologoPaciente, CadastroPsicologoWizard,\
+from .views import Home,CadastroWizard, EditarCadastro, PsicologoPaciente, CadastroPsicologoWizard,\
     InserirAnalise,InserirAnaliseRelacionamento,InserirAnaliseIndiferenciacao,InserirAnaliseSeletiva,InserirAnaliseInterventiva,\
     ConsultarAnalise, ConsultandoAnalise,AnalisePaciente, ConsultandoAnalisePaciente, GenogramaPaciente, \
     ProsseguirAnalise,Recomendacoes,ConsultandoRecomendacoes, RecomendacaoAreaAfetiva, RecomendacaoIndiferenciacao,\
-    RecomendacaoSeletiva, RecomendacaoInterventiva, ResumoAreaAfetiva, ResumoRelacionamento, ResumoSeletiva, ResumoInterventiva
+    RecomendacaoSeletiva,RecomendacaoTarefas, RecomendacaoInterventiva,\
+    ResumoAreaAfetiva, ResumoRelacionamento, ResumoSeletiva,ResumoTarefas, ResumoInterventiva
 
 handler404="views.erro404"
 
 urlpatterns = [
 
     # Paciente
-    url(r'^$', views.Home),
-    url(r'^home$', views.Home),
+    url(r'^$', Home.as_view()),
+    url(r'^home/(?P<paciente_id>\d+)/$', Home.as_view()),
     url(r'^sair$', views.LogoutView),
     url(r'^erro404$', views.Erro404),
     url(r'^cadastro$', CadastroWizard.as_view([CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna]), name="cadastro"),
@@ -34,6 +35,7 @@ urlpatterns = [
     url(r'^analise/resumo/(?P<paciente_id>\d+)/areaafetiva$', ResumoAreaAfetiva.as_view()),
     url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/relacionamentos$', ResumoRelacionamento.as_view()),
     url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/seletiva$', ResumoSeletiva.as_view()),
+    url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/tarefas$', ResumoTarefas.as_view()),
     url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/interventiva$', ResumoInterventiva.as_view()),
     url(r'^analise/inserir/(?P<paciente_id>\d+)/$', InserirAnalise.as_view()),
     url(r'^analise/inserir/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/recomendacao/areaafetiva$', RecomendacaoAreaAfetiva.as_view(template_name="projetofinal/analise/areaAfetiva.html")),
@@ -57,6 +59,8 @@ urlpatterns = [
     url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/indiferenciacao$', RecomendacaoIndiferenciacao.as_view(template_name="projetofinal/analise/recomendacao/indiferenciacao.html")),
     url(r'^pdf/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', views.pdf_view),
     url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/seletiva$', RecomendacaoSeletiva.as_view(template_name="projetofinal/analise/seletiva.html")),
+    url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/tarefas$', RecomendacaoTarefas.as_view(template_name="projetofinal/analise/tarefas.html")),
+
     url(r'^analise/recomendacao/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/interventiva$', RecomendacaoInterventiva.as_view(template_name="projetofinal/analise/recomendacao/interventiva.html")),
 
 
