@@ -53,8 +53,8 @@
                     Olá, {{user.first_name|capfirst}}
                 </div>
                     <li><a href="/home/{{user.id}}/">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-                    <li class="active "><a href="/cadastro/editar/{{ user.id }}">Editar Cadastro<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
-                    <li ><a href="/atualizar_chave/{{user.id}}">Atualizar Chave<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-wrench"></span></a></li>
+                    <li class=><a href="/cadastro/editar/{{ user.id }}">Editar Cadastro<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+                    <li class="active"><a href="/atualizar_chave/{{user.id}}">Atualizar Chave<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-wrench"></span></a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Atendimento<span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-edit"></span></a>
                         <ul class="dropdown-menu forAnimate" role="menu">
@@ -66,7 +66,7 @@
                         </ul>
                     </li>
                     <li><a href="/analise/recomendacao/{{user.id}}">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
-                    <li ><a href="/sair">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
+                    <li ><a href="/sair"">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
                 </ul>
             </div>
         </div>
@@ -77,11 +77,6 @@
 
     <form action="" method="post">{% csrf_token %}
     <div class="container">
-      <div id="myProgressbar" class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="0"  aria-valuemin="0" aria-valuemax="100" style="width:0%">
-          Passo {{ wizard.steps.step1 }} de {{ wizard.steps.count }}
-        </div>
-      </div>
     <table>
     {{ wizard.management_form }}
     {% if wizard.form.forms %}
@@ -113,10 +108,6 @@
     <script src="{% static 'assets/javascript/bootstrap.js' %}"></script>
     <script src="{% static 'assets/javascript/progressbar.js' %}"></script>
 
-    <script>
-      value = {{ wizard.steps.step1 }}/{{ wizard.steps.count }}*100;
-      $('#myProgressbar').progressbar(value);
-    </script>
   <!-- $('#myProgressbar').progressbar(20) -->
 
   </body>

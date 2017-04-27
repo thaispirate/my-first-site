@@ -9,45 +9,75 @@
                 <div class="panel-body">
 
                 <p>{{view.anamnesia.inicio|date:'d-m-Y H:i' }}</p>
-              <hr class="featurette-divider">
+                <hr class="featurette-divider">
                     <h3>Tarefas</h3>
                     <h5>Estes exercícios foram escolhidos para você de acordo com suas respostas nas fases anteriores.</h5>
-                    <h5>...</h5>
                     {% for key,value in view.tarefaAreaAfetiva.items %}
-                    {%if key == "afetivo" and value == "pdfafetivo1"%}
-                                <a href = "{% static 'pdf/crid.pdf' %}">Exercício da área afetivo relacional</a>
+                    {%if key == "afetivo" and value == "AreaAfetiva_Afetivo Relacional_1.5-3"%}
+                        <a href = "{% static 'pdf/AreaAfetiva_Afetivo Relacional_1.5-3.pdf' %}">Exercício da Área Afetiva: Afetivo Relacional</a>
+                    <br>
                     {%endif%}
-                    {%if key == "afetivo" and value == "pdfafetivo2"%}
-                                <a href = "{% static 'pdf/crid.pdf' %}">Exercício da área afetivo relacional</a>
+                    {%if key == "afetivo" and value == "AreaAfetiva_Afetivo Relacional_0-1.5"%}
+                        <a href = "{% static 'pdf/AreaAfetiva_Afetivo Relacional_0-1.5.pdf' %}">Exercício da Área Afetiva: Afetivo Relacional</a>
+                    <br>
+                    {%endif%}
+                    {%if key == "produtividade" and value == "AreaAfetiva_Produtividade"%}
+                        <a href = "{% static 'pdf/AreaAfetiva_Produtividade.pdf' %}">Exercício da Área Afetiva: Produtividade</a>
+                    <br>
+                    {%endif%}
+                    {%if key == "organico" and value == "AreaAfetiva_Organico"%}
+                        <a href = "{% static 'pdf/AreaAfetiva_Organico.pdf' %}">Exercício da Área Afetiva: Orgânico</a>
+                    <br>
+                    {%endif%}
+                    {%if key == "espiritual" and value == "AreaAfetiva_Espiritual"%}
+                        <a href = "{% static 'pdf/AreaAfetiva_Espiritual.pdf' %}">Exercício da Área Afetiva: Espiritual</a>
+                    <br>
+                    {%endif%}
+                    {%if key == "sociocultural" and value == "AreaAfetiva_SocioCultural"%}
+                        <a href = "{% static 'pdf/AreaAfetiva_SocioCultural.pdf' %}">Exercício da Área Afetiva: SocioCultural</a>
                     <br>
                     {%endif%}
                     {%endfor%}
-                    {% for key,value in view.tarefaAreaAfetiva.items %}
-                    {%if key == "geral" and value == "pdfindiferenciacao"%}
+                    {% for key,value in view.tarefaIndiferenciacao.items %}
+                    {%if key == "geral" and value == "Padrao de Funcionamento Mental Geral"%}
                     <br>
-                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício do padrão de indiferenciação</a>
+                        <a href = "{% static 'pdf/Padrao de Funcionamento Mental Geral.pdf' %}">Exercício do Padrão de Funcionamento Mental: Geral</a>
+                    {%endif%}
+                    {%if key == "adaptativo" and value == "Padrao de Funcionamento Mental Adaptativo" %}
+                    <br>
+                        <a href = "{% static 'pdf/Padrao de Funcionamento Mental Adaptativo.pdf' %}">Exercício do Padrão de Funcionamento Mental: Adaptativo</a>
+                    {%endif%}
+                    {%if key == "reativo" and value == "Padrao de Funcionamento Mental Reativo"%}
+                    <br>
+                        <a href = "{% static 'pdf/Padrao de Funcionamento Mental Reativo.pdf' %}">Exercício do Padrão de Funcionamento Mental: Reativo</a>
+                    {%endif%}
+                    {%if key == "criativo" and value == "Padrao de Funcionamento Mental Criativo"%}
+                    <br>
+                        <a href = "{% static 'pdf/Padrao de Funcionamento Mental Criativo.pdf' %}">Exercício do Padrão de Funcionamento Mental: Criativo</a>
                     {%endif%}
                     {%endfor%}
+                    <br>
                     {%if view.tarefaRelacionamento == "pdfrelacionamento"%}
                     <br>
-                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício da area seletiva(Relacionamento)</a>
+                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício de Seleção: Relacionamento</a>
                     {%endif%}
                     {%if view.tarefaDiferenciacao == "pdfdiferenciacao"%}
                     <br>
-                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício da area seletiva(Diferenciação)</a>
+                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício de Seleção: Diferenciação</a>
                     {%endif%}
                     {%if view.tarefaAutonomia == "pdfautonomia"%}
                     <br>
-                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício da area seletiva(Autonomia)</a>
+                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício de Seleção: Autonomia</a>
                     {%endif%}
                     {%if view.tarefaAssertividade == "pdfassertividade"%}
                     <br>
-                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício da area seletiva(Assertividade)</a>
+                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício de Seleção: Assertividade</a>
                     {%endif%}
                     {%if view.tarefaAutoestima == "pdfautoestima"%}
                     <br>
-                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício da area seletiva(Auto Estima)</a>
+                        <a href = "{% static 'pdf/crid.pdf' %}">Exercício de Seleção: Auto Estima</a>
                     {%endif%}
+
               <hr class="featurette-divider">
              <div class="col-md-12 text-center">
               <a type="submit" href="/analise/resumo/{{user.id}}/{{view.anamnesia.id}}/tarefas" class="btn btn-default">Continuar atendimento</a>

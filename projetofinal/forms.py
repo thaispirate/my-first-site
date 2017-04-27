@@ -91,6 +91,13 @@ class UserCreationForm(forms.ModelForm):
                 self.error_messages['chave_acesso'],
                 code='chave_acesso',
             )
+        else:
+            chave=Chave.objects.get(chave=code)
+            if chave.padrao == "usada":
+                raise forms.ValidationError(
+                self.error_messages['chave_acesso'],
+                code='chave_acesso',
+            )
         return code
 
     def save(self, commit=True):
@@ -548,6 +555,31 @@ class CadastroPsicologoForm(UserCreationForm):
 
 
     nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório'})
+
+class AtualizarChave(forms.Form):
+
+    error_messages = {
+        'chave_acesso': _("Chave de acesso inválida"),
+    }
+
+    chave = forms.CharField(label="Digite sua nova chave:",
+                            error_messages={'required':'Este campo é obrigatório'})
+
+    def clean_chave(self):
+        code = self.cleaned_data.get("chave")
+        if not Chave.objects.filter(chave = code).exists():
+            raise forms.ValidationError(
+                self.error_messages['chave_acesso'],
+                code='chave_acesso',
+            )
+        else:
+            chave=Chave.objects.get(chave=code)
+            if chave.padrao == "usada":
+                raise forms.ValidationError(
+                self.error_messages['chave_acesso'],
+                code='chave_acesso',
+            )
+        return chave
 
 class PerguntasAreaAfetiva(forms.Form):
 
