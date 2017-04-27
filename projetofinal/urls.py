@@ -9,7 +9,7 @@ from .analise import InserirAnalise,InserirAnaliseRelacionamento,InserirAnaliseI
     AnaliseFinalizada,ConsultarAnalise, ConsultandoAnalise,\
     ProsseguirAnalise,Recomendacoes,ConsultandoRecomendacoes, RecomendacaoAreaAfetiva, RecomendacaoIndiferenciacao,\
     RecomendacaoSeletiva,RecomendacaoTarefas, RecomendacaoInterventiva,\
-    ResumoAreaAfetiva, ResumoRelacionamento, ResumoSeletiva,ResumoTarefas, ResumoInterventiva
+    ResumoAreaAfetiva, ResumoRelacionamento, ResumoSeletiva,ResumoTarefas, ResumoExercicios, ResumoInterventiva
 
 handler404="paciente.erro404"
 
@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/relacionamentos$', ResumoRelacionamento.as_view()),
     url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/seletiva$', ResumoSeletiva.as_view()),
     url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/tarefas$', ResumoTarefas.as_view()),
+    url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/exercicios$', ResumoExercicios.as_view()),
     url(r'^analise/resumo/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/interventiva$', ResumoInterventiva.as_view()),
     url(r'^analise/inserir/(?P<paciente_id>\d+)/$', InserirAnalise.as_view()),
     url(r'^analise/inserir/(?P<paciente_id>\d+)/(?P<analise_id>\d+)/recomendacao/areaafetiva$', RecomendacaoAreaAfetiva.as_view(template_name="projetofinal/analise/areaAfetiva.html")),

@@ -112,6 +112,29 @@ class ResumoSeletiva(TemplateView):
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         return paciente
 
+class ResumoExercicios(TemplateView):
+    template_name = "projetofinal/analise/resumo/exercicios.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ResumoExercicios, self).dispatch(*args, **kwargs)
+
+    def anamnesia(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+        return anamnesia
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        return paciente
+
 class ResumoInterventiva(TemplateView):
     template_name = "projetofinal/analise/resumo/interventiva.html"
 
