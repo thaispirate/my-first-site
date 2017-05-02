@@ -65,6 +65,13 @@ class Home(TemplateView):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id).last()
+        agora=datetime.now()
+        inicio =anamnesia.inicio
+        tempo=agora-inicio
+        paciente.tempo= 30 - tempo.days
+        paciente.save()
+
         return paciente
 
 def LoginPaciente(request):

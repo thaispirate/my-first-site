@@ -37,7 +37,7 @@
             </div>
          <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
-            Olá, {{user.first_name|capfirst}}
+            Olá, {{user.first_name|capfirst}}. Faltam {{view.paciente.tempo}} dias
           </form>
           </div>
           </div>
@@ -50,7 +50,7 @@
             <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                 <div class="desktop-hide">
-                    Olá, {{user.first_name|capfirst}}
+                    Olá, {{user.first_name|capfirst}}. Faltam {{view.paciente.tempo}} dias
                 </div>
                     <li><a href="/home/{{user.id}}/">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                     <li class="active "><a href="/cadastro/editar/{{ user.id }}">Editar Cadastro<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
@@ -61,7 +61,9 @@
                             {%if view.paciente.retornos == 0%}
                             <li><a href="/analise/resumo/{{ user.id }}/areaafetiva">Iniciar</a></li>
                             {%endif%}
+                            {%if view.paciente.tempo != 0%}
                             <li><a href="/analise/prosseguir/{{user.id}}">Prosseguir</a></li>
+                            {%endif%}
                             <li><a href="/analise/consultar/{{user.id}}">Consultar</a></li>
                         </ul>
                     </li>

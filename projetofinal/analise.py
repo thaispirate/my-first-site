@@ -955,7 +955,7 @@ class ConsultarAnalise(TemplateView):
         grafico = simplejson.dumps(dados)
         return grafico
 
-    def paciente(self):
+    def pacienteNome(self):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
@@ -2588,13 +2588,13 @@ class ConsultandoRecomendacoes(TemplateView):
             texto["afetivo"]="AreaAfetiva_Afetivo Relacional_1.5-3"
         if afetivoRelacional >= 0 and afetivoRelacional < 1.5:
             texto["afetivo"]="AreaAfetiva_Afetivo Relacional_0-1.5"
-        if produtividade >=0 and produtividade < 3:
+        if produtividade >=0 and produtividade < 1.5:
             texto["produtividade"]="AreaAfetiva_Produtividade"
-        if organico >=0 and organico < 3:
+        if organico >=0 and organico < 1.5:
             texto["organico"]="AreaAfetiva_Organico"
-        if espiritual >=0 and espiritual < 3:
+        if espiritual >=0 and espiritual < 1.5:
             texto["espiritual"]="AreaAfetiva_Espiritual"
-        if socioCultural >=0 and socioCultural < 3:
+        if socioCultural >=0 and socioCultural < 1.5:
             texto["sociocultural"]="AreaAfetiva_SocioCultural"
         return texto
 
@@ -4066,13 +4066,13 @@ class RecomendacaoTarefas(TemplateView):
             texto["afetivo"]="AreaAfetiva_Afetivo Relacional_1.5-3"
         if afetivoRelacional >= 0 and afetivoRelacional < 1.5:
             texto["afetivo"]="AreaAfetiva_Afetivo Relacional_0-1.5"
-        if produtividade >=0 and produtividade < 3:
+        if produtividade >=0 and produtividade < 1.5:
             texto["produtividade"]="AreaAfetiva_Produtividade"
-        if organico >=0 and organico < 3:
+        if organico >=0 and organico < 1.5:
             texto["organico"]="AreaAfetiva_Organico"
-        if espiritual >=0 and espiritual < 3:
+        if espiritual >=0 and espiritual < 1.5:
             texto["espiritual"]="AreaAfetiva_Espiritual"
-        if socioCultural >=0 and socioCultural < 3:
+        if socioCultural >=0 and socioCultural < 1.5:
             texto["sociocultural"]="AreaAfetiva_SocioCultural"
         return texto
 

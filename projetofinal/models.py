@@ -34,6 +34,7 @@ class Paciente(models.Model):
     escolaridade = models.CharField(max_length=15, null=True,blank=True)
     psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE,null=True)
     retornos = models.PositiveIntegerField(null=True, blank=True)
+    tempo= models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.usuario.first_name
