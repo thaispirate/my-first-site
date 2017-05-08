@@ -16,7 +16,7 @@
               {{ view.textoAreaAfetiva }}
               <hr class="featurette-divider">
               {% if view.indiferenciacao %}
-                    <a href="/pdf/{{user.id}}/{{view.anamnesia.id}}">Genograma</a>
+                    <a href="/pdf/{{user.id}}/{{view.anamnesia.id}}" target="_blank">Genograma</a>
                     <div id="radar" style="min-width: 100px;min-height: 100px;height: 500px; margin: 0 auto"></div>
                     <hr class="featurette-divider">
                     {{ view.textoIndiferenciacao }}
@@ -36,68 +36,68 @@
                     <h5>Estes exercícios foram escolhidos para você de acordo com suas respostas nas fases anteriores.</h5>
                     {% for key,value in view.tarefaAreaAfetiva.items %}
                     {%if key == "afetivo" and value == "AreaAfetiva_Afetivo Relacional_1.5-3"%}
-                        <a href = "{% static 'pdf/AreaAfetiva_Afetivo Relacional_1.5-3.pdf' %}">Exercício da Área Afetiva: Afetivo Relacional</a>
+                        <a href = "{% static 'pdf/AreaAfetiva_Afetivo Relacional_1.5-3.pdf' %}" target="_blank">Exercício da Área Afetiva: Afetivo Relacional</a>
                     <br>
                     {%endif%}
                     {%if key == "afetivo" and value == "AreaAfetiva_Afetivo Relacional_0-1.5"%}
-                        <a href = "{% static 'pdf/AreaAfetiva_Afetivo Relacional_0-1.5.pdf' %}">Exercício da Área Afetiva: Afetivo Relacional</a>
+                        <a href = "{% static 'pdf/AreaAfetiva_Afetivo Relacional_0-1.5.pdf' %}" target="_blank">Exercício da Área Afetiva: Afetivo Relacional</a>
                     <br>
                     {%endif%}
                     {%if key == "produtividade" and value == "AreaAfetiva_Produtividade"%}
-                        <a href = "{% static 'pdf/AreaAfetiva_Produtividade.pdf' %}">Exercício da Área Afetiva: Produtividade</a>
+                        <a href = "{% static 'pdf/AreaAfetiva_Produtividade.pdf' %}" target="_blank">Exercício da Área Afetiva: Produtividade</a>
                     <br>
                     {%endif%}
                     {%if key == "organico" and value == "AreaAfetiva_Organico"%}
-                        <a href = "{% static 'pdf/AreaAfetiva_Organico.pdf' %}">Exercício da Área Afetiva: Orgânico</a>
+                        <a href = "{% static 'pdf/AreaAfetiva_Organico.pdf' %}" target="_blank">Exercício da Área Afetiva: Orgânico</a>
                     <br>
                     {%endif%}
                     {%if key == "espiritual" and value == "AreaAfetiva_Espiritual"%}
-                        <a href = "{% static 'pdf/AreaAfetiva_Espiritual.pdf' %}">Exercício da Área Afetiva: Espiritual</a>
+                        <a href = "{% static 'pdf/AreaAfetiva_Espiritual.pdf' %}" target="_blank">Exercício da Área Afetiva: Espiritual</a>
                     <br>
                     {%endif%}
                     {%if key == "sociocultural" and value == "AreaAfetiva_SocioCultural"%}
-                        <a href = "{% static 'pdf/AreaAfetiva_SocioCultural.pdf' %}">Exercício da Área Afetiva: SocioCultural</a>
+                        <a href = "{% static 'pdf/AreaAfetiva_SocioCultural.pdf' %}" target="_blank">Exercício da Área Afetiva: SocioCultural</a>
                     <br>
                     {%endif%}
                     {%endfor%}
                     {% for key,value in view.tarefaIndiferenciacao.items %}
                     {%if key == "geral" and value == "Padrao de Funcionamento Mental Geral"%}
                     <br>
-                        <a href = "{% static 'pdf/Padrao de Funcionamento Mental Geral.pdf' %}">Exercício do Padrão de Funcionamento Mental: Geral</a>
+                        <a href = "{% static 'pdf/Padrao de Funcionamento Mental Geral.pdf' %}" target="_blank">Exercício do Padrão de Funcionamento Mental: Geral</a>
                     {%endif%}
                     {%if key == "adaptativo" and value == "Padrao de Funcionamento Mental Adaptativo" %}
                     <br>
-                        <a href = "{% static 'pdf/Padrao de Funcionamento Mental Adaptativo.pdf' %}">Exercício do Padrão de Funcionamento Mental: Adaptativo</a>
+                        <a href = "{% static 'pdf/Padrao de Funcionamento Mental Adaptativo.pdf' %}" target="_blank">Exercício do Padrão de Funcionamento Mental: Adaptativo</a>
                     {%endif%}
                     {%if key == "reativo" and value == "Padrao de Funcionamento Mental Reativo"%}
                     <br>
-                        <a href = "{% static 'pdf/Padrao de Funcionamento Mental Reativo.pdf' %}">Exercício do Padrão de Funcionamento Mental: Reativo</a>
+                        <a href = "{% static 'pdf/Padrao de Funcionamento Mental Reativo.pdf' %}" target="_blank">Exercício do Padrão de Funcionamento Mental: Reativo</a>
                     {%endif%}
                     {%if key == "criativo" and value == "Padrao de Funcionamento Mental Criativo"%}
                     <br>
-                        <a href = "{% static 'pdf/Padrao de Funcionamento Mental Criativo.pdf' %}">Exercício do Padrão de Funcionamento Mental: Criativo</a>
+                        <a href = "{% static 'pdf/Padrao de Funcionamento Mental Criativo.pdf' %}" target="_blank">Exercício do Padrão de Funcionamento Mental: Criativo</a>
                     {%endif%}
                     {%endfor%}
                     <br>
                     {%if view.tarefaRelacionamento == "pdfrelacionamento"%}
                     <br>
-                        <a href = "{% static 'pdf/Selecao_Relacionamento.pdf' %}">Exercício de Seleção: Relacionamento</a>
+                        <a href = "{% static 'pdf/Selecao_Relacionamento.pdf' %}" target="_blank">Exercício de Seleção: Relacionamento</a>
                     {%endif%}
                     {%if view.tarefaDiferenciacao == "pdfdiferenciacao"%}
                     <br>
-                        <a href = "{% static 'pdf/Selecao_Diferenciacao.pdf' %}">Exercício de Seleção: Diferenciação</a>
+                        <a href = "{% static 'pdf/Selecao_Diferenciacao.pdf' %}" target="_blank">Exercício de Seleção: Diferenciação</a>
                     {%endif%}
                     {%if view.tarefaAutonomia == "pdfautonomia"%}
                     <br>
-                        <a href = "{% static 'pdf/Selecao_Autonomia.pdf' %}">Exercício de Seleção: Autonomia</a>
+                        <a href = "{% static 'pdf/Selecao_Autonomia.pdf' %}" target="_blank">Exercício de Seleção: Autonomia</a>
                     {%endif%}
                     {%if view.tarefaAssertividade == "pdfassertividade"%}
                     <br>
-                        <a href = "{% static 'pdf/Selecao_Assertividade.pdf' %}">Exercício de Seleção: Assertividade</a>
+                        <a href = "{% static 'pdf/Selecao_Assertividade.pdf' %}" target="_blank">Exercício de Seleção: Assertividade</a>
                     {%endif%}
                     {%if view.tarefaAutoestima == "pdfautoestima"%}
                     <br>
-                        <a href = "{% static 'pdf/Selecao_AutoEstima.pdf' %}">Exercício de Seleção: Auto Estima</a>
+                        <a href = "{% static 'pdf/Selecao_AutoEstima.pdf' %}" target="_blank">Exercício de Seleção: Auto Estima</a>
                     {%endif%}
                {%endif%}
            </div>

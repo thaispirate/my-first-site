@@ -61,14 +61,14 @@
                             {%if view.paciente.retornos == 0%}
                             <li><a href="/analise/resumo/{{ user.id }}/areaafetiva">Iniciar</a></li>
                             {%endif%}
-                            {%if view.paciente.tempo != 0%}
+                            {%if view.paciente.tempo >= 0%}
                             <li><a href="/analise/prosseguir/{{user.id}}">Prosseguir</a></li>
                             {%endif%}
                             <li><a href="/analise/consultar/{{user.id}}">Consultar</a></li>
                         </ul>
                     </li>
                     <li><a href="/analise/recomendacao/{{user.id}}">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
-                    <li><a href="/habilitar_psicologo/{{user.id}}">Habilitar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-search"></span></a></li>
+                    <li><a href="/habilitar_psicologo/{{user.id}}">Habilitar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-ok-circle"></span></a></li>
                     <li class="active"><a href="/buscar_psicologo/{{user.id}}">Buscar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-search"></span></a></li>
                     <li ><a href="/sair">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
                 </ul>

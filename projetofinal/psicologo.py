@@ -664,6 +664,15 @@ class GenogramaPaciente(TemplateView):
         anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id,padrao__isnull= False)
         for analise in anamnesia:
             analise_id = str(analise.id)
+        return anamnesia
+
+    def genograma(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id,padrao__isnull= False)
+        for analise in anamnesia:
+            analise_id = str(analise.id)
             main(paciente_id,analise_id)
         return anamnesia
 

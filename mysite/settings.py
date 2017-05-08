@@ -43,10 +43,6 @@ INSTALLED_APPS = (
     'password_reset',
     'jquery',
     'highcharts',
-    'haystack',
-    'dal',
-    'dal_select2',
-    'autocomplete_light',
     'projetofinal',
 )
 

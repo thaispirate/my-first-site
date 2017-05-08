@@ -86,7 +86,7 @@
             {% for analise in view.anamnesia %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="/pdf/{{view.paciente}}/{{analise.id}}">{{analise.inicio|date:'d-m-Y H:i'}}</a>
+                <td><a href="/pdf/{{view.paciente}}/{{analise.id}}" target="_blank">{{analise.inicio|date:'d-m-Y H:i'}}</a>
                 </td>
             </tr>
             {% endfor %}

@@ -57,12 +57,13 @@ class Home(TemplateView):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
-        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id).last()
-        agora=datetime.now()
-        inicio =anamnesia.inicio
-        tempo=agora-inicio
-        paciente.tempo= 30 - tempo.days
-        paciente.save()
+        if Anamnesia.objects.filter(paciente_id=paciente.id).exists():
+            anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id).last()
+            agora=datetime.now()
+            inicio =anamnesia.inicio
+            tempo=agora-inicio
+            paciente.tempo= 30 - tempo.days
+            paciente.save()
 
         return paciente
 
@@ -380,15 +381,6 @@ class BuscarPsicologo(SessionWizardView):
 
         return redirect(EdicaoRealizada)
 
-class BuscaPsicologo(autocomplete.Select2QuerySetView):
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(BuscaPsicologo, self).dispatch(*args, **kwargs)
-    def get_queryset(self):
-
-        qs = Psicologo.objects.all()
-
-        return qs
 #Classes do password-reset(esqueci a senha)
 
 class SaltMixin(object):

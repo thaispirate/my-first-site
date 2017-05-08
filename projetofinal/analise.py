@@ -245,6 +245,13 @@ class InserirAnalise(SessionWizardView):
                 paciente = Paciente.objects.get(usuario_id=paciente_id)
                 paciente.retornos = 1
                 paciente.save()
+        if Anamnesia.objects.filter(paciente_id=paciente.id).exists():
+            anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id).last()
+            agora=datetime.now()
+            inicio =anamnesia.inicio
+            tempo=agora-inicio
+            paciente.tempo= 30 - tempo.days
+            paciente.save()
 
         return form.data
 
@@ -1320,6 +1327,13 @@ class ProsseguirAnalise(TemplateView):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
+        if Anamnesia.objects.filter(paciente_id=paciente.id).exists():
+            anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id).last()
+            agora=datetime.now()
+            inicio =anamnesia.inicio
+            tempo=agora-inicio
+            paciente.tempo= 30 - tempo.days
+            paciente.save()
         anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
         for analise in anamnesia:
             if Interventiva.objects.filter(anamnesia_id = analise.id).exists():
@@ -2555,7 +2569,7 @@ class ConsultandoRecomendacoes(TemplateView):
             autoEstima=autoEstima.texto
 
         texto["Relacionamento"]=relacionamento
-        texto["Diferenciacao"]=diferenciacao
+        texto["Diferenciação"]=diferenciacao
         texto["Autonomia"]=autonomia
         texto["Assertividade"]=assertividade
         texto["Autoestima"]=autoEstima
@@ -3350,9 +3364,17 @@ class RecomendacaoIndiferenciacao(TemplateView):
         if 'analise_id' in self.kwargs:
             analise_id = self.kwargs['analise_id']
         anamnesia = Anamnesia.objects.get(id=analise_id)
-        main(paciente_id,analise_id)
         return anamnesia
 
+    def genograma(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        if 'analise_id' in self.kwargs:
+            analise_id = self.kwargs['analise_id']
+        anamnesia = Anamnesia.objects.get(id=analise_id)
+        main(paciente_id,analise_id)
+        return anamnesia
 
     def grafico(self):
         if 'paciente_id' in self.kwargs:
@@ -4020,7 +4042,7 @@ class RecomendacaoSeletiva(TemplateView):
             autoEstima=autoEstima.texto
 
         texto["Relacionamento"]=relacionamento
-        texto["Diferenciacao"]=diferenciacao
+        texto["Diferenciação"]=diferenciacao
         texto["Autonomia"]=autonomia
         texto["Assertividade"]=assertividade
         texto["Autoestima"]=autoEstima
