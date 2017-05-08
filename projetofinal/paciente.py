@@ -379,7 +379,6 @@ class BuscarPsicologo(SessionWizardView):
 
         return form.data
 
-
     def done(self, form_list, form_dict, **kwargs):
 
         return redirect(EdicaoRealizada)
