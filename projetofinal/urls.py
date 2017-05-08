@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^cadastro/editar/(?P<paciente_id>\d+)/$', EditarCadastro.as_view([EdicaoPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna]), name="editar"),
     url(r'^atualizar_chave/(?P<paciente_id>\d+)/$', AtualizarChave.as_view()),
     url(r'^habilitar_psicologo/(?P<paciente_id>\d+)/$', HabilitarPsicologo.as_view()),
+    url(r'^habilitado$', paciente.PsicologoHabilitado),
     url(r'^buscar_psicologo/(?P<paciente_id>\d+)/$',BuscarPsicologo.as_view()),
 
     url(r'^recover/(?P<signature>.+)/$', paciente.recover_done,

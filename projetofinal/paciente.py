@@ -354,7 +354,10 @@ class HabilitarPsicologo(SessionWizardView):
         psicologo = Psicologo.objects.get(codigo = crp)
         paciente.psicologo=psicologo
         paciente.save()
-        return HttpResponseRedirect('/home/'+paciente_id)
+        return redirect(PsicologoHabilitado)
+
+def PsicologoHabilitado(request):
+    return render(request, 'projetofinal/habilitado.html', {})
 
 class BuscarPsicologo(SessionWizardView):
     template_name = "projetofinal/busca.html"
