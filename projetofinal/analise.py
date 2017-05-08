@@ -5,8 +5,7 @@ import json
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User, Group
-from .forms import ConsultarAreaAfetiva,CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,\
-    CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna,EdicaoPaciente,AtualizarChave, PerguntasAreaAfetiva,\
+from .forms import ConsultarAreaAfetiva, PerguntasAreaAfetiva,\
     RelacionamentoAvosMaternos, RelacionamentoAvoMaternoAntes, RelacionamentoAvoMaternaAntes, RelacionamentoAvosMaternosDepois,\
     RelacionamentoAvosPaternos, RelacionamentoAvoPaternoAntes, RelacionamentoAvoPaternaAntes, RelacionamentoAvosPaternosDepois,\
     RelacionamentoPais, RelacionamentoPaiAntes,RelacionamentoMaeAntes,RelacionamentoPaisDepois, RelacionamentoPaciente,\
@@ -1737,6 +1736,7 @@ class ConsultandoRecomendacoes(TemplateView):
         if 'analise_id' in self.kwargs:
             analise_id = self.kwargs['analise_id']
         anamnesia = Anamnesia.objects.get(id=analise_id)
+        main(paciente_id,analise_id)
         return anamnesia
 
     def usuario(self):
@@ -3364,17 +3364,9 @@ class RecomendacaoIndiferenciacao(TemplateView):
         if 'analise_id' in self.kwargs:
             analise_id = self.kwargs['analise_id']
         anamnesia = Anamnesia.objects.get(id=analise_id)
-        return anamnesia
-
-    def genograma(self):
-        if 'paciente_id' in self.kwargs:
-            paciente_id = self.kwargs['paciente_id']
-        paciente = Paciente.objects.get(usuario_id=paciente_id)
-        if 'analise_id' in self.kwargs:
-            analise_id = self.kwargs['analise_id']
-        anamnesia = Anamnesia.objects.get(id=analise_id)
         main(paciente_id,analise_id)
         return anamnesia
+
 
     def grafico(self):
         if 'paciente_id' in self.kwargs:

@@ -21,10 +21,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
 from .utils import get_user_model
-from haystack.forms import SearchForm
-from dal import autocomplete
-import autocomplete_light
-autocomplete_light.autodiscover()
+#from haystack.forms import SearchForm
+#from dal import autocomplete
+#import autocomplete_light
+#autocomplete_light.autodiscover()
 
 class UserCreationForm(forms.ModelForm):
     """

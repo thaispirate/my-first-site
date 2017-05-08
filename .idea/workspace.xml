@@ -2,24 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ca5a1301-4982-49aa-9407-4d7d63347a4a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mysite/settings.py" afterPath="$PROJECT_DIR$/mysite/settings.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/analise.py" afterPath="$PROJECT_DIR$/projetofinal/analise.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/forms.py" afterPath="$PROJECT_DIR$/projetofinal/forms.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/paciente.py" afterPath="$PROJECT_DIR$/projetofinal/paciente.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/psicologo.py" afterPath="$PROJECT_DIR$/projetofinal/psicologo.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/base.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/indiferenciacao.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/indiferenciacao.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/base.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/consultando.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/consultando.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/indiferenciacao.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/indiferenciacao.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/resumo/base.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/resumo/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/tarefas.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/tarefas.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/busca.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/busca.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/chave.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/chave.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/editar.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/editar.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente/genograma.html" afterPath="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente/genograma.html" />
     </list>
     <ignored path="django.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,9 +29,11 @@
       <file leaf-file-name="analise.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projetofinal/analise.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1086.0">
-              <caret line="2571" column="24" selection-start-line="2571" selection-start-column="8" selection-end-line="2571" selection-end-column="24" />
-              <folding />
+            <state vertical-scroll-proportion="-8.971429">
+              <caret line="1738" column="0" selection-start-line="1738" selection-start-column="0" selection-end-line="1738" selection-end-column="36" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -54,10 +42,8 @@
         <entry file="file://$PROJECT_DIR$/projetofinal/forms.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="595" column="34" selection-start-line="595" selection-start-column="34" selection-end-line="595" selection-end-column="34" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
+              <caret line="0" column="13" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -86,7 +72,37 @@
         <entry file="file://$PROJECT_DIR$/projetofinal/paciente.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+              <caret line="38" column="1" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/base.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.4166665">
+              <caret line="67" column="62" selection-start-line="67" selection-start-column="62" selection-end-line="67" selection-end-column="62" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="56" column="84" selection-start-line="56" selection-start-column="84" selection-end-line="56" selection-end-column="84" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="indiferenciacao.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/indiferenciacao.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.875">
+              <caret line="11" column="80" selection-start-line="11" selection-start-column="80" selection-end-line="11" selection-end-column="80" />
               <folding />
             </state>
           </provider>
@@ -97,16 +113,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-48.125">
               <caret line="77" column="93" selection-start-line="77" selection-start-column="93" selection-end-line="77" selection-end-column="93" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tarefas.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/resumo/tarefas.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -169,18 +175,14 @@
         <option value="$PROJECT_DIR$/projetofinal/urls.py" />
         <option value="$PROJECT_DIR$/mysite/urls.py" />
         <option value="$PROJECT_DIR$/projetofinal/autocomplete_light_registry.py" />
-        <option value="$PROJECT_DIR$/projetofinal/forms.py" />
         <option value="$PROJECT_DIR$/mysite/settings.py" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/base.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/base.html" />
-        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/base.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/editar.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/chave.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/resumo/base.html" />
-        <option value="$PROJECT_DIR$/projetofinal/analise.py" />
-        <option value="$PROJECT_DIR$/projetofinal/paciente.py" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/tarefas.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/indiferenciacao.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/consultando.html" />
@@ -188,6 +190,10 @@
         <option value="$PROJECT_DIR$/projetofinal/psicologo.py" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente/genograma.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/busca.html" />
+        <option value="$PROJECT_DIR$/projetofinal/forms.py" />
+        <option value="$PROJECT_DIR$/projetofinal/paciente.py" />
+        <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/base.html" />
+        <option value="$PROJECT_DIR$/projetofinal/analise.py" />
         <option value="$PROJECT_DIR$/projetofinal/genograma.py" />
       </list>
     </option>
@@ -658,18 +664,18 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32744783" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24981412" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32744783" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -690,13 +696,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/removida.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="33" selection-start-line="0" selection-start-column="33" selection-end-line="0" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/resumo/inicio.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -939,14 +938,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.416667">
-          <caret line="70" column="54" selection-start-line="70" selection-start-column="54" selection-end-line="70" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.7083335">
@@ -987,28 +978,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/seletiva.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-11.875">
           <caret line="19" column="97" selection-start-line="19" selection-start-column="97" selection-end-line="19" selection-end-column="97" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/analise.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1086.0">
-          <caret line="2571" column="24" selection-start-line="2571" selection-start-column="8" selection-end-line="2571" selection-end-column="24" />
           <folding />
         </state>
       </provider>
@@ -1037,14 +1010,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/indiferenciacao.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.875">
-          <caret line="11" column="80" selection-start-line="11" selection-start-column="80" selection-end-line="11" selection-end-column="80" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/psicologo.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1061,24 +1026,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/paciente.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="595" column="34" selection-start-line="595" selection-start-column="34" selection-end-line="595" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente/genograma.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.5630252">
@@ -1092,6 +1039,64 @@
         <state vertical-scroll-proportion="-12.5">
           <caret line="70" column="185" selection-start-line="70" selection-start-column="185" selection-end-line="70" selection-end-column="185" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.4166665">
+          <caret line="67" column="62" selection-start-line="67" selection-start-column="62" selection-end-line="67" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/indiferenciacao.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.875">
+          <caret line="11" column="80" selection-start-line="11" selection-start-column="80" selection-end-line="11" selection-end-column="80" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="56" column="84" selection-start-line="56" selection-start-column="84" selection-end-line="56" selection-end-column="84" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/paciente.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="38" column="1" selection-start-line="38" selection-start-column="1" selection-end-line="38" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="13" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/analise.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.971429">
+          <caret line="1738" column="0" selection-start-line="1738" selection-start-column="0" selection-end-line="1738" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

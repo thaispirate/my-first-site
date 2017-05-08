@@ -37,7 +37,7 @@ from .signals import user_recovers_password
 from .utils import get_user_model, get_username
 from django.contrib.auth import logout
 from .genograma import main
-from dal import autocomplete
+#from dal import autocomplete
 
 # Create your views here.
 
