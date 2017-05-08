@@ -123,7 +123,7 @@ class CadastroWizard(SessionWizardView):
         paciente.retornos=0
         paciente.save()
         familia = Familia()
-        familia.usuario = paciente
+        familia.paciente = paciente
         familia.parente = "conjuge"
         familia.nome = form_data[1]['nomeConjuge']
         familia.nascimento = form_data[1]['nascimentoConjuge']
@@ -131,7 +131,7 @@ class CadastroWizard(SessionWizardView):
         familia.escolaridade = form_data[1]['escolaridadeConjuge']
         familia.save()
         familia = Familia()
-        familia.usuario = paciente
+        familia.paciente = paciente
         familia.parente = "pai"
         familia.nome = form_data[2]['nomePai']
         familia.nascimento = form_data[2]['nascimentoPai']
@@ -139,7 +139,7 @@ class CadastroWizard(SessionWizardView):
         familia.escolaridade = form_data[2]['escolaridadePai']
         familia.save()
         familia = Familia()
-        familia.usuario = paciente
+        familia.paciente = paciente
         familia.parente = "mae"
         familia.nome = form_data[3]['nomeMae']
         familia.nascimento = form_data[3]['nascimentoMae']
@@ -147,7 +147,7 @@ class CadastroWizard(SessionWizardView):
         familia.escolaridade = form_data[3]['escolaridadeMae']
         familia.save()
         familia = Familia()
-        familia.usuario = paciente
+        familia.paciente = paciente
         familia.parente = "avoPaterno"
         familia.nome = form_data[4]['nomeAvoPaterno']
         familia.nascimento = form_data[4]['nascimentoAvoPaterno']
@@ -155,7 +155,7 @@ class CadastroWizard(SessionWizardView):
         familia.escolaridade = form_data[4]['escolaridadeAvoPaterno']
         familia.save()
         familia = Familia()
-        familia.usuario = paciente
+        familia.paciente = paciente
         familia.parente = "avoPaterna"
         familia.nome = form_data[5]['nomeAvoPaterna']
         familia.nascimento = form_data[5]['nascimentoAvoPaterna']
@@ -163,7 +163,7 @@ class CadastroWizard(SessionWizardView):
         familia.escolaridade = form_data[5]['escolaridadeAvoPaterna']
         familia.save()
         familia = Familia()
-        familia.usuario = paciente
+        familia.paciente = paciente
         familia.parente = "avoMaterno"
         familia.nome = form_data[6]['nomeAvoMaterno']
         familia.nascimento = form_data[6]['nascimentoAvoMaterno']
@@ -171,7 +171,7 @@ class CadastroWizard(SessionWizardView):
         familia.escolaridade = form_data[6]['escolaridadeAvoMaterno']
         familia.save()
         familia = Familia()
-        familia.usuario = paciente
+        familia.paciente = paciente
         familia.parente = "avoMaterna"
         familia.nome = form_data[7]['nomeAvoMaterna']
         familia.nascimento = form_data[7]['nascimentoAvoMaterna']

@@ -767,7 +767,6 @@ class InserirAnaliseInterventiva(SessionWizardView):
                     for item in form.data:
                         if item[0] == "0":
                             interventivas.update({item.split("-")[1]:form.data[item]})
-                    print (interventivas)
                     for perguntas in interventivas:
                         interventiva = Interventiva()
                         interventiva.paciente = paciente
