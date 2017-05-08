@@ -21,9 +21,14 @@ class Psicologo(models.Model):
     usuario = models.OneToOneField(User)
     email = models.EmailField()
     nome = models.CharField(max_length=50,null=True)
+    estado = models.CharField(max_length=50,null=True)
+    cidade = models.CharField(max_length=50,null=True)
+    bairro = models.CharField(max_length=50,null=True)
+    codigo = models.CharField(max_length=50,null=True)
 
     def __str__(self):
         return self.usuario.first_name
+
 
 class Paciente(models.Model):
     usuario = models.OneToOneField(User)

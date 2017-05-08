@@ -546,50 +546,51 @@ class InserirAnaliseRelacionamento(SessionWizardView):
             contador = 6
         parentes = ["AvoMaterno","AvoMaterna","AvoPaterno","AvoPaterna","Pai","Mae","Paciente","Conjuge"]
 
-        if form.data['inserir_analise_relacionamento-current_step'] in steps:
-            item = form.data['inserir_analise_relacionamento-current_step']
-            if item+"-"+"relacao" in form.data:
-                relacionamento = Relacionamento()
-                relacionamento.paciente = paciente
-                relacionamento.anamnesia = Anamnesia.objects.get(id = analise_id,paciente_id=paciente.id)
-                relacionamento.parente=parentes[contador]
-                relacionamento.relacao = form.data[item+"-"+"relacao"]
-                relacionamento.filhos = form.data[item+"-"+"filhos"]
-                relacionamento.filhas = form.data[item+"-"+"filhas"]
-                relacionamento.relacaoAntes = form.data[item+"-"+"relacao"+parentes[contador]+"Antes"]
-                relacionamento.save()
+        if paciente.tempo != 0:
+            if form.data['inserir_analise_relacionamento-current_step'] in steps:
+                item = form.data['inserir_analise_relacionamento-current_step']
+                if item+"-"+"relacao" in form.data:
+                    relacionamento = Relacionamento()
+                    relacionamento.paciente = paciente
+                    relacionamento.anamnesia = Anamnesia.objects.get(id = analise_id,paciente_id=paciente.id)
+                    relacionamento.parente=parentes[contador]
+                    relacionamento.relacao = form.data[item+"-"+"relacao"]
+                    relacionamento.filhos = form.data[item+"-"+"filhos"]
+                    relacionamento.filhas = form.data[item+"-"+"filhas"]
+                    relacionamento.relacaoAntes = form.data[item+"-"+"relacao"+parentes[contador]+"Antes"]
+                    relacionamento.save()
 
-                relacionamento = Relacionamento()
-                relacionamento.paciente = paciente
-                relacionamento.anamnesia = Anamnesia.objects.get(id = analise_id,paciente_id=paciente.id)
-                relacionamento.parente=parentes[contador+1]
-                relacionamento.relacao = form.data[item+"-"+"relacao"]
-                relacionamento.filhos = form.data[item+"-"+"filhos"]
-                relacionamento.filhas = form.data[item+"-"+"filhas"]
-                relacionamento.relacaoAntes = form.data[item+"-"+"relacao"+parentes[contador+1]+"Antes"]
-                relacionamento.save()
+                    relacionamento = Relacionamento()
+                    relacionamento.paciente = paciente
+                    relacionamento.anamnesia = Anamnesia.objects.get(id = analise_id,paciente_id=paciente.id)
+                    relacionamento.parente=parentes[contador+1]
+                    relacionamento.relacao = form.data[item+"-"+"relacao"]
+                    relacionamento.filhos = form.data[item+"-"+"filhos"]
+                    relacionamento.filhas = form.data[item+"-"+"filhas"]
+                    relacionamento.relacaoAntes = form.data[item+"-"+"relacao"+parentes[contador+1]+"Antes"]
+                    relacionamento.save()
 
-            if item+"-"+"filhos"+parentes[contador]+"Antes" in form.data:
-                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = analise_id,parente = parentes[contador])
-                relacionamento.filhosAntes = form.data[item+"-"+"filhos"+parentes[contador]+"Antes"]
-                relacionamento.filhasAntes = form.data[item+"-"+"filhas"+parentes[contador]+"Antes"]
-                relacionamento.save()
-            if item+"-"+"filhos"+parentes[contador+1]+"Antes" in form.data:
-                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = analise_id,parente = parentes[contador+1])
-                relacionamento.filhosAntes = form.data[item+"-"+"filhos"+parentes[contador+1]+"Antes"]
-                relacionamento.filhasAntes = form.data[item+"-"+"filhas"+parentes[contador+1]+"Antes"]
-                relacionamento.save()
+                if item+"-"+"filhos"+parentes[contador]+"Antes" in form.data:
+                    relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = analise_id,parente = parentes[contador])
+                    relacionamento.filhosAntes = form.data[item+"-"+"filhos"+parentes[contador]+"Antes"]
+                    relacionamento.filhasAntes = form.data[item+"-"+"filhas"+parentes[contador]+"Antes"]
+                    relacionamento.save()
+                if item+"-"+"filhos"+parentes[contador+1]+"Antes" in form.data:
+                    relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = analise_id,parente = parentes[contador+1])
+                    relacionamento.filhosAntes = form.data[item+"-"+"filhos"+parentes[contador+1]+"Antes"]
+                    relacionamento.filhasAntes = form.data[item+"-"+"filhas"+parentes[contador+1]+"Antes"]
+                    relacionamento.save()
 
-            if item+"-"+"filhos"+parentes[contador] in form.data:
-                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = analise_id,parente = parentes[contador])
-                relacionamento.filhosDepois = form.data[item+"-"+"filhos"+parentes[contador]]
-                relacionamento.filhasDepois = form.data[item+"-"+"filhas"+parentes[contador]]
-                relacionamento.save()
-            if item+"-"+"filhos"+parentes[contador+1] in form.data:
-                relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = analise_id,parente = parentes[contador+1])
-                relacionamento.filhosDepois = form.data[item+"-"+"filhos"+parentes[contador+1]]
-                relacionamento.filhasDepois = form.data[item+"-"+"filhas"+parentes[contador+1]]
-                relacionamento.save()
+                if item+"-"+"filhos"+parentes[contador] in form.data:
+                    relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = analise_id,parente = parentes[contador])
+                    relacionamento.filhosDepois = form.data[item+"-"+"filhos"+parentes[contador]]
+                    relacionamento.filhasDepois = form.data[item+"-"+"filhas"+parentes[contador]]
+                    relacionamento.save()
+                if item+"-"+"filhos"+parentes[contador+1] in form.data:
+                    relacionamento = Relacionamento.objects.get(paciente_id = paciente.id, anamnesia_id = analise_id,parente = parentes[contador+1])
+                    relacionamento.filhosDepois = form.data[item+"-"+"filhos"+parentes[contador+1]]
+                    relacionamento.filhasDepois = form.data[item+"-"+"filhas"+parentes[contador+1]]
+                    relacionamento.save()
 
         return form.data
 
@@ -623,37 +624,38 @@ class InserirAnaliseIndiferenciacao(SessionWizardView):
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         analise_id =  self.kwargs['analise_id']
 
-        if form.data['inserir_analise_indiferenciacao-current_step'] == '0':
-            anamnesia = Anamnesia.objects.get(id=analise_id)
-            respostasIndiferenciacao = []
-            adaptativo = 0
-            reativo = 0
-            criativo = 0
-            if "0-grauIndiferenciacao" in form.data:
-                respostasIndiferenciacao = form.data.getlist('0-grauIndiferenciacao')
-            for item in respostasIndiferenciacao:
-                indiferenciacao = GrauIndiferenciacaoPaciente()
-                indiferenciacao.paciente=paciente
-                indiferenciacao.anamnesia=anamnesia
-                indiferenciacao.resposta = GrauIndiferenciacao.objects.get(id=int(item))
-                if indiferenciacao.resposta.padrao == "adaptativo":
-                    adaptativo = adaptativo+1
-                if indiferenciacao.resposta.padrao == "reativo":
-                    reativo = reativo+1
-                if indiferenciacao.resposta.padrao == "criativo":
-                    criativo = criativo+1
-                indiferenciacao.save()
+        if paciente.tempo != 0:
+            if form.data['inserir_analise_indiferenciacao-current_step'] == '0':
+                anamnesia = Anamnesia.objects.get(id=analise_id)
+                respostasIndiferenciacao = []
+                adaptativo = 0
+                reativo = 0
+                criativo = 0
+                if "0-grauIndiferenciacao" in form.data:
+                    respostasIndiferenciacao = form.data.getlist('0-grauIndiferenciacao')
+                for item in respostasIndiferenciacao:
+                    indiferenciacao = GrauIndiferenciacaoPaciente()
+                    indiferenciacao.paciente=paciente
+                    indiferenciacao.anamnesia=anamnesia
+                    indiferenciacao.resposta = GrauIndiferenciacao.objects.get(id=int(item))
+                    if indiferenciacao.resposta.padrao == "adaptativo":
+                        adaptativo = adaptativo+1
+                    if indiferenciacao.resposta.padrao == "reativo":
+                        reativo = reativo+1
+                    if indiferenciacao.resposta.padrao == "criativo":
+                        criativo = criativo+1
+                    indiferenciacao.save()
 
-            lista = [(adaptativo,"a"),(reativo,"b"),(criativo, "c")]
-            minimo = min(lista, key=lambda x: x[0])
-            if minimo[0] == adaptativo:
-                anamnesia.padrao = "adaptativo"
-            if minimo[0] == reativo:
-                anamnesia.padrao = "reativo"
-            if minimo[0] ==  criativo:
-                anamnesia.padrao = "criativo"
-            anamnesia.save()
-            indiferenciacao.save()
+                lista = [(adaptativo,"a"),(reativo,"b"),(criativo, "c")]
+                minimo = min(lista, key=lambda x: x[0])
+                if minimo[0] == adaptativo:
+                    anamnesia.padrao = "adaptativo"
+                if minimo[0] == reativo:
+                    anamnesia.padrao = "reativo"
+                if minimo[0] ==  criativo:
+                    anamnesia.padrao = "criativo"
+                anamnesia.save()
+                indiferenciacao.save()
 
         return form.data
 
@@ -696,30 +698,31 @@ class InserirAnaliseSeletiva(SessionWizardView):
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         analise_id =  self.kwargs['analise_id']
 
-        if form.data['inserir_analise_seletiva-current_step'] == '0':
-            anamnesia = Anamnesia.objects.get(id=analise_id)
-            seletivas = {}
-            if "S01" in form.data:
-                for item in form.data:
-                    if item[0] == "S":
-                        seletivas.update({item:form.data[item]})
-                for perguntas in seletivas:
-                    if perguntas != "S03" and perguntas != "S04":
-                        seletiva = Seletiva()
-                        seletiva.paciente = paciente
-                        seletiva.anamnesia = anamnesia
-                        pergunta = PerguntaSeletiva.objects.get(numero=perguntas)
-                        seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=seletivas[perguntas])
-                        seletiva.save()
-                    else:
-                        seletivas[perguntas] = form.data.getlist(perguntas)
-                        for resposta in seletivas[perguntas]:
+        if paciente.tempo != 0:
+            if form.data['inserir_analise_seletiva-current_step'] == '0':
+                anamnesia = Anamnesia.objects.get(id=analise_id)
+                seletivas = {}
+                if "S01" in form.data:
+                    for item in form.data:
+                        if item[0] == "S":
+                            seletivas.update({item:form.data[item]})
+                    for perguntas in seletivas:
+                        if perguntas != "S03" and perguntas != "S04":
                             seletiva = Seletiva()
                             seletiva.paciente = paciente
                             seletiva.anamnesia = anamnesia
                             pergunta = PerguntaSeletiva.objects.get(numero=perguntas)
-                            seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=resposta)
+                            seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=seletivas[perguntas])
                             seletiva.save()
+                        else:
+                            seletivas[perguntas] = form.data.getlist(perguntas)
+                            for resposta in seletivas[perguntas]:
+                                seletiva = Seletiva()
+                                seletiva.paciente = paciente
+                                seletiva.anamnesia = anamnesia
+                                pergunta = PerguntaSeletiva.objects.get(numero=perguntas)
+                                seletiva.resposta = RespostaSeletiva.objects.get(pergunta_id=pergunta.id,letra=resposta)
+                                seletiva.save()
 
         return form.data
 
@@ -750,24 +753,26 @@ class InserirAnaliseInterventiva(SessionWizardView):
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         analise_id =  self.kwargs['analise_id']
 
-        if form.data['inserir_analise_interventiva-current_step'] == '0':
-            anamnesia = Anamnesia.objects.get(id=analise_id)
-            interventivas = {}
-            if "0-I01" in form.data:
-                for item in form.data:
-                    if item[0] == "0":
-                        interventivas.update({item.split("-")[1]:form.data[item]})
-                print (interventivas)
-                for perguntas in interventivas:
-                    interventiva = Interventiva()
-                    interventiva.paciente = paciente
-                    interventiva.anamnesia = anamnesia
-                    pergunta = PerguntaInterventiva.objects.get(numero=perguntas)
-                    interventiva.resposta = interventivas[perguntas]
-                    interventiva.pergunta = pergunta
-                    interventiva.save()
-                    anamnesia.fim = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    anamnesia.save()
+        if paciente.tempo != 0:
+            if form.data['inserir_analise_interventiva-current_step'] == '0':
+                anamnesia = Anamnesia.objects.get(id=analise_id)
+                interventivas = {}
+                if "0-I01" in form.data:
+                    for item in form.data:
+                        if item[0] == "0":
+                            interventivas.update({item.split("-")[1]:form.data[item]})
+                    print (interventivas)
+                    for perguntas in interventivas:
+                        interventiva = Interventiva()
+                        interventiva.paciente = paciente
+                        interventiva.anamnesia = anamnesia
+                        pergunta = PerguntaInterventiva.objects.get(numero=perguntas)
+                        interventiva.resposta = interventivas[perguntas]
+                        interventiva.pergunta = pergunta
+                        interventiva.save()
+                        anamnesia.fim = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        anamnesia.save()
+
         return form.data
 
     def paciente(self):

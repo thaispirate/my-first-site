@@ -5,19 +5,10 @@ import json
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User, Group
-from .forms import ConsultarAreaAfetiva,CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,\
-    CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna,EdicaoPaciente,AtualizarChave, PerguntasAreaAfetiva,\
-    RelacionamentoAvosMaternos, RelacionamentoAvoMaternoAntes, RelacionamentoAvoMaternaAntes, RelacionamentoAvosMaternosDepois,\
-    RelacionamentoAvosPaternos, RelacionamentoAvoPaternoAntes, RelacionamentoAvoPaternaAntes, RelacionamentoAvosPaternosDepois,\
-    RelacionamentoPais, RelacionamentoPaiAntes,RelacionamentoMaeAntes,RelacionamentoPaisDepois, RelacionamentoPaciente,\
-    RelacionamentoPacienteAntes, RelacionamentoConjugeAntes, RelacionamentoPacienteDepois,GrauDeIndeferenciacao,\
-    PerguntasSeletivas, ConsultarPerguntasSeletivas,\
-    PerguntasInterventivas, ConsultarPerguntasInterventivas
+from .forms import CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,\
+    CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna,EdicaoPaciente,AtualizarChave, HabilitarPsicologo, BuscarPsicologo
+from .models import Paciente, Chave, User,Familia, Psicologo, Anamnesia
 
-from .models import Paciente, Chave, User,Familia, Psicologo, AreaAfetiva, Anamnesia, PerguntaAreaAfetiva,RespostaAreaAfetiva,\
-    Relacionamento,GrauIndiferenciacao, GrauIndiferenciacaoPaciente,\
-    Seletiva, PerguntaSeletiva,RespostaSeletiva, PerguntaSeletiva,\
-    Interventiva, PerguntaInterventiva, Recomendacao
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404, HttpResponseRedirect, HttpResponse, FileResponse
 from django.template import RequestContext
@@ -46,6 +37,7 @@ from .signals import user_recovers_password
 from .utils import get_user_model, get_username
 from django.contrib.auth import logout
 from .genograma import main
+from dal import autocomplete
 
 # Create your views here.
 
@@ -127,7 +119,6 @@ class CadastroWizard(SessionWizardView):
         paciente.nascimento = form_data[0]['nascimento']
         paciente.sexo = form_data[0]['sexo']
         paciente.escolaridade = form_data[0]['escolaridade']
-        paciente.psicologo = form_data[0]['psicologo']
         paciente.retornos=0
         paciente.save()
         familia = Familia()
@@ -269,7 +260,6 @@ class EditarCadastro(SessionWizardView):
         paciente.nascimento = form_data[0]['nascimento']
         paciente.sexo = form_data[0]['sexo']
         paciente.escolaridade = form_data[0]['escolaridade']
-        paciente.psicologo = form_data[0]['psicologo']
         paciente.save()
         familia = Familia.objects.get(paciente_id=paciente.id,parente="conjuge")
         familia.nome = form_data[1]['nomeConjuge']
@@ -341,7 +331,64 @@ class AtualizarChave(SessionWizardView):
         chave.save()
         return HttpResponseRedirect('/home/'+paciente_id)
 
+class HabilitarPsicologo(SessionWizardView):
+    template_name = "projetofinal/psicologo.html"
+    form_list = [HabilitarPsicologo]
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(HabilitarPsicologo, self).dispatch(*args, **kwargs)
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        return paciente
+
+    def done(self, form_list, form_dict, **kwargs):
+        form_data= [form.cleaned_data for form in form_list]
+        crp=form_data[0]['CRP']
+        paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        psicologo = Psicologo.objects.get(codigo = crp)
+        paciente.psicologo=psicologo
+        paciente.save()
+        return HttpResponseRedirect('/home/'+paciente_id)
+
+class BuscarPsicologo(SessionWizardView):
+    template_name = "projetofinal/busca.html"
+    form_list=[BuscarPsicologo]
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(BuscarPsicologo, self).dispatch(*args, **kwargs)
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        return paciente
+
+    def get_form_step_data(self, form):
+        paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        return form.data
+
+
+    def done(self, form_list, form_dict, **kwargs):
+
+        return redirect(EdicaoRealizada)
+
+class BuscaPsicologo(autocomplete.Select2QuerySetView):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(BuscaPsicologo, self).dispatch(*args, **kwargs)
+    def get_queryset(self):
+
+        qs = Psicologo.objects.all()
+
+        return qs
 #Classes do password-reset(esqueci a senha)
 
 class SaltMixin(object):

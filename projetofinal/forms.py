@@ -12,8 +12,7 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.forms import ValidationError
-
+from django.forms import ValidationError, ModelChoiceField, ModelForm, Textarea
 
 from django import forms
 from django.core.validators import validate_email
@@ -22,7 +21,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
 from .utils import get_user_model
-
+from haystack.forms import SearchForm
+from dal import autocomplete
+import autocomplete_light
+autocomplete_light.autodiscover()
 
 class UserCreationForm(forms.ModelForm):
     """
@@ -154,12 +156,6 @@ class CadastroPaciente(UserCreationForm):
 
     )
 
-    psicologo = forms.ModelChoiceField(
-        label="Psicólogo",
-        queryset = Psicologo.objects.all(),
-        required=False
-
-    )
 
 class CadastroConjuge(forms.Form):
     nomeConjuge = forms.CharField(required=False,label="Primeiro nome do Cônjuge")
@@ -407,12 +403,6 @@ class EdicaoPaciente(forms.Form):
             initial = paciente.escolaridade,
             required=False
         )
-        self.fields['psicologo'] = forms.ModelChoiceField(
-            label= "Psicólogo",
-            queryset= Psicologo.objects.all(),
-            initial = paciente.psicologo,
-            required=False
-        )
 
 
 class PasswordRecoveryForm(forms.Form):
@@ -555,6 +545,9 @@ class CadastroPsicologoForm(UserCreationForm):
 
 
     nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório'})
+    estado = forms.CharField(label="Estado",error_messages={'required':'Este campo é obrigatório'})
+    cidade = forms.CharField(label="Cidade",error_messages={'required':'Este campo é obrigatório'})
+    bairro= forms.CharField(label="Bairro",error_messages={'required':'Este campo é obrigatório'})
 
 class AtualizarChave(forms.Form):
 
@@ -580,6 +573,54 @@ class AtualizarChave(forms.Form):
                 code='chave_acesso',
             )
         return chave
+
+class HabilitarPsicologo(forms.Form):
+
+    error_messages = {
+        'codigo_invalido': _("CRP inválido"),
+    }
+
+    CRP = forms.CharField(label="Digite o CRP do psicólogo:",
+                            error_messages={'required':'Este campo é obrigatório'},
+                          )
+    def clean_CRP(self):
+        crp = self.cleaned_data.get("CRP")
+        if not Psicologo.objects.filter(codigo = crp).exists():
+            raise forms.ValidationError(
+                self.error_messages['codigo_invalido'],
+                code='codigo_invalido',
+            )
+
+        return crp
+
+class BuscarPsicologo(forms.Form):
+
+    choiceestado=[(i['estado'], i['estado']) for i in Psicologo.objects.order_by('estado').values('estado').distinct()]
+    choicecidade=[(i['cidade'], i['cidade']) for i in Psicologo.objects.order_by('cidade').values('cidade').distinct()]
+    choicebairro=[(i['bairro'], i['bairro']) for i in Psicologo.objects.order_by('bairro').values('bairro').distinct()]
+    choicenome=[(i['nome'], i['nome']) for i in Psicologo.objects.order_by('nome').values('nome').distinct()]
+
+    estado = forms.ChoiceField(
+        label="Estado",
+        choices=choiceestado,
+        required=False,
+    )
+    cidade = forms.ChoiceField(
+        label="Cidade",
+        choices=choicecidade,
+        required=False
+    )
+    bairro =forms.ChoiceField(
+        label="Bairro",
+        required=False,
+        choices=choicebairro
+    )
+    nome = forms.ChoiceField(
+        label="Nome",
+        choices=choicenome,
+        required=False
+    )
+
 
 class PerguntasAreaAfetiva(forms.Form):
 

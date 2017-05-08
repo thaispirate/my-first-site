@@ -2,7 +2,7 @@ from django.conf.urls import url
 from . import paciente,psicologo,analise
 from .forms import CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,CadastroAvoPaterna,\
     CadastroAvoMaterno, CadastroAvoMaterna,EdicaoPaciente, CadastroPsicologoForm
-from .paciente import Home,CadastroWizard, EditarCadastro,AtualizarChave
+from .paciente import Home,CadastroWizard, EditarCadastro,AtualizarChave, HabilitarPsicologo, BuscarPsicologo
 from .psicologo import PsicologoPaciente, CadastroPsicologoWizard,AnalisePaciente, ConsultandoAnalisePaciente, GenogramaPaciente
 
 from .analise import InserirAnalise,InserirAnaliseRelacionamento,InserirAnaliseIndiferenciacao,InserirAnaliseSeletiva,InserirAnaliseInterventiva,\
@@ -26,6 +26,9 @@ urlpatterns = [
     url(r'^login$', paciente.LoginPaciente),
     url(r'^cadastro/editar/(?P<paciente_id>\d+)/$', EditarCadastro.as_view([EdicaoPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna]), name="editar"),
     url(r'^atualizar_chave/(?P<paciente_id>\d+)/$', AtualizarChave.as_view()),
+    url(r'^habilitar_psicologo/(?P<paciente_id>\d+)/$', HabilitarPsicologo.as_view()),
+    url(r'^buscar_psicologo/(?P<paciente_id>\d+)/$',BuscarPsicologo.as_view()),
+
     url(r'^recover/(?P<signature>.+)/$', paciente.recover_done,
         name='password_reset_sent'),
     url(r'^recover$', paciente.recover, name='password_reset_recover'),

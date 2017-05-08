@@ -44,7 +44,7 @@
             </div>
          <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right">
-            Olá, {{user.first_name|capfirst}}. Faltam {{view.paciente.tempo}} dias
+            Olá, {{user.first_name|capfirst}}
           </form>
           </div>
           </div>
@@ -57,7 +57,7 @@
             <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                 <div class="desktop-hide">
-                    Olá, {{user.first_name|capfirst}}. Faltam {{view.paciente.tempo}} dias
+                    Olá, {{user.first_name|capfirst}}
                 </div>
                     <li><a href="/home/{{user.id}}/">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                     <li ><a href="/cadastro/editar/{{ user.id }}">Editar Cadastro<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
@@ -75,6 +75,8 @@
                         </ul>
                     </li>
                     <li class="active"><a href="/analise/recomendacao/{{user.id}}">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
+                    <li><a href="/habilitar_psicologo/{{user.id}}">Habilitar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-ok-circle"></span></a></li>
+                    <li><a href="/buscar_psicologo/{{user.id}}">Buscar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-search"></span></a></li>
                     <li ><a href="/sair">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
                 </ul>
             </div>

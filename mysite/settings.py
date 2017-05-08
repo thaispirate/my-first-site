@@ -43,6 +43,10 @@ INSTALLED_APPS = (
     'password_reset',
     'jquery',
     'highcharts',
+    'haystack',
+    'dal',
+    'dal_select2',
+    'autocomplete_light',
     'projetofinal',
 )
 
@@ -130,3 +134,11 @@ DEFAULT_FROM_EMAIL = 'thais.potc@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+
+import os
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}

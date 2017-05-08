@@ -54,7 +54,7 @@
                 </div>
                     <li><a href="/home/{{user.id}}/">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                     <li class=><a href="/cadastro/editar/{{ user.id }}">Editar Cadastro<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
-                    <li class="active"><a href="/atualizar_chave/{{user.id}}">Atualizar Chave<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-wrench"></span></a></li>
+                    <li><a href="/atualizar_chave/{{user.id}}">Atualizar Chave<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-wrench"></span></a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Atendimento<span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-edit"></span></a>
                         <ul class="dropdown-menu forAnimate" role="menu">
@@ -68,8 +68,8 @@
                         </ul>
                     </li>
                     <li><a href="/analise/recomendacao/{{user.id}}">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
-                    <li><a href="/habilitar_psicologo/{{user.id}}">Habilitar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-ok-circle"></span></a></li>
-                    <li><a href="/buscar_psicologo/{{user.id}}">Buscar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-search"></span></a></li>
+                    <li><a href="/habilitar_psicologo/{{user.id}}">Habilitar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-search"></span></a></li>
+                    <li class="active"><a href="/buscar_psicologo/{{user.id}}">Buscar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-search"></span></a></li>
                     <li ><a href="/sair">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
                 </ul>
             </div>
@@ -78,8 +78,7 @@
 
     <div class="main">
             <!-- Content Here -->
-
-    <form action="" method="post">{% csrf_token %}
+   <form action="" method="post">{% csrf_token %}
     <div class="container">
     <table>
     {{ wizard.management_form }}
@@ -93,7 +92,11 @@
     {% endif %}
     </table>
     <div class="col-sm-offset-5 col-sm-10">
-    <button type="submit" class="btn btn-default" value="{% trans "submit" %}">Enviar</button>
+    <button type="submit" class="btn btn-default" value="{% trans "submit" %}">Buscar</button>
+    </div>
+    </div>
+    </form>
+
     </div>
     </div>
     </form>

@@ -90,7 +90,10 @@ class CadastroPsicologoWizard(SessionWizardView):
         psicologo = Psicologo()
         psicologo.usuario = user
         psicologo.email = form_data[0]['username']
-        psicologo.nome = form_data[0]['nome']
+        psicologo.nome = form_data[0]['nome'].upper()
+        psicologo.estado = form_data[0]['estado'].upper()
+        psicologo.cidade = form_data[0]['cidade'].upper()
+        psicologo.bairro = form_data[0]['bairro'].upper()
         psicologo.save()
         return redirect(CadastroPsicologoRealizado)
 
