@@ -54,11 +54,13 @@ $(document).ready(function () {
 
  var radar = {
             xAxis: [{
-                categories: ['Adaptativo','Reativo', 'Criativo']
+                categories: ['Adaptativo','Reativo', 'Criativo'],
+                crosshair: true
             }],
             chart: {
-                zoomType: 'xy',
-                renderTo: 'radar'
+                renderTo: 'radar',
+                zoomType:'none',
+                pinchType:'none'
             },
             title: {
                 text: 'Grau de Indiferenciação<br>'+ paciente['paciente']
@@ -69,6 +71,7 @@ $(document).ready(function () {
                         color: ["#7cb5ec","#f7a35c","#ff095c","#FFDAB9","#FF0000","#AB82FF","#ADFF2F","#FF69B4"]
                     }
                 },
+                min: 0,
                 title: {
                     text: 'Pontuação',
                     style: {
@@ -76,11 +79,12 @@ $(document).ready(function () {
                     }
                 }
             }],
-
-            tooltip: {
-                shared: true
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
             },
-
             series: []
 }
 
@@ -96,6 +100,9 @@ $(document).ready(function () {
                     tooltip: {
                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}:</td>' +
                         '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
                     }
                 });
                 }
@@ -107,7 +114,10 @@ $(document).ready(function () {
                 [dadosRadar['Limite Inferior Reativo'],dadosRadar['Limite Superior Reativo']],
                 [dadosRadar['Limite Inferior Criativo'],dadosRadar['Limite Superior Criativo']]],
                 tooltip: {
-                pointFormat:  '(Limites esperados: Inferior={point.low} Superior={point.high})<br/>'
+                    pointFormat:  '(Limites esperados: Inferior={point.low} Superior={point.high})<br/>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
                 }
 
         });

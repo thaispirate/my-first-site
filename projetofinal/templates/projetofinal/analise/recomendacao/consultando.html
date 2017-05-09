@@ -116,8 +116,9 @@ paciente = {{ view.pacienteNome|safe }};
                 categories: ['Adaptativo','Reativo', 'Criativo']
             }],
             chart: {
-                zoomType: 'xy',
-                renderTo: 'radar'
+                renderTo: 'radar',
+                zoomType:'none',
+                pinchType:'none'
             },
             title: {
                 text: 'Grau de Indiferenciação<br>'+ paciente['paciente']

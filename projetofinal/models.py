@@ -27,7 +27,7 @@ class Psicologo(models.Model):
     codigo = models.CharField(max_length=50,null=True)
 
     def __str__(self):
-        return self.usuario.first_name
+        return self.nome
 
 
 class Paciente(models.Model):
@@ -42,7 +42,7 @@ class Paciente(models.Model):
     tempo= models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.usuario.first_name
+        return self.nome
 
 
 class Familia(models.Model):
