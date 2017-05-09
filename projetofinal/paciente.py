@@ -359,6 +359,7 @@ class HabilitarPsicologo(SessionWizardView):
 def PsicologoHabilitado(request):
     return render(request, 'projetofinal/habilitado.html', {})
 
+
 class BuscarPsicologo(SessionWizardView):
     template_name = "projetofinal/busca.html"
     form_list=[BuscarPsicologo]

@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 class Chave(models.Model):
     PADRAO =(
         ("usada","Usada"),
+        ("livre","Livre")
     )
     chave = models.CharField(max_length=100)
     padrao = models.CharField(max_length=20,choices=PADRAO,null=True, blank=True)

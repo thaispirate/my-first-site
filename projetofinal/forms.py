@@ -21,10 +21,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
 from .utils import get_user_model
-#from haystack.forms import SearchForm
-#from dal import autocomplete
-#import autocomplete_light
-#autocomplete_light.autodiscover()
+from dal import autocomplete
+import autocomplete_light
+autocomplete_light.autodiscover()
 
 class UserCreationForm(forms.ModelForm):
     """
@@ -593,6 +592,12 @@ class HabilitarPsicologo(forms.Form):
 
         return crp
 
+class BuscaPsicologo(forms.Form):
+    old_user = forms.CharField(
+        widget=autocomplete_light.TextWidget('PsicologoAutocomplete'))
+    user = forms.ChoiceField(Psicologo.objects.all(),
+        widget=autocomplete_light.ChoiceWidget('PsicologoAutocomplete'))
+
 class BuscarPsicologo(forms.Form):
 
     choiceestado=[(i['estado'], i['estado']) for i in Psicologo.objects.order_by('estado').values('estado').distinct()]
@@ -604,6 +609,8 @@ class BuscarPsicologo(forms.Form):
         label="Estado",
         choices=choiceestado,
         required=False,
+        widget=autocomplete_light.ChoiceWidget('PsicologoAutocomplete')
+
     )
     cidade = forms.ChoiceField(
         label="Cidade",

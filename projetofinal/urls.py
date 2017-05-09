@@ -10,6 +10,8 @@ from .analise import InserirAnalise,InserirAnaliseRelacionamento,InserirAnaliseI
     ProsseguirAnalise,Recomendacoes,ConsultandoRecomendacoes, RecomendacaoAreaAfetiva, RecomendacaoIndiferenciacao,\
     RecomendacaoSeletiva,RecomendacaoTarefas, RecomendacaoInterventiva,\
     ResumoAreaAfetiva, ResumoRelacionamento, ResumoSeletiva,ResumoTarefas, ResumoExercicios, ResumoInterventiva
+from .models import Psicologo
+from dal import autocomplete
 
 handler404="paciente.erro404"
 
@@ -28,8 +30,7 @@ urlpatterns = [
     url(r'^atualizar_chave/(?P<paciente_id>\d+)/$', AtualizarChave.as_view()),
     url(r'^habilitar_psicologo/(?P<paciente_id>\d+)/$', HabilitarPsicologo.as_view()),
     url(r'^habilitado$', paciente.PsicologoHabilitado),
-    url(r'^buscar_psicologo/(?P<paciente_id>\d+)/$',BuscarPsicologo.as_view()),
-
+    url(r'^buscar_psicologo/(?P<paciente_id>\d+)/$',BuscarPsicologo.as_view(),name="Buscar_Psicologo"),
     url(r'^recover/(?P<signature>.+)/$', paciente.recover_done,
         name='password_reset_sent'),
     url(r'^recover$', paciente.recover, name='password_reset_recover'),
