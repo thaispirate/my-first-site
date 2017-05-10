@@ -55,15 +55,14 @@
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
+                        <ul class="nav navbar-collapse">
                         <div class="desktop-hide">
                             Olá, {{user.first_name|capfirst}}
                         </div>
-                            <li><a href="">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                            <li><a href="/psicologo/home">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                             <li class="active" ><a href="/psicologo/paciente/{{view.paciente}}/analise">Análise<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-edit"></span></a></li>
                             <li ><a href="/psicologo/paciente/{{view.paciente}}/genograma">Genograma<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
                             <li ><a href="#">Relatório<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
-                            <li ><a href="#">Estatística<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-stats"></span></a></li>
                             <li ><a href="/psicologo/sair">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
 
                         </ul>
@@ -96,7 +95,9 @@
 
             <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
           </aside>
-               <div id="radar" style="min-width: 200px; height: 400px; margin: 0 auto"></div>
+               {%if view.indiferenciacao == 1%}
+               <div id="radar" style="min-width: 100px;min-height: 100px;height: 500px; margin: 0 auto"></div>
+               {%endif%}
            {% endif %}
        </div>
        </div>

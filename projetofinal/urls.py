@@ -2,7 +2,8 @@ from django.conf.urls import url
 from . import paciente,psicologo,analise
 from .forms import CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,CadastroAvoPaterna,\
     CadastroAvoMaterno, CadastroAvoMaterna,EdicaoPaciente, CadastroPsicologoForm
-from .paciente import Home,CadastroWizard, EditarCadastro,AtualizarChave, HabilitarPsicologo, BuscarPsicologo
+from .paciente import Home,CadastroWizard, EditarCadastro,EdicaoRealizada,AtualizarChave,ChaveAtualizada,\
+    HabilitarPsicologo,PsicologoHabilitado, BuscarPsicologo
 from .psicologo import PsicologoPaciente, CadastroPsicologoWizard,AnalisePaciente, ConsultandoAnalisePaciente, GenogramaPaciente
 
 from .analise import InserirAnalise,InserirAnaliseRelacionamento,InserirAnaliseIndiferenciacao,InserirAnaliseSeletiva,InserirAnaliseInterventiva,\
@@ -22,12 +23,13 @@ urlpatterns = [
     url(r'^erro404$', paciente.Erro404),
     url(r'^cadastro$', CadastroWizard.as_view([CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna]), name="cadastro"),
     url(r'^cadastrado$', paciente.CadastroRealizado),
-    url(r'^editado$', paciente.EdicaoRealizada),
+    url(r'^editado/(?P<paciente_id>\d+)$', EdicaoRealizada.as_view()),
     url(r'^login$', paciente.LoginPaciente),
     url(r'^cadastro/editar/(?P<paciente_id>\d+)/$', EditarCadastro.as_view([EdicaoPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna]), name="editar"),
     url(r'^atualizar_chave/(?P<paciente_id>\d+)/$', AtualizarChave.as_view()),
+    url(r'^chave/atualizada/(?P<paciente_id>\d+)/$', ChaveAtualizada.as_view()),
     url(r'^habilitar_psicologo/(?P<paciente_id>\d+)/$', HabilitarPsicologo.as_view()),
-    url(r'^habilitado$', paciente.PsicologoHabilitado),
+    url(r'^habilitado/(?P<paciente_id>\d+)$', PsicologoHabilitado.as_view()),
     url(r'^buscar_psicologo/(?P<paciente_id>\d+)/$',BuscarPsicologo.as_view()),
     url(r'^recover/(?P<signature>.+)/$', paciente.recover_done,
         name='password_reset_sent'),

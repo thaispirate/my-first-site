@@ -39,6 +39,7 @@ class Paciente(models.Model):
     sexo = models.CharField(max_length=10,null=True)
     escolaridade = models.CharField(max_length=15, null=True,blank=True)
     psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE,null=True)
+    habilitado = models.DateTimeField(null=True,blank=True)
     retornos = models.PositiveIntegerField(null=True, blank=True)
     tempo= models.PositiveIntegerField(null=True, blank=True)
 

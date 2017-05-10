@@ -183,8 +183,19 @@ class CadastroWizard(SessionWizardView):
 def CadastroRealizado(request):
     return render(request, 'projetofinal/cadastrado.html', {})
 
-def EdicaoRealizada(request):
-    return render(request, 'projetofinal/editado.html', {})
+class EdicaoRealizada(TemplateView):
+    template_name = "projetofinal/editado.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EdicaoRealizada, self).dispatch(*args, **kwargs)
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        return paciente
 
 class EditarCadastro(SessionWizardView):
     template_name = "projetofinal/editar.html"
@@ -302,7 +313,7 @@ class EditarCadastro(SessionWizardView):
         familia.falecimento = form_data[7]['falecimentoAvoMaterna']
         familia.escolaridade = form_data[7]['escolaridadeAvoMaterna']
         familia.save()
-        return redirect(EdicaoRealizada)
+        return HttpResponseRedirect('/editado/'+paciente_id)
 
 class AtualizarChave(SessionWizardView):
     template_name = "projetofinal/chave.html"
@@ -328,7 +339,21 @@ class AtualizarChave(SessionWizardView):
         paciente.save()
         chave.padrao="usada"
         chave.save()
-        return HttpResponseRedirect('/home/'+paciente_id)
+        return HttpResponseRedirect('/chave/atualizada/'+paciente_id)
+
+class ChaveAtualizada(TemplateView):
+    template_name = "projetofinal/atualizada.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ChaveAtualizada, self).dispatch(*args, **kwargs)
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        return paciente
 
 class HabilitarPsicologo(SessionWizardView):
     template_name = "projetofinal/psicologo.html"
@@ -351,11 +376,23 @@ class HabilitarPsicologo(SessionWizardView):
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         psicologo = Psicologo.objects.get(codigo = crp)
         paciente.psicologo=psicologo
+        paciente.habilitado=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         paciente.save()
-        return redirect(PsicologoHabilitado)
+        return HttpResponseRedirect('/habilitado/'+paciente_id)
 
-def PsicologoHabilitado(request):
-    return render(request, 'projetofinal/habilitado.html', {})
+class PsicologoHabilitado(TemplateView):
+    template_name = "projetofinal/habilitado.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PsicologoHabilitado, self).dispatch(*args, **kwargs)
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        return paciente
 
 
 class BuscarPsicologo(SessionWizardView):

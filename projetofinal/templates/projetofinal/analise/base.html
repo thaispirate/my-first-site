@@ -68,7 +68,7 @@
                             {%if view.paciente.retornos == 0 or paciente.retornos == 0%}
                             <li><a href="/analise/resumo/{{ user.id }}/areaafetiva">Iniciar</a></li>
                             {%endif%}
-                            {%if view.paciente.tempo >= 0%}
+                            {%if view.paciente.tempo >= 0 or paciente.tempo >= 0 %}
                             <li><a href="/analise/prosseguir/{{user.id}}">Prosseguir</a></li>
                             {%endif%}
                             <li><a href="/analise/consultar/{{user.id}}">Consultar</a></li>

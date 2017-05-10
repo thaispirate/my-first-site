@@ -6,7 +6,9 @@
 {% block content %}
  <div class="container">
             {% if not view.anamnesia %}
-              <h2>Não existem atendimentos</h2>
+              <h4>Você precisará de uma nova chave para realizar um novo atendimento.</h4>
+              <h4>As recomendações para o atendimento já finalizado continuam disponíveis
+                  no menu "Recomendações"</h4>
             {% else %}
             {%if view.paciente.tempo == 1%}
             <h4>Falta {{view.paciente.tempo}} dia para encerrarem seus créditos</h4>
@@ -43,7 +45,9 @@
 
             <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
          </aside>
+               {%if view.indiferenciacao == 1%}
                <div id="radar" style="min-width: 100px;min-height: 100px;height: 500px; margin: 0 auto"></div>
+               {%endif%}
           {% endif %}
        </div>
        </div>

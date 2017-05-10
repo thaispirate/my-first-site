@@ -820,6 +820,17 @@ class ConsultarAnalise(TemplateView):
 
         return anamnesia
 
+    def indiferenciacao(self):
+        indiferenciacao=0
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
+        for analise in anamnesia:
+            if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id).exists():
+                indiferenciacao=1
+        return indiferenciacao
+
     def paciente(self):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
@@ -865,19 +876,21 @@ class ConsultarAnalise(TemplateView):
         reativo=0
         adaptativo=0
         for analise in anamnesia:
-            indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
-            for opcao in indiferenciacao:
-                resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
-                if resposta.padrao == "adaptativo":
-                    adaptativo=adaptativo+1
-                if resposta.padrao == "reativo":
-                    reativo=reativo+1
-                if resposta.padrao == "criativo":
-                    criativo=criativo+1
+            if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id).exists():
+                indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
+                for opcao in indiferenciacao:
+                    print(opcao.anamnesia_id)
+                    resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
+                    if resposta.padrao == "adaptativo":
+                        adaptativo=adaptativo+1
+                    if resposta.padrao == "reativo":
+                        reativo=reativo+1
+                    if resposta.padrao == "criativo":
+                        criativo=criativo+1
 
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
+                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
+                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
 
         nascimento=str(paciente.nascimento)
         ano = int(nascimento.split("-")[0])
@@ -1338,6 +1351,18 @@ class ProsseguirAnalise(TemplateView):
                 anamnesia = anamnesia.exclude(id = analise.id)
         return anamnesia
 
+    def indiferenciacao(self):
+        indiferenciacao=0
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
+        for analise in anamnesia:
+            if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id).exists():
+                indiferenciacao=1
+        return indiferenciacao
+
+
     def grafico(self):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
@@ -1379,19 +1404,22 @@ class ProsseguirAnalise(TemplateView):
         reativo=0
         adaptativo=0
         for analise in anamnesia:
-            indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
-            for opcao in indiferenciacao:
-                resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
-                if resposta.padrao == "adaptativo":
-                    adaptativo=adaptativo+1
-                if resposta.padrao == "reativo":
-                    reativo=reativo+1
-                if resposta.padrao == "criativo":
-                    criativo=criativo+1
+            if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id).exists():
+                indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
+                for opcao in indiferenciacao:
+                    print(opcao.anamnesia_id)
+                    resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
+                    if resposta.padrao == "adaptativo":
+                        adaptativo=adaptativo+1
+                    if resposta.padrao == "reativo":
+                        reativo=reativo+1
+                    if resposta.padrao == "criativo":
+                        criativo=criativo+1
 
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
+                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
+                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+
 
         nascimento=str(paciente.nascimento)
         ano = int(nascimento.split("-")[0])
@@ -1551,6 +1579,20 @@ def RemoverAnalise(request, paciente_id):
     paciente = Paciente.objects.get(usuario_id=paciente_id)
     return render(request,"projetofinal/analise/removida.html", {'paciente': paciente},context_instance=RequestContext(request))
 
+class AnaliseRemovida(TemplateView):
+    template_name = "projetofinal/analise/removida.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(AnaliseRemovida, self).dispatch(*args, **kwargs)
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+
+        return paciente
+
 class Recomendacoes(TemplateView):
     template_name = "projetofinal/analise/recomendacao/home.html"
 
@@ -1565,6 +1607,17 @@ class Recomendacoes(TemplateView):
         anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
 
         return anamnesia
+
+    def indiferenciacao(self):
+        indiferenciacao=0
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
+        for analise in anamnesia:
+            if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id).exists():
+                indiferenciacao=1
+        return indiferenciacao
 
     def grafico(self):
         if 'paciente_id' in self.kwargs:
@@ -1605,19 +1658,21 @@ class Recomendacoes(TemplateView):
         reativo=0
         adaptativo=0
         for analise in anamnesia:
-            indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
-            for opcao in indiferenciacao:
-                resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
-                if resposta.padrao == "adaptativo":
-                    adaptativo=adaptativo+1
-                if resposta.padrao == "reativo":
-                    reativo=reativo+1
-                if resposta.padrao == "criativo":
-                    criativo=criativo+1
+            if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id).exists():
+                indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
+                for opcao in indiferenciacao:
+                    print(opcao.anamnesia_id)
+                    resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
+                    if resposta.padrao == "adaptativo":
+                        adaptativo=adaptativo+1
+                    if resposta.padrao == "reativo":
+                        reativo=reativo+1
+                    if resposta.padrao == "criativo":
+                        criativo=criativo+1
 
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
+                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
+                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
 
         nascimento=str(paciente.nascimento)
         ano = int(nascimento.split("-")[0])

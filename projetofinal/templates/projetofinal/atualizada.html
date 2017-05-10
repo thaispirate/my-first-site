@@ -1,0 +1,15 @@
+{% extends 'projetofinal/base.html' %}
+{% load staticfiles %}
+
+    {% block content %}
+        <h2> Você habilitou um novo atendimento. </h2>
+        <h4>Você será redirecionado em 5 segundos ao portal inicial</h4>
+<script text="text/javascript">
+paciente_id={{view.paciente.usuario_id|safe}}
+    function redirect(){
+       window.location.href = "/home/"+paciente_id;
+    }
+    setTimeout(redirect, 5000); //2000 is equivalent to 2 seconds
+</script>
+    {% endblock %}
+

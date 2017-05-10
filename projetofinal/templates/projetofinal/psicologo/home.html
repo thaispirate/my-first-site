@@ -20,59 +20,62 @@
     <![endif]-->
   </head>
   <body>
-
-           <nav class="navbar navbar-inverse navbar-fixed-top">
+         <nav class="navbar navbar-inverse navbar-fixed-top">
           <div class="container">
             <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-              </button>
               <a class="navbar-brand" href="/psicologo/home">Vínculo Vida</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
             </div>
-            <div id="navbar" class="navbar-collapse collapse">
-
-          <form class="navbar-form navbar-right" >
+         <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
             Olá, {{user.first_name|capfirst}}
-            <a type="submit" class="btn btn-primary" href="/psicologo/sair">Sair</a>
-
           </form>
           </div>
           </div>
-         </nav>
-       <img src="{% static 'image/psicologia.jpg' %}" class="img-responsive" alt="Responsive image"/>
-       <div class="container">
-          <hr class="featurette-divider">
-          <div class="col-md-5">
-          <table class="table table-bordered">
-            <tr>
-                <th>#</th>
-                <th>Paciente</th>
-            </tr>
-            {% for paciente in pacientes %}
-              {% if paciente.psicologo.nome == user.first_name %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td><a href="/psicologo/paciente/{{ paciente.usuario_id }}">{{paciente.nome}}</a></td>
-            </tr>
-              {%endif%}
-            {% endfor %}
-          </table>
-          </div>
-       </div>
+          </nav>
 
+            <nav class="navbar navbar-inverse sidebar" role="navigation">
+                <div class="container-fluid">
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                        <ul class="nav navbar-collapse">
+                        <div class="desktop-hide">
+                            Olá, {{user.first_name|capfirst}}
+                        </div>
+                            <li class="active"><a href="">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                            <li ><a href="/psicologo/sair">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{% static 'assets/javascript/ajaxgoogleapis.js' %}"></script>
-    <script src="{% static 'assets/javascript/jquery.js' %}"></script>
-    <script src="{% static 'assets/javascript/bootstrap.js' %}"></script>
-    <script src="{% static 'assets/javascript/menulateral.js' %}"></script>
-  </body>
-</html>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="main">
+            <!-- Content Here -->
+                <img src="{% static 'image/psicologia.jpg' %}" class="img-responsive" alt="Responsive image"/>
+              <div class="container">
+                  <div class="col-md-5">
+                  <table class="table table-bordered">
+                    <tr>
+                        <th>#</th>
+                        <th>Paciente</th>
+                    </tr>
+                    {% for paciente in pacientes %}
+                      {% if paciente.psicologo.nome == user.first_name %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="/psicologo/paciente/{{ paciente.usuario_id }}/analise">{{paciente.nome}}</a></td>
+                    </tr>
+                      {%endif%}
+                    {% endfor %}
+                  </table>
+                  </div>
+               </div>
+            </div>
 
 
