@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ca5a1301-4982-49aa-9407-4d7d63347a4a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/forms.py" afterPath="$PROJECT_DIR$/projetofinal/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/paciente.py" afterPath="$PROJECT_DIR$/projetofinal/paciente.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/urls.py" afterPath="$PROJECT_DIR$/projetofinal/urls.py" />
     </list>
     <ignored path="django.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,10 +33,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projetofinal/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2907916">
+            <state vertical-scroll-proportion="0.0">
               <caret line="12" column="25" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
@@ -90,6 +89,18 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5799677">
+              <caret line="30" column="77" selection-start-line="30" selection-start-column="77" selection-end-line="30" selection-end-column="77" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -136,7 +147,6 @@
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/indiferenciacao.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/consultando.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastro.html" />
-        <option value="$PROJECT_DIR$/projetofinal/urls.py" />
         <option value="$PROJECT_DIR$/projetofinal/autocomplete_light_registry.py" />
         <option value="$PROJECT_DIR$/projetofinal/models.py" />
         <option value="$PROJECT_DIR$/mysite/settings.py" />
@@ -157,6 +167,7 @@
         <option value="$PROJECT_DIR$/projetofinal/genograma.py" />
         <option value="$PROJECT_DIR$/projetofinal/forms.py" />
         <option value="$PROJECT_DIR$/projetofinal/paciente.py" />
+        <option value="$PROJECT_DIR$/projetofinal/urls.py" />
       </list>
     </option>
   </component>
@@ -778,16 +789,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="103" selection-start-line="32" selection-start-column="103" selection-end-line="32" selection-end-column="103" />
-          <folding>
-            <element signature="e#0#32#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mysite/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -996,10 +997,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2907916">
+        <state vertical-scroll-proportion="0.0">
           <caret line="12" column="25" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5799677">
+          <caret line="30" column="77" selection-start-line="30" selection-start-column="77" selection-end-line="30" selection-end-column="77" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
