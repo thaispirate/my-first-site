@@ -576,7 +576,7 @@ class AtualizarChave(forms.Form):
 class HabilitarPsicologo(forms.Form):
 
     error_messages = {
-        'codigo_invalido': _("CRP inválido"),
+        'codigo_invalido': _("CRP não encontrado"),
     }
 
     CRP = forms.CharField(label="Digite o CRP do psicólogo:",
@@ -592,11 +592,6 @@ class HabilitarPsicologo(forms.Form):
 
         return crp
 
-class BuscaPsicologo(forms.Form):
-    old_user = forms.CharField(
-        widget=autocomplete_light.TextWidget('PsicologoAutocomplete'))
-    user = forms.ChoiceField(Psicologo.objects.all(),
-        widget=autocomplete_light.ChoiceWidget('PsicologoAutocomplete'))
 
 class BuscarPsicologo(forms.Form):
 
@@ -609,7 +604,6 @@ class BuscarPsicologo(forms.Form):
         label="Estado",
         choices=choiceestado,
         required=False,
-        widget=autocomplete_light.ChoiceWidget('PsicologoAutocomplete')
 
     )
     cidade = forms.ChoiceField(
@@ -671,7 +665,7 @@ class ConsultarAreaAfetiva(forms.Form):
 class RelacionamentoAvosMaternos(forms.Form):
 
     relacao = forms.ChoiceField(
-        label="Seus avós maternos são:",
+        label="Qual é/era o relacionamento dos seus avós maternos:",
         choices = (
             ('Casados', "Casados"),
             ('Moram junto', "Moram junto"),
@@ -732,7 +726,7 @@ class RelacionamentoAvosMaternosDepois(forms.Form):
 class RelacionamentoAvosPaternos(forms.Form):
 
     relacao = forms.ChoiceField(
-        label="Seus avós paternos são:",
+        label="Qual é/era o relacionamento dos seus avós paternos:",
         choices = (
             ('Casados', "Casados"),
             ('Moram junto', "Moram junto"),
@@ -808,7 +802,7 @@ class RelacionamentoPais(forms.Form):
             filhos=1
         print(step)
         self.fields[step+"relacao"] = forms.ChoiceField(
-            label="Seus pais são:",
+            label="Qual é/era o relacionamento dos seus pais:",
             choices = (
                 ('Casados', "Casados"),
                 ('Moram junto', "Moram junto"),

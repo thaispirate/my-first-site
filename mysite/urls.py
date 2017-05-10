@@ -5,5 +5,4 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('projetofinal.urls')),
     url(r'', include('password_reset.urls')),
-    url(r'^autocomplete/', include('autocomplete_light.urls')),
 ]

@@ -134,23 +134,6 @@ descompactar django-highcharts-0.1.7.tar.gz
 cd django-highcharts-0.1.7
 sudo cp -R highcharts/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
 
--haystack
-baixar django-haystack-2.6.0.tar.gz : https://pypi.python.org/pypi/django-haystack/2.6.0
-descompactar django-haystack-2.6.0.tar.gz
-cd django-haystack-2.6.0
-sudo cp -R haystack/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
-
--whoosh
-baixar Whoosh-2.7.4.tar.gz : https://pypi.python.org/pypi/Whoosh/
-descompactar Whoosh-2.7.4.tar.gz
-cd Whoosh-2.7.4/src/
-sudo cp -R whoosh/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
-
--autocomplete-light
-baixar django-autocomplete-light-3.2.7.tar.gz : https://pypi.python.org/pypi/django-autocomplete-light
-cd django-autocomplete-light-3.2.7/src/
-sudo cp -R dal/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
-sudo cp -R dal_select2/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
 
 -cairo
 pip install pycairo

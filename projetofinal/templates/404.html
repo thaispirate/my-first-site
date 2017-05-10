@@ -49,17 +49,24 @@
                         <div class="desktop-hide">
                             Olá, {{user.first_name|capfirst}}
                         </div>
-                            <li class="active"><a href="{% url 'projetofinal.views.Home' %}">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                            <li class="active"><a href="/home/{{user.id}}/">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                             <li ><a href="/cadastro/editar/{{ user.id }}">Editar Cadastro<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+                            <li ><a href="/atualizar_chave/{{user.id}}">Atualizar Chave<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-wrench"></span></a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Atendimento<span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-edit"></span></a>
                                 <ul class="dropdown-menu forAnimate" role="menu">
-                                    <li><a href="/analise/inserir/{{ user.id }}">Iniciar</a></li>
+                                    {%if view.paciente.retornos == 0%}
+                                    <li><a href="/analise/resumo/{{ user.id }}/areaafetiva">Iniciar</a></li>
+                                    {%endif%}
+                                    {%if view.paciente.tempo >= 0%}
                                     <li><a href="/analise/prosseguir/{{user.id}}">Prosseguir</a></li>
+                                    {%endif%}
                                     <li><a href="/analise/consultar/{{user.id}}">Consultar</a></li>
                                 </ul>
                             </li>
                             <li><a href="/analise/recomendacao/{{user.id}}">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
+                            <li><a href="/buscar_psicologo/{{user.id}}">Buscar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-search"></span></a></li>
+                            <li><a href="/habilitar_psicologo/{{user.id}}">Habilitar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-ok-circle"></span></a></li>
                             <li ><a href="{% url 'projetofinal.views.LogoutView' %}">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
                         </ul>
                     </div>
