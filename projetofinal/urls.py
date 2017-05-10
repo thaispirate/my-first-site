@@ -82,4 +82,10 @@ urlpatterns = [
     url(r'^psicologo/paciente/(?P<paciente_id>\d+)/analise$', view=AnalisePaciente.as_view()),
     url(r'^psicologo/paciente/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ConsultandoAnalisePaciente.as_view(), name="consultar"),
     url(r'^psicologo/paciente/(?P<paciente_id>\d+)/genograma$', view=GenogramaPaciente.as_view()),
+    url(r'^psicologo/recover/(?P<signature>.+)/$', psicologo.recover_done,
+        name='psicologo/password_reset_sent'),
+    url(r'^psicologo/recover$', psicologo.recover, name='psicologo/password_reset_recover'),
+    url(r'^psicologo/reset/done/$', psicologo.reset_done, name='psicologo/password_reset_done'),
+    url(r'^psicologo/reset/(?P<token>[\w:-]+)/$', psicologo.reset,
+        name='psicologo/password_reset_reset'),
 ]

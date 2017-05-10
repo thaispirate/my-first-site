@@ -846,8 +846,8 @@ class GenogramaPaciente(TemplateView):
 #Classes do password-reset(esqueci a senha)
 
 class SaltMixin(object):
-    salt = 'password_recovery'
-    url_salt = 'password_recovery_url'
+    salt = 'psicologo/password_recovery'
+    url_salt = 'psicologo/password_recovery_url'
 
 
 def loads_with_timestamp(value, salt):
@@ -862,7 +862,7 @@ def loads_with_timestamp(value, salt):
 
 
 class RecoverDone(SaltMixin, generic.TemplateView):
-    template_name = 'password_reset/reset_sent2.html'
+    template_name = 'psicologo/password_reset/reset_sent2.html'
 
     def get_context_data(self, **kwargs):
         ctx = super(RecoverDone, self).get_context_data(**kwargs)
@@ -879,10 +879,10 @@ recover_done = RecoverDone.as_view()
 class Recover(SaltMixin, generic.FormView):
     case_sensitive = True
     form_class = PasswordRecoveryForm
-    template_name = 'password_reset/recovery_form2.html'
-    success_url_name = 'password_reset_sent'
-    email_template_name = 'password_reset/recovery_email2.txt'
-    email_subject_template_name = 'password_reset/recovery_email_subject2.txt'
+    template_name = 'psicologo/password_reset/recovery_form2.html'
+    success_url_name = 'psicologo/password_reset_sent'
+    email_template_name = 'psicologo/password_reset/recovery_email2.txt'
+    email_subject_template_name = 'psicologo/password_reset/recovery_email_subject2.txt'
     search_fields = ['username', 'email']
 
     def get_success_url(self):
@@ -938,8 +938,8 @@ recover = Recover.as_view()
 class Reset(SaltMixin, generic.FormView):
     form_class = PasswordResetForm
     token_expires = 3600 * 48  # Two days
-    template_name = 'password_reset/reset2.html'
-    success_url = reverse_lazy('password_reset_done')
+    template_name = 'psicologo/password_reset/reset2.html'
+    success_url = reverse_lazy('psicologo/password_reset_done')
 
     @method_decorator(sensitive_post_parameters('password1', 'password2'))
     def dispatch(self, request, *args, **kwargs):
@@ -986,7 +986,7 @@ reset = Reset.as_view()
 
 
 class ResetDone(generic.TemplateView):
-    template_name = 'password_reset/recovery_done2.html'
+    template_name = 'psicologo/password_reset/recovery_done2.html'
 
 
 reset_done = ResetDone.as_view()
