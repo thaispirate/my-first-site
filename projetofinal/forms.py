@@ -549,6 +549,19 @@ class CadastroPsicologoForm2(ModelForm):
         self.fields['complemento'].required = False
         self.fields['telefone'].required = False
         self.fields['celular'].required = False
+        self.fields['numero'].required = True
+        self.fields['bairro'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['endereco'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['numero'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['crp'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['estado'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['municipio'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['nome'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['endereco'].label="Endereço"
+        self.fields['numero'].label= "Número"
+        self.fields['municipio'].label= "Município"
+        self.fields['crp'].label= "CRP"
+
 
 class AtualizarChave(forms.Form):
 
@@ -599,7 +612,11 @@ class BuscarPsicologo(ModelForm):
     class Meta:
         model=Psicologo
         fields=['estado','municipio']
+    def __init__(self, *args, **kwargs):
+        super(BuscarPsicologo, self).__init__(*args, **kwargs)
 
+        self.fields['estado'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['municipio'].error_messages={'required':'Este campo é obrigatório'}
 
 
 class PerguntasAreaAfetiva(forms.Form):

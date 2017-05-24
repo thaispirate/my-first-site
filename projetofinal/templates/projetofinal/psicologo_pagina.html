@@ -82,13 +82,14 @@
    <h3><strong>{{view.psicologo.nome}}</strong></h3>
       <h4>{{view.psicologo.email}}</h4>
       {%if view.psicologo.telefone%}
-      <h4>Tel.:{{view.psicologo.telefone}}</h4>
+      <h4>Tel.: {{view.psicologo.telefone}}</h4>
       {%endif%}
       {%if view.psicologo.celular%}
-      <h4>Cel.:{{view.psicologo.celular}}</h4>
+      <h4>Cel.: {{view.psicologo.celular}}</h4>
       {%endif%}
       <h4>{{view.psicologo.endereco}} {{view.psicologo.numero}} - {{view.psicologo.bairro}}</h4>
       <h4>{{view.psicologo.municipio}}</h4>
+      <h4>CRP: {{view.psicologo.crp}}</h4>
       <div id="map-canvas" class=""></div>
     </div>
     </div>
@@ -125,6 +126,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
       <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'assets/javascript/ajaxgoogleapis.js' %}"></script>
+    <script src="{% static 'assets/javascript/jquery.js' %}"></script>
+    <script src="{% static 'assets/javascript/bootstrap.js' %}"></script>
+    <script src="{% static 'assets/javascript/progressbar.js' %}"></script>
 
   </body>
 </html>
