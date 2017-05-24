@@ -16,7 +16,7 @@ def drawPersonOfInterst(piStartX,piStartY,piSize,pbIndex,pbMan,pbDead,pstrBirthD
 	if pbMan:
 		ctx.rectangle(piStartX,piStartY,piSize,piSize)
 		if pbIndex:
-			ctx.rectangle(piStartX+4,piStartY+4,piSize-8,piSize-8)
+			ctx.rectangle(piStartX+4,piStartY+4,piSize-8,piSiisze-8)
 		if pbDead:
 			ctx.move_to(piStartX,piStartY)
 			ctx.line_to(piStartX+piSize,piStartY+piSize)
