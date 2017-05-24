@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'password_reset',
     'jquery',
     'highcharts',
+    'smart_selects',
     'projetofinal',
 )
 
@@ -130,3 +131,4 @@ DEFAULT_FROM_EMAIL = 'thais.potc@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+SMART_SELECTS_JQUERY_URL = True

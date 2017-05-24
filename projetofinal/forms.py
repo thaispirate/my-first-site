@@ -1,6 +1,7 @@
 import random
 from django import forms
-from .models import User, Chave, Paciente, Psicologo, Familia, PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva,\
+from .models import User, Chave, Estado, Municipio,Paciente, Psicologo, Familia,\
+    PerguntaAreaAfetiva, RespostaAreaAfetiva, AreaAfetiva,\
     Anamnesia, GrauIndiferenciacao, PerguntaSeletiva, RespostaSeletiva,Seletiva,\
     PerguntaInterventiva, Interventiva
 from django.contrib.auth.forms import UserCreationForm
@@ -538,12 +539,16 @@ class CadastroPsicologoForm(UserCreationForm):
                  'required': "Please enter your second password.",
             },
          }
+class CadastroPsicologoForm2(ModelForm):
+    class Meta():
+        model=Psicologo
+        fields=['nome','telefone','celular','estado','municipio','endereco','numero','complemento','bairro','crp']
+    def __init__(self, *args, **kwargs):
+        super(CadastroPsicologoForm2, self).__init__(*args, **kwargs)
 
-
-    nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório'})
-    estado = forms.CharField(label="Estado",error_messages={'required':'Este campo é obrigatório'})
-    cidade = forms.CharField(label="Cidade",error_messages={'required':'Este campo é obrigatório'})
-    bairro= forms.CharField(label="Bairro",error_messages={'required':'Este campo é obrigatório'})
+        self.fields['complemento'].required = False
+        self.fields['telefone'].required = False
+        self.fields['celular'].required = False
 
 class AtualizarChave(forms.Form):
 
@@ -590,34 +595,11 @@ class HabilitarPsicologo(forms.Form):
         return crp
 
 
-class BuscarPsicologo(forms.Form):
+class BuscarPsicologo(ModelForm):
+    class Meta:
+        model=Psicologo
+        fields=['estado','municipio']
 
-    choiceestado=[(i['estado'], i['estado']) for i in Psicologo.objects.order_by('estado').values('estado').distinct()]
-    choicecidade=[(i['cidade'], i['cidade']) for i in Psicologo.objects.order_by('cidade').values('cidade').distinct()]
-    choicebairro=[(i['bairro'], i['bairro']) for i in Psicologo.objects.order_by('bairro').values('bairro').distinct()]
-    choicenome=[(i['nome'], i['nome']) for i in Psicologo.objects.order_by('nome').values('nome').distinct()]
-
-    estado = forms.ChoiceField(
-        label="Estado",
-        choices=choiceestado,
-        required=False,
-
-    )
-    cidade = forms.ChoiceField(
-        label="Cidade",
-        choices=choicecidade,
-        required=False
-    )
-    bairro =forms.ChoiceField(
-        label="Bairro",
-        required=False,
-        choices=choicebairro
-    )
-    nome = forms.ChoiceField(
-        label="Nome",
-        choices=choicenome,
-        required=False
-    )
 
 
 class PerguntasAreaAfetiva(forms.Form):

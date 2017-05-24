@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.models import User, Group
 from .forms import CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,\
     CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna,EdicaoPaciente,AtualizarChave, HabilitarPsicologo, BuscarPsicologo
-from .models import Paciente, Chave, User,Familia, Psicologo, Anamnesia
+from .models import Paciente, Chave, User,Familia, Psicologo, Anamnesia,Municipio, Estado
 
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404, HttpResponseRedirect, HttpResponse, FileResponse
@@ -36,6 +36,8 @@ from .forms import PasswordRecoveryForm, PasswordResetForm
 from .signals import user_recovers_password
 from .utils import get_user_model, get_username
 from django.contrib.auth import logout
+from geopy.geocoders import Nominatim
+from geopy.geocoders import GoogleV3
 
 # Create your views here.
 
@@ -403,21 +405,74 @@ class BuscarPsicologo(SessionWizardView):
     def dispatch(self, *args, **kwargs):
         return super(BuscarPsicologo, self).dispatch(*args, **kwargs)
 
+
     def paciente(self):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         return paciente
 
-    def get_form_step_data(self, form):
-        paciente_id = self.kwargs['paciente_id']
-        paciente = Paciente.objects.get(usuario_id=paciente_id)
-
-        return form.data
 
     def done(self, form_list, form_dict, **kwargs):
+        form_data= [form.cleaned_data for form in form_list]
+        paciente_id = self.kwargs['paciente_id']
+        estado= form_data[0]['estado']
+        estado = Estado.objects.get(estado = estado)
+        estado = estado.estado
+        municipio =form_data[0]['municipio']
+        municipio = Municipio.objects.get(municipio = municipio)
+        municipio=municipio.municipio
+        return HttpResponseRedirect('/buscar_psicologo/'+paciente_id+'/'+estado+'/'+municipio)
 
-        return redirect(EdicaoRealizada)
+class PsicologoLista(TemplateView):
+    template_name = "projetofinal/psicologo_lista.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PsicologoLista, self).dispatch(*args, **kwargs)
+
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        return paciente
+
+    def psicologo(self):
+        if 'estado' in self.kwargs:
+            estado = self.kwargs['estado']
+        if 'municipio' in self.kwargs:
+            municipio = self.kwargs['municipio']
+
+        municipio=Municipio.objects.get(municipio=municipio)
+        psicologo=Psicologo.objects.filter(municipio_id=municipio.id)
+
+        return psicologo
+
+class PsicologoPagina(TemplateView):
+    template_name = "projetofinal/psicologo_pagina.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PsicologoPagina, self).dispatch(*args, **kwargs)
+
+    def psicologo(self):
+        if 'psicologo_id' in self.kwargs:
+            psicologo_id = self.kwargs['psicologo_id']
+        psicologo= Psicologo.objects.get(id=psicologo_id)
+        return psicologo
+
+    def mapa(self):
+        coordenadas={}
+        if 'psicologo_id' in self.kwargs:
+            psicologo_id = self.kwargs['psicologo_id']
+        psicologo= Psicologo.objects.get(id=psicologo_id)
+        geolocator = GoogleV3()
+        location = geolocator.geocode(str(psicologo.numero)+" "+psicologo.endereco+" "+str(psicologo.municipio))
+        coordenadas['latitude']=location.latitude
+        coordenadas['longitude']=location.longitude
+        return coordenadas
+
 
 #Classes do password-reset(esqueci a senha)
 

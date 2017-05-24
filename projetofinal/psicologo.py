@@ -14,7 +14,7 @@ from .forms import ConsultarAreaAfetiva,CadastroPaciente,CadastroConjuge,Cadastr
     PerguntasSeletivas, ConsultarPerguntasSeletivas,\
     PerguntasInterventivas, ConsultarPerguntasInterventivas
 
-from .models import Paciente, Chave, User,Familia, Psicologo, AreaAfetiva, Anamnesia, PerguntaAreaAfetiva,RespostaAreaAfetiva,\
+from .models import Paciente, Chave,Estado,Municipio, User,Familia, Psicologo, AreaAfetiva, Anamnesia, PerguntaAreaAfetiva,RespostaAreaAfetiva,\
     Relacionamento,GrauIndiferenciacao, GrauIndiferenciacaoPaciente,\
     Seletiva, PerguntaSeletiva,RespostaSeletiva, PerguntaSeletiva,\
     Interventiva, PerguntaInterventiva, Recomendacao
@@ -82,7 +82,7 @@ class CadastroPsicologoWizard(SessionWizardView):
         user.username = form_data[0]['username']
         user.set_password(form_data[0]['password1'])
         user.email = form_data[0]['username']
-        user.first_name = form_data[0]['nome']
+        user.first_name = form_data[1]['nome']
         user.save()
         group = Group.objects.get_or_create(name="psicologo")
         group = Group.objects.get(name="psicologo")
@@ -90,10 +90,20 @@ class CadastroPsicologoWizard(SessionWizardView):
         psicologo = Psicologo()
         psicologo.usuario = user
         psicologo.email = form_data[0]['username']
-        psicologo.nome = form_data[0]['nome'].upper()
-        psicologo.estado = form_data[0]['estado'].upper()
-        psicologo.cidade = form_data[0]['cidade'].upper()
-        psicologo.bairro = form_data[0]['bairro'].upper()
+        psicologo.nome = form_data[1]['nome']
+        estado= form_data[1]['estado']
+        estado = Estado.objects.get(estado=estado)
+        psicologo.estado=estado
+        municipio= form_data[1]['municipio']
+        municipio = Municipio.objects.get(municipio=municipio)
+        psicologo.municipio=municipio
+        psicologo.endereco = form_data[1]['endereco']
+        psicologo.numero = form_data[1]['numero']
+        psicologo.complemento = form_data[1]['complemento']
+        psicologo.bairro = form_data[1]['bairro']
+        psicologo.telefone = form_data[1]['telefone']
+        psicologo.telefone = form_data[1]['celular']
+        psicologo.crp = form_data[1]['crp']
         psicologo.save()
         return redirect(CadastroPsicologoRealizado)
 
@@ -204,7 +214,6 @@ class AnalisePaciente(TemplateView):
             if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id).exists():
                 indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
                 for opcao in indiferenciacao:
-                    print(opcao.anamnesia_id)
                     resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
                     if resposta.padrao == "adaptativo":
                         adaptativo=adaptativo+1
@@ -733,7 +742,6 @@ class GenogramaPaciente(TemplateView):
             if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id).exists():
                 indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
                 for opcao in indiferenciacao:
-                    print(opcao.anamnesia_id)
                     resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
                     if resposta.padrao == "adaptativo":
                         adaptativo=adaptativo+1

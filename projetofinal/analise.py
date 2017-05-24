@@ -879,7 +879,6 @@ class ConsultarAnalise(TemplateView):
             if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id).exists():
                 indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
                 for opcao in indiferenciacao:
-                    print(opcao.anamnesia_id)
                     resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
                     if resposta.padrao == "adaptativo":
                         adaptativo=adaptativo+1
@@ -1407,7 +1406,6 @@ class ProsseguirAnalise(TemplateView):
             if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id).exists():
                 indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
                 for opcao in indiferenciacao:
-                    print(opcao.anamnesia_id)
                     resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
                     if resposta.padrao == "adaptativo":
                         adaptativo=adaptativo+1
@@ -1661,7 +1659,6 @@ class Recomendacoes(TemplateView):
             if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id).exists():
                 indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
                 for opcao in indiferenciacao:
-                    print(opcao.anamnesia_id)
                     resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
                     if resposta.padrao == "adaptativo":
                         adaptativo=adaptativo+1

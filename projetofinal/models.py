@@ -4,8 +4,22 @@ from django import forms
 from django.utils import timezone
 from datetime import date
 from django.contrib.auth.models import User
+from smart_selects.db_fields import ChainedForeignKey
 
 # Create your models here.
+class Estado(models.Model):
+    estado = models.CharField(max_length=100,null=True, blank=True)
+    sigla = models.CharField(max_length=3,null=True, blank=True)
+
+    def __str__(self):
+        return self.estado
+
+class Municipio(models.Model):
+    municipio = models.CharField(max_length=100,null=True, blank=True)
+    estado = models.ForeignKey(Estado, on_delete=models.CASCADE,null=True)
+
+    def __str__(self):
+        return self.municipio
 
 class Chave(models.Model):
     PADRAO =(
@@ -22,10 +36,22 @@ class Psicologo(models.Model):
     usuario = models.OneToOneField(User)
     email = models.EmailField()
     nome = models.CharField(max_length=50,null=True)
-    estado = models.CharField(max_length=50,null=True)
-    cidade = models.CharField(max_length=50,null=True)
+    telefone = models.PositiveIntegerField(null=True, blank=True)
+    celular = models.PositiveIntegerField(null=True, blank=True)
+    estado = models.ForeignKey(Estado, on_delete=models.CASCADE,null=True)
+    municipio = ChainedForeignKey(
+        Municipio,
+        chained_field="estado",
+        chained_model_field="estado",
+        show_all=False,
+        auto_choose=True,
+        sort=True,
+        null=True)
+    endereco = models.CharField(max_length=200,null=True)
+    numero=models.PositiveIntegerField(null=True, blank=True)
+    complemento = models.CharField(max_length=200,null=True)
     bairro = models.CharField(max_length=50,null=True)
-    codigo = models.CharField(max_length=50,null=True)
+    crp = models.CharField(max_length=50,null=True)
 
     def __str__(self):
         return self.nome

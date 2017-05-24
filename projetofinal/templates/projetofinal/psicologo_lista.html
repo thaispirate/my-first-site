@@ -78,26 +78,27 @@
 
     <div class="main">
             <!-- Content Here -->
-   <form action="" method="post">{% csrf_token %}
-    <div class="container">
-    <table>
-    {{ wizard.management_form }}
-    {% if wizard.form.forms %}
-        {{ wizard.form.management_form }}
-        {% for form in wizard.form.forms %}
-            {{ form }}
-        {% endfor %}
-    {% else %}
-        {% crispy wizard.form %}
-    {% endif %}
-        {{ aform.instance.estado }}
-    </table>
-    <div class="col-sm-offset-5 col-sm-10">
-    <button type="submit" class="btn btn-default" value="{% trans "submit" %}">Buscar</button>
-    </div>
-    </div>
-    </form>
-
+        <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12"  align="center">
+        <div class="alert alert-info" role="alert">
+        <table class="table" >
+            <thead class="thead-default">
+            <tr>
+                <th>Nome</th>
+                <th>Bairro</th>
+                <th>Página</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for psicologo in view.psicologo %}
+                <td style="white-space:nowrap;">{{psicologo.nome}}</td>
+                <td style="white-space:nowrap;">{{psicologo.bairro}}</td>
+                <td style="white-space:nowrap;"><a href="/buscar_psicologo/{{psicologo.nome}}/{{psicologo.id}}">Saiba Mais</a></td>
+            </tr>
+            {%endfor%}
+            </tbody>
+        </table>
+        </div>
+        </div>
     </div>
     </div>
     </form>

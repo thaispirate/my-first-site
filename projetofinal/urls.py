@@ -1,9 +1,9 @@
 from django.conf.urls import url
 from . import paciente,psicologo,analise
 from .forms import CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,CadastroAvoPaterna,\
-    CadastroAvoMaterno, CadastroAvoMaterna,EdicaoPaciente, CadastroPsicologoForm
+    CadastroAvoMaterno, CadastroAvoMaterna,EdicaoPaciente, CadastroPsicologoForm, CadastroPsicologoForm2
 from .paciente import Home,CadastroWizard, EditarCadastro,EdicaoRealizada,AtualizarChave,ChaveAtualizada,\
-    HabilitarPsicologo,PsicologoHabilitado, BuscarPsicologo
+    HabilitarPsicologo,PsicologoHabilitado, BuscarPsicologo, PsicologoLista, PsicologoPagina
 from .psicologo import PsicologoPaciente, CadastroPsicologoWizard,AnalisePaciente, ConsultandoAnalisePaciente, GenogramaPaciente
 
 from .analise import InserirAnalise,InserirAnaliseRelacionamento,InserirAnaliseIndiferenciacao,InserirAnaliseSeletiva,InserirAnaliseInterventiva,\
@@ -31,6 +31,9 @@ urlpatterns = [
     url(r'^habilitar_psicologo/(?P<paciente_id>\d+)/$', HabilitarPsicologo.as_view()),
     url(r'^habilitado/(?P<paciente_id>\d+)$', PsicologoHabilitado.as_view()),
     url(r'^buscar_psicologo/(?P<paciente_id>\d+)/$',BuscarPsicologo.as_view()),
+    url(r'^buscar_psicologo/(?P<paciente_id>\d+)/(?P<estado>.+?)/(?P<municipio>.+?)/$',PsicologoLista.as_view()),
+    url(r'^buscar_psicologo/(?P<psicologo>.+?)/(?P<psicologo_id>\d+)$',PsicologoPagina.as_view()),
+
     url(r'^recover/(?P<signature>.+)/$', paciente.recover_done,
         name='password_reset_sent'),
     url(r'^recover$', paciente.recover, name='password_reset_recover'),
@@ -75,7 +78,7 @@ urlpatterns = [
     url(r'^psicologo/administracao$', psicologo.PsicologoAdministracao),
     url(r'^psicologo/login$', psicologo.LoginPsicologo),
     url(r'^psicologo/home$', psicologo.PsicologoHome),
-    url(r'^psicologo/cadastro$', CadastroPsicologoWizard.as_view([CadastroPsicologoForm]), name="cadastroPsicologo"),
+    url(r'^psicologo/cadastro$', CadastroPsicologoWizard.as_view([CadastroPsicologoForm,CadastroPsicologoForm2]), name="cadastroPsicologo"),
     url(r'^psicologo/cadastrado$', psicologo.CadastroPsicologoRealizado),
     url(r'^psicologo/paciente/(?P<paciente_id>\d+)/$', PsicologoPaciente.as_view()),
     url(r'^psicologo/sair$', psicologo.LogoutPsicologo),

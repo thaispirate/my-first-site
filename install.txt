@@ -134,6 +134,20 @@ descompactar django-highcharts-0.1.7.tar.gz
 cd django-highcharts-0.1.7
 sudo cp -R highcharts/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
 
+-smart_selects
+baixar django-smart-selects-1.5.1.tar.gz :https://pypi.python.org/pypi/django-smart-selects/1.5.1
+descompactar django-smart-selects-1.5.1.tar.gz
+cd django-smart-selects-1.5.1
+sudo cp -R smart_selects/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
+
+
+-geopy
+baixar geopy-1.11.0.tar.gz :https://pypi.python.org/pypi/geopy
+descompactar geopy-1.11.0.tar.gz
+cd geopy-1.11.0
+sudo cp -R geopy/ ~/projetos/django/myvenv/lib/python3.4/site-packages/
+
+
 
 -cairo
 pip install pycairo
