@@ -562,6 +562,41 @@ class CadastroPsicologoForm2(ModelForm):
         self.fields['municipio'].label= "Município"
         self.fields['crp'].label= "CRP"
 
+class EdicaoPsicologo(ModelForm):
+
+    class Meta():
+        model=Psicologo
+        fields=['nome','telefone','celular','estado','municipio','endereco','numero','complemento','bairro','crp']
+
+    def __init__(self,*args,**kwargs):
+        psicologo_id = kwargs.pop('psicologo_id', None)
+        super(EdicaoPsicologo, self).__init__(*args,**kwargs)
+        psicologo = Psicologo.objects.get(usuario_id=psicologo_id)
+        self.fields['complemento'].required = False
+        self.fields['telefone'].required = False
+        self.fields['celular'].required = False
+        self.fields['numero'].required = True
+        self.fields['bairro'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['endereco'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['numero'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['crp'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['estado'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['municipio'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['nome'].error_messages={'required':'Este campo é obrigatório'}
+        self.fields['endereco'].label="Endereço"
+        self.fields['numero'].label= "Número"
+        self.fields['municipio'].label= "Município"
+        self.fields['crp'].label= "CRP"
+        self.fields['complemento'].initial = psicologo.complemento
+        self.fields['telefone'].initial = psicologo.telefone
+        self.fields['celular'].initial=psicologo.celular
+        self.fields['bairro'].initial=psicologo.bairro
+        self.fields['endereco'].initial=psicologo.endereco
+        self.fields['numero'].initial=psicologo.numero
+        self.fields['crp'].initial=psicologo.crp
+        self.fields['nome'].initial=psicologo.nome
+        self.fields['estado'].initial=psicologo.estado
+        self.fields['municipio'].initial=psicologo.municipio
 
 class AtualizarChave(forms.Form):
 

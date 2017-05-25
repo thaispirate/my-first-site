@@ -4,7 +4,8 @@ from .forms import CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,Cada
     CadastroAvoMaterno, CadastroAvoMaterna,EdicaoPaciente, CadastroPsicologoForm, CadastroPsicologoForm2
 from .paciente import Home,CadastroWizard, EditarCadastro,EdicaoRealizada,AtualizarChave,ChaveAtualizada,\
     HabilitarPsicologo,PsicologoHabilitado, BuscarPsicologo, PsicologoLista, PsicologoPagina
-from .psicologo import PsicologoPaciente, CadastroPsicologoWizard,AnalisePaciente, ConsultandoAnalisePaciente, GenogramaPaciente
+from .psicologo import PsicologoPaciente, CadastroPsicologoWizard,EdicaoRealizadaPsicologo,EditarCadastroPsicologo,\
+    AnalisePaciente, ConsultandoAnalisePaciente, GenogramaPaciente
 
 from .analise import InserirAnalise,InserirAnaliseRelacionamento,InserirAnaliseIndiferenciacao,InserirAnaliseSeletiva,InserirAnaliseInterventiva,\
     AnaliseFinalizada,ConsultarAnalise, ConsultandoAnalise,\
@@ -80,6 +81,8 @@ urlpatterns = [
     url(r'^psicologo/home$', psicologo.PsicologoHome),
     url(r'^psicologo/cadastro$', CadastroPsicologoWizard.as_view([CadastroPsicologoForm,CadastroPsicologoForm2]), name="cadastroPsicologo"),
     url(r'^psicologo/cadastrado$', psicologo.CadastroPsicologoRealizado),
+    url(r'^psicologo/cadastro/editar/(?P<psicologo_id>\d+)/$', EditarCadastroPsicologo.as_view(), name="editar"),
+    url(r'^psicologo/editado/(?P<psicologo_id>\d+)$', EdicaoRealizadaPsicologo.as_view()),
     url(r'^psicologo/paciente/(?P<paciente_id>\d+)/$', PsicologoPaciente.as_view()),
     url(r'^psicologo/sair$', psicologo.LogoutPsicologo),
     url(r'^psicologo/paciente/(?P<paciente_id>\d+)/analise$', view=AnalisePaciente.as_view()),

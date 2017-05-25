@@ -5,8 +5,8 @@ import json
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User, Group
-from .forms import ConsultarAreaAfetiva,CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,\
-    CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna,EdicaoPaciente,AtualizarChave, PerguntasAreaAfetiva,\
+from .forms import ConsultarAreaAfetiva,EdicaoPsicologo,\
+    PerguntasAreaAfetiva,\
     RelacionamentoAvosMaternos, RelacionamentoAvoMaternoAntes, RelacionamentoAvoMaternaAntes, RelacionamentoAvosMaternosDepois,\
     RelacionamentoAvosPaternos, RelacionamentoAvoPaternoAntes, RelacionamentoAvoPaternaAntes, RelacionamentoAvosPaternosDepois,\
     RelacionamentoPais, RelacionamentoPaiAntes,RelacionamentoMaeAntes,RelacionamentoPaisDepois, RelacionamentoPaciente,\
@@ -102,7 +102,7 @@ class CadastroPsicologoWizard(SessionWizardView):
         psicologo.complemento = form_data[1]['complemento']
         psicologo.bairro = form_data[1]['bairro']
         psicologo.telefone = form_data[1]['telefone']
-        psicologo.telefone = form_data[1]['celular']
+        psicologo.celular = form_data[1]['celular']
         psicologo.crp = form_data[1]['crp']
         psicologo.save()
         return redirect(CadastroPsicologoRealizado)
@@ -116,6 +116,59 @@ def PsicologoHome(request):
     paciente = Paciente.objects.all()
     return render(request, 'projetofinal/psicologo/home.html', {'pacientes':paciente})
 
+class EditarCadastroPsicologo(SessionWizardView):
+    template_name = "projetofinal/psicologo/editar.html"
+    form_list = [EdicaoPsicologo]
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EditarCadastroPsicologo, self).dispatch(*args, **kwargs)
+
+    def get_form(self, step=None, data=None, files=None):
+
+        if 'psicologo_id' in self.kwargs:
+                psicologo_id = self.kwargs['psicologo_id']
+                try:
+                    psicologo = Psicologo.objects.get(usuario_id=psicologo_id)
+                except Paciente.DoesNotExist:
+                    raise Http404("Psicologo não existe")
+        # determine the step if not given
+        if step is None:
+            step = self.steps.current
+
+        if step == "0":
+            form = EdicaoPsicologo(psicologo_id=psicologo_id, data=data)
+            return form
+
+
+
+    def done(self, form_list, form_dict, **kwargs):
+        psicologo_id = self.kwargs['psicologo_id']
+        psicologo = Psicologo.objects.get(usuario_id=psicologo_id)
+        form_data= [form.cleaned_data for form in form_list]
+        psicologo.nome = form_data[0]['nome']
+        estado= form_data[0]['estado']
+        estado = Estado.objects.get(estado=estado)
+        psicologo.estado=estado
+        municipio= form_data[0]['municipio']
+        municipio = Municipio.objects.get(municipio=municipio)
+        psicologo.municipio=municipio
+        psicologo.endereco = form_data[0]['endereco']
+        psicologo.numero = form_data[0]['numero']
+        psicologo.complemento = form_data[0]['complemento']
+        psicologo.bairro = form_data[0]['bairro']
+        psicologo.telefone = form_data[0]['telefone']
+        psicologo.celular = form_data[0]['celular']
+        psicologo.crp = form_data[0]['crp']
+        psicologo.save()
+        return HttpResponseRedirect('/psicologo/editado/'+psicologo_id)
+
+class EdicaoRealizadaPsicologo(TemplateView):
+    template_name = "projetofinal/psicologo/editado.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(EdicaoRealizadaPsicologo, self).dispatch(*args, **kwargs)
 
 class PsicologoPaciente(TemplateView):
     template_name="projetofinal/psicologo/paciente/home.html"
