@@ -376,7 +376,7 @@ class HabilitarPsicologo(SessionWizardView):
         crp=form_data[0]['CRP']
         paciente_id = self.kwargs['paciente_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
-        psicologo = Psicologo.objects.get(codigo = crp)
+        psicologo = Psicologo.objects.get(crp = crp)
         paciente.psicologo=psicologo
         paciente.habilitado=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         paciente.save()

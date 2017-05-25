@@ -598,7 +598,7 @@ class HabilitarPsicologo(forms.Form):
                           )
     def clean_CRP(self):
         crp = self.cleaned_data.get("CRP")
-        if not Psicologo.objects.filter(codigo = crp).exists():
+        if not Psicologo.objects.filter(crp = crp).exists():
             raise forms.ValidationError(
                 self.error_messages['codigo_invalido'],
                 code='codigo_invalido',
