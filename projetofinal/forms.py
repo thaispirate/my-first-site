@@ -589,13 +589,12 @@ class AtualizarChave(forms.Form):
         return chave
 
 class HabilitarPsicologo(forms.Form):
-
     error_messages = {
         'codigo_invalido': _("CRP não encontrado"),
     }
 
     CRP = forms.CharField(label="Digite o CRP do psicólogo:",
-                            error_messages={'required':'Este campo é obrigatório'},
+                            error_messages={'required':'Este campo é obrigatório'}
                           )
     def clean_CRP(self):
         crp = self.cleaned_data.get("CRP")
