@@ -58,7 +58,7 @@ def LoginPsicologo(request):
     username = password = ''
     state="please log in"
     if request.POST:
-        username = request.POST['username'].lower()
+        username = request.POST['username'].lower().strip()
         password = request.POST['password']
 
         user = authenticate(username=username, password=password)

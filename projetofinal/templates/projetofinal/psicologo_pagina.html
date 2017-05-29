@@ -27,7 +27,7 @@
      <nav class="navbar navbar-inverse navbar-fixed-top">
           <div class="container">
             <div class="navbar-header">
-              <a class="navbar-brand" href="/home/{{user.id}}/">Vínculo Vida</a>
+              <a class="navbar-brand" href="/home/{{user.id}}/">Família com Vida</a>
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
                   <span class="sr-only">Toggle navigation</span>
                   <span class="icon-bar"></span>
@@ -91,7 +91,11 @@
       <h4>{{view.psicologo.municipio}}</h4>
       <div id="map-canvas" class=""></div>
     </div>
+        <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12"  align="center">
+        <a type="submit" href="/buscar_psicologo/{{user.id}}/{{view.psicologo.estado}}/{{view.psicologo.municipio}}" class="btn btn-default">Voltar</a>
+        </div>
     </div>
+
 
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
      <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnycWatbGyK6ldFqErjFtko1yeMclNUOA&amp;"></script>

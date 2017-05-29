@@ -71,7 +71,7 @@ def LoginPaciente(request):
     username = password = ''
     state="please log in"
     if request.POST:
-        username = request.POST['username'].lower()
+        username = request.POST['username'].lower().strip()
         password = request.POST['password']
 
         user = authenticate(username=username, password=password)
@@ -456,6 +456,12 @@ class PsicologoPagina(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(PsicologoPagina, self).dispatch(*args, **kwargs)
 
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        return paciente
+
     def psicologo(self):
         if 'psicologo_id' in self.kwargs:
             psicologo_id = self.kwargs['psicologo_id']
@@ -468,7 +474,7 @@ class PsicologoPagina(TemplateView):
             psicologo_id = self.kwargs['psicologo_id']
         psicologo= Psicologo.objects.get(id=psicologo_id)
         geolocator = GoogleV3()
-        location = geolocator.geocode(str(psicologo.numero)+" "+psicologo.endereco+" "+str(psicologo.municipio))
+        location = geolocator.geocode(str(psicologo.numero)+" "+psicologo.endereco+" "+str(psicologo.municipio),timeout=None)
         coordenadas['latitude']=location.latitude
         coordenadas['longitude']=location.longitude
         return coordenadas

@@ -64,6 +64,7 @@ class UserCreationForm(forms.ModelForm):
         # Since User.username is unique, this check is redundant,
         # but it sets a nicer error message than the ORM. See #13147.
         username = self.cleaned_data["username"]
+        username=username.strip()
         try:
             User._default_manager.get(username=username)
         except User.DoesNotExist:
