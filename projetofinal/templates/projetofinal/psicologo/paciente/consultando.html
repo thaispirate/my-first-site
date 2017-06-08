@@ -62,10 +62,8 @@
                     </div>
                 </div>
             </nav>
-
-    <div class="main">
+    <div class="main" id="main">
             <!-- Content Here -->
-
     <form action="" method="post">{% csrf_token %}
     <div class="container">
       <div id="myProgressbar" class="progress">
@@ -95,7 +93,13 @@
     </div>
     </div>
     </form>
+            <div id="editor"></div>
+
+            <input type=button name=print value="Print" id="cmd">
+
     </div>
+
+
 
       <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -104,10 +108,41 @@
     <script src="{% static 'assets/javascript/jquery.js' %}"></script>
     <script src="{% static 'assets/javascript/bootstrap.js' %}"></script>
     <script src="{% static 'assets/javascript/progressbar.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
+
 
     <script>
       value = {{ wizard.steps.step1 }}/{{ wizard.steps.count }}*100;
       $('#myProgressbar').progressbar(value);
+
+
+var doc = new jsPDF();
+var specialElementHandlers = {
+    '#editor': function (element, renderer) {
+        return true;
+    }
+};
+
+$('#cmd').click(function () {
+    doc.fromHTML($('#main').html(), 15, 15, {
+        'width': 170,
+            'elementHandlers': specialElementHandlers
+    });
+    doc.save('sample-file.pdf');
+});
+
+       html2canvas(document.getElementById('main'), {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500,
+                    }]
+                };
+                pdfMake.createPdf(docDefinition).download("Score_Details.pdf");
+            }
+        });
     </script>
   <!-- $('#myProgressbar').progressbar(20) -->
 

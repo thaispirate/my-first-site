@@ -5,7 +5,7 @@ from .forms import CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,Cada
 from .paciente import Home,CadastroWizard, EditarCadastro,EdicaoRealizada,AtualizarChave,ChaveAtualizada,\
     HabilitarPsicologo,PsicologoHabilitado, BuscarPsicologo, PsicologoLista, PsicologoPagina
 from .psicologo import PsicologoPaciente, CadastroPsicologoWizard,EdicaoRealizadaPsicologo,EditarCadastroPsicologo,\
-    AnalisePaciente, ConsultandoAnalisePaciente, GenogramaPaciente
+    AnalisePaciente, ConsultandoAnalisePaciente, GenogramaPaciente, PdfView
 
 from .analise import InserirAnalise,InserirAnaliseRelacionamento,InserirAnaliseIndiferenciacao,InserirAnaliseSeletiva,InserirAnaliseInterventiva,\
     AnaliseFinalizada,ConsultarAnalise, ConsultandoAnalise,\
@@ -88,6 +88,7 @@ urlpatterns = [
     url(r'^psicologo/paciente/(?P<paciente_id>\d+)/analise$', view=AnalisePaciente.as_view()),
     url(r'^psicologo/paciente/(?P<paciente_id>\d+)/(?P<analise_id>\d+)$', ConsultandoAnalisePaciente.as_view(), name="consultar"),
     url(r'^psicologo/paciente/(?P<paciente_id>\d+)/genograma$', view=GenogramaPaciente.as_view()),
+        url(r'^psicologo/paciente/(?P<paciente_id>\d+)/pdf$',psicologo.PdfView),
     url(r'^psicologo/recover/(?P<signature>.+)/$', psicologo.recover_done,
         name='psicologo/password_reset_sent'),
     url(r'^psicologo/recover$', psicologo.recover, name='psicologo/password_reset_recover'),

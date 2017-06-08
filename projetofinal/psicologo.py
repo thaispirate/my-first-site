@@ -47,8 +47,11 @@ from .utils import get_user_model, get_username
 from django.contrib.auth import logout
 from .genograma import main
 
-# Create your views here.
+import io as BytesIO
+from reportlab.pdfgen import canvas
+from weasyprint import HTML
 
+# Create your views here.
 
 #Views do Psicólogo
 def PsicologoAdministracao(request):
@@ -116,7 +119,7 @@ def CadastroPsicologoRealizado(request):
 
 @login_required()
 def PsicologoHome(request):
-
+    HTML('http://weasyprint.org/').write_pdf('/tmp/weasyprint-website.pdf')
     paciente = Paciente.objects.all()
     return render(request, 'projetofinal/psicologo/home.html', {'pacientes':paciente})
 
@@ -907,6 +910,14 @@ class GenogramaPaciente(TemplateView):
         paciente = simplejson.dumps(dados)
         return paciente
 
+def PdfView(request,paciente_id):
+    html_template = get_template('projetofinal/psicologo/paciente/consultando.html')
+    pdf_file = HTML(string=html_template).write_pdf()
+    response = HttpResponse(pdf_file, content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="home_page.pdf"'
+    return response
+
+    return response
 
 #Classes do password-reset(esqueci a senha)
 
