@@ -103,8 +103,7 @@
   <!-- $('#myProgressbar').progressbar(20) -->
 <script>
 mapa = {{ view.mapa|safe }};
-console.log(mapa['latitude'],mapa['longitude']);
-  function initialize() {
+5  function initialize() {
         var position = new google.maps.LatLng(mapa['latitude'],mapa['longitude']);
         var mapOptions = {
             center: position,

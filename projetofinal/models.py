@@ -62,6 +62,8 @@ class Paciente(models.Model):
     email = models.EmailField()
     nome = models.CharField(max_length=50,null=True)
     nascimento = models.DateField(null=True)
+    cpf = models.CharField(max_length=14,null=True)
+    telefone = models.CharField(max_length=50,null=True)
     sexo = models.CharField(max_length=10,null=True)
     escolaridade = models.CharField(max_length=15, null=True,blank=True)
     psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE,null=True)

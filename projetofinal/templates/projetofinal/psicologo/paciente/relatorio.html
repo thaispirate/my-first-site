@@ -49,6 +49,7 @@
           </div>
           </div>
           </nav>
+
             <nav class="navbar navbar-inverse sidebar" role="navigation">
                 <div class="container-fluid">
 
@@ -59,9 +60,9 @@
                             Olá, {{user.first_name|capfirst}}
                         </div>
                             <li><a href="/psicologo/home">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-                            <li class="active" ><a href="/psicologo/paciente/{{view.paciente}}/analise">Análise<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-edit"></span></a></li>
+                            <li ><a href="/psicologo/paciente/{{view.paciente}}/analise">Análise<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-edit"></span></a></li>
                             <li ><a href="/psicologo/paciente/{{view.paciente}}/genograma">Genograma<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
-                            <li ><a href="/psicologo/paciente/{{view.paciente}}/relatorio">Relatório<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
+                            <li class="active"><a href="#">Relatório<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
                             <li ><a href="/psicologo/sair">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
 
                         </ul>
@@ -84,7 +85,7 @@
             {% for analise in view.anamnesia %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="/psicologo/paciente/{{view.paciente}}/{{ analise.id }}">{{analise.inicio|date:'d-m-Y H:i'}}</a>
+                <td><a href="/psicologo/pdf/{{view.paciente}}/{{analise.id}}" target="_blank">{{analise.inicio|date:'d-m-Y H:i'}}</a>
                 </td>
             </tr>
             {% endfor %}

@@ -118,6 +118,8 @@ class CadastroWizard(SessionWizardView):
         paciente.email = form_data[0]['username']
         paciente.nome = form_data[0]['nome']
         paciente.nascimento = form_data[0]['nascimento']
+        paciente.cpf = form_data[0]['cpf']
+        paciente.telefone = form_data[0]['telefone']
         paciente.sexo = form_data[0]['sexo']
         paciente.escolaridade = form_data[0]['escolaridade']
         paciente.retornos=0
@@ -270,6 +272,8 @@ class EditarCadastro(SessionWizardView):
         form_data= [form.cleaned_data for form in form_list]
         paciente.nome = form_data[0]['nome']
         paciente.nascimento = form_data[0]['nascimento']
+        paciente.cpf = form_data[0]['cpf']
+        paciente.telefone = form_data[0]['telefone']
         paciente.sexo = form_data[0]['sexo']
         paciente.escolaridade = form_data[0]['escolaridade']
         paciente.save()
