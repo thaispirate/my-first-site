@@ -106,10 +106,10 @@ class CadastroWizard(SessionWizardView):
         user.email = form_data[0]['username']
         user.first_name = form_data[0]['nome']
         user.save()
-        code= form_data[0]['code']
-        chave= Chave.objects.get(chave = code)
-        chave.padrao = "usada"
-        chave.save()
+        #code= form_data[0]['code']
+        #chave= Chave.objects.get(chave = code)
+        #chave.padrao = "usada"
+        #chave.save()
         group = Group.objects.get_or_create(name='paciente')
         group = Group.objects.get(name='paciente')
         user.groups.add(group)

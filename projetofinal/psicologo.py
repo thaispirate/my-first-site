@@ -87,10 +87,10 @@ class CadastroPsicologoWizard(SessionWizardView):
         user.email = form_data[0]['username']
         user.first_name = form_data[1]['nome']
         user.save()
-        code= form_data[0]['code']
-        chave= Chave.objects.get(chave = code)
-        chave.padrao = "usada"
-        chave.save()
+        #code= form_data[0]['code']
+        #chave= Chave.objects.get(chave = code)
+        #chave.padrao = "usada"
+        #chave.save()
         group = Group.objects.get_or_create(name="psicologo")
         group = Group.objects.get(name="psicologo")
         user.groups.add(group)
@@ -1099,7 +1099,7 @@ class RelatorioPaciente(TemplateView):
 def Relatorio(request,paciente_id,analise_id):
     # Create the HttpResponse object with the appropriate PDF headers.
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="filename.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="Relatorio.pdf"'
 
     # Create the PDF object, using the response object as its "file."
     p = canvas.Canvas(response)
