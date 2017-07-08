@@ -414,9 +414,12 @@ class ConsultandoAnalisePaciente(SessionWizardView):
             except Anamnesia.DoesNotExist:
                 raise Http404("Atendimento não existe")
 
+        lista_form=[]
         for key,value in self.form_list.items():
             if value != ConsultarAreaAfetiva:
-                self.form_list.pop(key)
+                lista_form.append(key)
+        for item in lista_form:
+            self.form_list.pop(item)
 
         relacionamentos = Relacionamento.objects.filter(anamnesia_id = analise_id)
         for relacionamento in relacionamentos:
@@ -1156,6 +1159,123 @@ def Relatorio(request,paciente_id,analise_id):
                 p.drawString(250,800,paciente.nome)
                 p.drawString(250,770,"Área Afetiva")
 
+    #Recomendacao Area Afetiva
+    anamnesia = Anamnesia.objects.filter(id=analise_id)
+    for analise in anamnesia:
+        area = AreaAfetiva.objects.filter(anamnesia_id=analise.id).order_by('resposta_id')
+        A = [0]
+        for respostas in area:
+            resposta = RespostaAreaAfetiva.objects.get(id=respostas.resposta_id)
+            A.append(resposta.valor)
+        afetivoRelacional = ((A[1] + A[2] + A[4] + A[6] + A[9] + A[13] + A[15] + A[17] + A[19] + A[20] + A[21] + A[22] +
+                              A[23] + A[25] + A[28]) / 15)
+        produtividade = ((A[5] + A[16] + A[20] + A[22] + A[23]) / 5)
+        organico = ((A[7] + A[12] + A[14] + A[27] + A[29]) / 5)
+        espiritual = ((A[3] + A[11] + A[18] + A[24] + A[26]) / 5)
+        socioCultural = ((A[8] + A[10] + A[20] + A[22] + A[23]) / 5)
+
+    texto = ""
+    if afetivoRelacional >= 3 and afetivoRelacional <= 4:
+        complementox = Recomendacao.objects.get(nome="complementox", intervalo="Máximo")
+        complementoy = Recomendacao.objects.get(nome="complementoy", intervalo="Máximo")
+    if afetivoRelacional >= 1.5 and afetivoRelacional < 3:
+        complementox = Recomendacao.objects.get(nome="complementox", intervalo="Médio")
+        complementoy = Recomendacao.objects.get(nome="complementoy", intervalo="Médio")
+    if afetivoRelacional >= 0 and afetivoRelacional < 1.5:
+        complementox = Recomendacao.objects.get(nome="complementox", intervalo="Mínimo")
+        complementoy = Recomendacao.objects.get(nome="complementoy", intervalo="Mínimo")
+    if produtividade >= 3 and produtividade <= 4:
+        PRODUTIVIDADE = Recomendacao.objects.get(nome="produtividade", intervalo="Máximo")
+    if produtividade >= 1.5 and produtividade < 3:
+        PRODUTIVIDADE = Recomendacao.objects.get(nome="produtividade", intervalo="Médio")
+    if produtividade >= 0 and produtividade < 1.5:
+        PRODUTIVIDADE = Recomendacao.objects.get(nome="produtividade", intervalo="Mínimo")
+    if organico >= 3 and organico <= 4:
+        ORGANICO = Recomendacao.objects.get(nome="organico", intervalo="Máximo")
+    if organico >= 1.5 and organico < 3:
+        ORGANICO = Recomendacao.objects.get(nome="organico", intervalo="Médio")
+    if organico >= 0 and organico < 1.5:
+        ORGANICO = Recomendacao.objects.get(nome="organico", intervalo="Mínimo")
+    if espiritual >= 3 and espiritual <= 4:
+        ESPIRITUAL = Recomendacao.objects.get(nome="espiritual", intervalo="Máximo")
+    if espiritual >= 1.5 and espiritual < 3:
+        ESPIRITUAL = Recomendacao.objects.get(nome="espiritual", intervalo="Médio")
+    if espiritual >= 0 and espiritual < 1.5:
+        ESPIRITUAL = Recomendacao.objects.get(nome="espiritual", intervalo="Mínimo")
+    if socioCultural >= 3 and socioCultural <= 4:
+        SOCIOCULTURAL = Recomendacao.objects.get(nome="sociocultural", intervalo="Máximo")
+    if socioCultural >= 1.5 and socioCultural < 3:
+        SOCIOCULTURAL = Recomendacao.objects.get(nome="sociocultural", intervalo="Médio")
+    if socioCultural >= 0 and socioCultural < 1.5:
+        SOCIOCULTURAL = Recomendacao.objects.get(nome="sociocultural", intervalo="Mínimo")
+
+    lista = [(organico, "a"), (produtividade, "b"), (socioCultural, "c"), (espiritual, "d")]
+    minimo = min(lista, key=lambda x: x[0])
+    if minimo[0] == produtividade:
+        area = PRODUTIVIDADE.texto
+    if minimo[0] == organico:
+        area = ORGANICO.texto
+    if minimo[0] == espiritual:
+        area = ESPIRITUAL.texto
+    if minimo[0] == socioCultural:
+        area = SOCIOCULTURAL.texto
+
+    parte1 = Recomendacao.objects.get(nome="afetivorelacional", intervalo="parte1")
+    parte2 = Recomendacao.objects.get(nome="afetivorelacional", intervalo="parte2")
+    parte3 = Recomendacao.objects.get(nome="afetivorelacional", intervalo="parte3")
+    AFETIVORELACIONAL = parte1.texto + complementox.texto + parte2.texto + complementoy.texto + parte3.texto
+    texto = AFETIVORELACIONAL + area
+
+    p.showPage()
+    p.setFont('Helvetica', 16)
+    p.setFillColorRGB(0, 0, 1)
+    p.drawString(250, 800, paciente.nome)
+    p.drawString(200, 770, "Recomendaçao Área Afetiva")
+
+    alturap = 740
+    p.setFillColorRGB(0, 0, 0)
+    p.setFont("Helvetica", 12)
+    p.drawString(10, alturap,"Afetivo-Relacional: "+ str("%.2f" % afetivoRelacional))
+    alturap=alturap-20
+    p.drawString(10, alturap,"Produtividade: "+ str("%.2f" % produtividade))
+    alturap=alturap-20
+    p.drawString(10, alturap,"Orgânico: "+ str("%.2f" % organico))
+    alturap=alturap-20
+    p.drawString(10, alturap,"Socio-Cultural: "+ str("%.2f" % socioCultural))
+    alturap=alturap-20
+    p.drawString(10, alturap,"Espiritual: "+ str("%.2f" % espiritual))
+    alturap=alturap-20
+    if len(texto) > 100:
+        string = texto
+        depois = string[80:len(string)].split(" ", 1)[1]
+        antes = string[80:len(string)].split(" ", 1)[0]
+        alturap = alturap - 40
+        p.setFillColorRGB(0, 0, 0)
+        p.setFont("Helvetica", 12)
+        p.drawString(10, alturap, string[0:80] + antes)
+        while len(depois) > 100:
+            string = depois
+            depois = string[80:len(string)].split(" ", 1)[1]
+            antes = string[80:len(string)].split(" ", 1)[0]
+            p.setFillColorRGB(0, 0, 0)
+            p.setFont("Helvetica", 12)
+            p.drawString(10, alturap - 15, string[0:80] + antes)
+            alturap = alturap - 15
+            if alturap <= 60:
+                p.showPage()
+                alturap = 740
+                p.setFillColorRGB(0, 0, 1)
+                p.setFont("Helvetica", 16)
+                p.drawString(250, 800, paciente.nome)
+                p.drawString(250, 770, "Recomendaçao Área Afetiva")
+        p.setFillColorRGB(0, 0, 0)
+        p.setFont("Helvetica", 12)
+        p.drawString(10, alturap - 15, depois)
+
+    else:
+        p.setFillColorRGB(0, 0, 0)
+        p.drawString(10, alturap - 40, texto)
+
     #Relacionamento
 
     #Relacionamento Avós Maternos
@@ -1595,6 +1715,197 @@ def Relatorio(request,paciente_id,analise_id):
                 p.drawString(250,800,paciente.nome)
                 p.drawString(210,770,"Grau de Indiferenciação")
 
+    #Recomendaçao Grau de Indiferenciacao
+    anamnesia = Anamnesia.objects.filter(id=analise_id)
+    criativo = 0
+    reativo = 0
+    adaptativo = 0
+    for analise in anamnesia:
+        indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id)
+        for opcao in indiferenciacao:
+            resposta = GrauIndiferenciacao.objects.get(id=opcao.resposta_id)
+            if resposta.padrao == "adaptativo":
+                adaptativo = adaptativo + 1
+            if resposta.padrao == "reativo":
+                reativo = reativo + 1
+            if resposta.padrao == "criativo":
+                criativo = criativo + 1
+
+    nascimento = str(paciente.nascimento)
+    ano = int(nascimento.split("-")[0])
+    mes = int(nascimento.split("-")[1])
+    dia = int(nascimento.split("-")[2])
+    atual = datetime.now()
+    anoAtual = atual.year
+    mesAtual = atual.month
+    diaAtual = atual.day
+
+    if mes > mesAtual:
+        idade = anoAtual - ano - 1
+    if mes < mesAtual:
+        idade = anoAtual - ano
+    if mes == mesAtual:
+        if dia >= diaAtual:
+            idade = anoAtual - ano - 1
+        if dia < diaAtual:
+            idade = anoAtual - ano
+
+    adaptativoMin = 0
+    adaptativoMax = 0
+    criativoMin = 0
+    criativoMax = 0
+    reativoMin = 0
+    reativoMax = 0
+
+    if idade >= 0 and idade <= 3:
+        adaptativoMin = 14
+        adaptativoMax = 17
+        criativoMin = 0
+        criativoMax = 2
+        reativoMin = 0
+        reativoMax = 2
+    if idade >= 4 and idade <= 7:
+        adaptativoMin = 12
+        adaptativoMax = 17
+        criativoMin = 0
+        criativoMax = 3
+        reativoMin = 2
+        reativoMax = 6
+    if idade >= 8 and idade <= 12:
+        adaptativoMin = 8
+        adaptativoMax = 13
+        criativoMin = 2
+        criativoMax = 5
+        reativoMin = 6
+        reativoMax = 10
+    if idade >= 13 and idade <= 19:
+        adaptativoMin = 4
+        adaptativoMax = 8
+        criativoMin = 6
+        criativoMax = 8
+        reativoMin = 10
+        reativoMax = 15
+    if idade >= 20 and idade <= 24:
+        adaptativoMin = 1
+        adaptativoMax = 3
+        criativoMin = 9
+        criativoMax = 11
+        reativoMin = 8
+        reativoMax = 12
+    if idade >= 25 and idade <= 32:
+        adaptativoMin = 0
+        adaptativoMax = 2
+        criativoMin = 11
+        criativoMax = 15
+        reativoMin = 3
+        reativoMax = 7
+    if idade >= 33:
+        adaptativoMin = 0
+        adaptativoMax = 2
+        criativoMin = 16
+        criativoMax = 19
+        reativoMin = 0
+        reativoMax = 2
+
+    p.showPage()
+    p.setFont('Helvetica', 16)
+    p.setFillColorRGB(0, 0, 1)
+    p.drawString(250, 800, paciente.nome)
+    p.drawString(160, 770, "Recomendaçao Grau de Indiferenciação")
+
+    alturap = 740
+    p.setFillColorRGB(0, 0, 0)
+    p.setFont("Helvetica", 12)
+
+    p.drawString(10, alturap, "Quantidade de respostas selecionadas de cada padrão")
+    alturap = alturap - 40
+    p.drawString(10, alturap, "Criativo: " + str(criativo))
+    alturap = alturap - 20
+    p.setFillColorRGB(1, 0, 0)
+    p.drawString(10, alturap, "Limite Maximo Criativo: " + str(criativoMax))
+    alturap = alturap - 20
+    p.drawString(10, alturap, "Limite Mínimo Criativo: " + str(criativoMin))
+    alturap = alturap - 20
+    p.setFillColorRGB(0, 0, 0)
+    p.drawString(10, alturap, "Adaptativo: " + str(adaptativo))
+    alturap = alturap - 20
+    p.setFillColorRGB(1, 0, 0)
+    p.drawString(10, alturap, "Limite Maximo Adaptativo: " + str(adaptativoMax))
+    alturap = alturap - 20
+    p.drawString(10, alturap, "Limite Mínimo Adaptativo: " + str(adaptativoMin))
+    alturap = alturap - 20
+    p.setFillColorRGB(0, 0, 0)
+    p.drawString(10, alturap, "Reativo: " + str(reativo))
+    alturap = alturap - 20
+    p.setFillColorRGB(1, 0, 0)
+    p.drawString(10, alturap, "Limite Maximo Reativo: " + str(reativoMax))
+    alturap = alturap - 20
+    p.drawString(10, alturap, "Limite Mínimo Reativo: " + str(reativoMin))
+    alturap = alturap - 20
+
+    tudo_dentro = ""
+    abaixo_adaptativo = ""
+    acima_adaptativo = ""
+    abaixo_criativo = ""
+    acima_criativo = ""
+    abaixo_reativo = ""
+    acima_reativo = ""
+    texto = ""
+    if adaptativo > adaptativoMin and adaptativo < adaptativoMax and \
+                    reativo > reativoMin and reativo < reativoMax and \
+                    criativo > criativoMin and criativo < criativoMax:
+        tudo_dentro = Recomendacao.objects.get(nome='tudo_dentro')
+        texto = tudo_dentro.texto
+    if adaptativo < adaptativoMin:
+        abaixo_adaptativo = Recomendacao.objects.get(nome='intervalo_adaptativo', intervalo="abaixo")
+        texto = texto + abaixo_adaptativo.texto
+    if adaptativo > adaptativoMax:
+        acima_adaptativo = Recomendacao.objects.get(nome='intervalo_adaptativo', intervalo="acima")
+        texto = texto + acima_adaptativo.texto
+    if reativo < reativoMin:
+        abaixo_reativo = Recomendacao.objects.get(nome='intervalo_reativo', intervalo="abaixo")
+        texto = texto + abaixo_reativo.texto
+    if reativo > reativoMax:
+        acima_reativo = Recomendacao.objects.get(nome='intervalo_reativo', intervalo="acima")
+        texto = texto + acima_reativo.texto
+    if criativo < criativoMin:
+        abaixo_criativo = Recomendacao.objects.get(nome='intervalo_criativo', intervalo="abaixo")
+        texto = texto + abaixo_criativo.texto
+    if criativo > criativoMax:
+        acima_criativo = Recomendacao.objects.get(nome='intervalo_criativo', intervalo="acima")
+        texto = texto + acima_criativo.texto
+    print(texto)
+    if len(texto) > 100:
+        string = texto
+        depois = string[80:len(string)].split(" ", 1)[1]
+        antes = string[80:len(string)].split(" ", 1)[0]
+        alturap = alturap - 40
+        p.setFillColorRGB(0, 0, 0)
+        p.setFont("Helvetica", 12)
+        p.drawString(10, alturap, string[0:80] + antes)
+        while len(depois) > 100:
+            string = depois
+            depois = string[80:len(string)].split(" ", 1)[1]
+            antes = string[80:len(string)].split(" ", 1)[0]
+            p.setFillColorRGB(0, 0, 0)
+            p.setFont("Helvetica", 12)
+            p.drawString(10, alturap - 15, string[0:80] + antes)
+            alturap = alturap - 15
+            if alturap <= 60:
+                p.showPage()
+                alturap = 740
+                p.setFillColorRGB(0, 0, 1)
+                p.setFont("Helvetica", 16)
+                p.drawString(250, 800, paciente.nome)
+                p.drawString(160, 770, "Recomendaçao Grau de Indiferenciação")
+        p.setFillColorRGB(0, 0, 0)
+        p.setFont("Helvetica", 12)
+        p.drawString(10, alturap - 15, depois)
+
+    else:
+        p.setFillColorRGB(0, 0, 0)
+        p.drawString(10, alturap - 40, texto)
+
     #Seletivas
     if Seletiva.objects.filter(paciente_id=paciente.id,anamnesia_id=analise_id).exists():
         seletivap=PerguntaSeletiva.objects.all()
@@ -1668,6 +1979,553 @@ def Relatorio(request,paciente_id,analise_id):
                 p.drawString(250,800,paciente.nome)
                 p.drawString(265,770,"Seletiva")
 
+    #Recomendacao Seletiva
+    anamnesia = Anamnesia.objects.get(id=analise_id)
+
+    nascimento = str(paciente.nascimento)
+    ano = int(nascimento.split("-")[0])
+    mes = int(nascimento.split("-")[1])
+    dia = int(nascimento.split("-")[2])
+    atual = datetime.now()
+    anoAtual = atual.year
+    mesAtual = atual.month
+    diaAtual = atual.day
+
+    if mes > mesAtual:
+        idade = anoAtual - ano - 1
+    if mes < mesAtual:
+        idade = anoAtual - ano
+    if mes == mesAtual:
+        if dia >= diaAtual:
+            idade = anoAtual - ano - 1
+        if dia < diaAtual:
+            idade = anoAtual - ano
+
+    texto = {}
+    relacionamento = "Não há recomendações"
+    diferenciacao = "Não há recomendações"
+    autonomia = "Não há recomendações"
+    assertividade = "Não há recomendações"
+    autoEstima = "Não há recomendações"
+    somarelacionamento = 0
+    somadiferenciacao = 0
+    somaautonomia = 0
+    somaassertividade = 0
+    somaautoestima = 0
+
+    perguntasrelacionamento = ["S34", "S35", "S36"]
+    perguntasdiferenciacao = ["S05", "S06", "S15", "S16", "S24", "S25"]
+    perguntasautonomia = ["S01", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S28"]
+    perguntasassertiva = ["S14", "S18", "S20", "S21", "S30", "S31", "S32", "S33", ]
+    perguntasautoEstima = ["S02", "S17", "S19", "S22", "S23", "S26", "S27", "S29"]
+
+    seletiva = Seletiva.objects.filter(paciente_id=paciente.id, anamnesia_id=anamnesia.id)
+    for item in seletiva:
+        resposta = RespostaSeletiva.objects.get(id=item.resposta_id)
+        pergunta = PerguntaSeletiva.objects.get(id=resposta.pergunta_id)
+
+        if pergunta.numero in perguntasrelacionamento:
+            nome = "relacionamento"
+            if idade >= 0 and idade <= 3:
+                if resposta.nivel0 != 0:
+                    somarelacionamento = somarelacionamento + resposta.nivel0
+                    if resposta.nivel0 <= 1:
+                        relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >= 4 and idade <= 7:
+                if resposta.nivel1 != 0:
+                    somarelacionamento = somarelacionamento + resposta.nivel1
+                    if resposta.nivel1 <= 1:
+                        relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+                        relacionamento = relacionamento.texto
+            if idade >= 8 and idade <= 12:
+                if resposta.nivel2 != 0:
+                    somarelacionamento = somarelacionamento + resposta.nivel2
+                    if resposta.nivel2 <= 1:
+                        relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+                        relacionamento = relacionamento.texto
+            if idade >= 13 and idade <= 19:
+                if resposta.nivel3 != 0:
+                    somarelacionamento = somarelacionamento + resposta.nivel3
+                    if resposta.nivel3 <= 1:
+                        relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+                        relacionamento = relacionamento.texto
+            if idade >= 20 and idade <= 24:
+                if resposta.nivel4 != 0:
+                    somarelacionamento = somarelacionamento + resposta.nivel4
+                    if resposta.nivel4 <= 1:
+                        relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+                        relacionamento = relacionamento.texto
+            if idade >= 25 and idade <= 32:
+                if resposta.nivel5 != 0:
+                    somarelacionamento = somarelacionamento + resposta.nivel5
+                    if resposta.nivel5 <= 1:
+                        relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+                        relacionamento = relacionamento.texto
+            if idade >= 33:
+                if resposta.nivel6 != 0:
+                    somarelacionamento = somarelacionamento + resposta.nivel6
+                    if resposta.nivel6 <= 1:
+                        relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+                        relacionamento = relacionamento.texto
+
+        if pergunta.numero in perguntasdiferenciacao:
+            nome = "diferenciacao"
+            if idade >= 0 and idade <= 3:
+                if resposta.nivel0 != 0:
+                    somadiferenciacao = somadiferenciacao + resposta.nivel0
+                    if resposta.nivel0 <= 1:
+                        diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >= 4 and idade <= 7:
+                if resposta.nivel1 != 0:
+                    somadiferenciacao = somadiferenciacao + resposta.nivel1
+                    if resposta.nivel1 <= 1:
+                        diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+                        diferenciacao = diferenciacao.texto
+            if idade >= 8 and idade <= 12:
+                if resposta.nivel2 != 0:
+                    somadiferenciacao = somadiferenciacao + resposta.nivel2
+                    if resposta.nivel2 <= 1:
+                        diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+                        diferenciacao = diferenciacao.texto
+            if idade >= 13 and idade <= 19:
+                if resposta.nivel3 != 0:
+                    somadiferenciacao = somadiferenciacao + resposta.nivel3
+                    if resposta.nivel3 <= 1:
+                        diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+                        diferenciacao = diferenciacao.texto
+            if idade >= 20 and idade <= 24:
+                if resposta.nivel4 != 0:
+                    somadiferenciacao = somadiferenciacao + resposta.nivel4
+                    if resposta.nivel4 <= 1:
+                        diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+                        diferenciacao = diferenciacao.texto
+            if idade >= 25 and idade <= 32:
+                if resposta.nivel5 != 0:
+                    somadiferenciacao = somadiferenciacao + resposta.nivel5
+                    if resposta.nivel5 <= 1:
+                        diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+                        diferenciacao = diferenciacao.texto
+            if idade >= 33:
+                if resposta.nivel6 != 0:
+                    somadiferenciacao = somadiferenciacao + resposta.nivel6
+                    if resposta.nivel6 <= 1:
+                        diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+                        diferenciacao = diferenciacao.texto
+
+        if pergunta.numero in perguntasautonomia:
+            nome = "autonomia"
+            if idade >= 0 and idade <= 3:
+                if resposta.nivel0 != 0:
+                    somaautonomia = somaautonomia + resposta.nivel0
+                    if resposta.nivel0 <= 1:
+                        autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >= 4 and idade <= 7:
+                if resposta.nivel1 != 0:
+                    somaautonomia = somaautonomia + resposta.nivel1
+                    if resposta.nivel1 <= 1:
+                        autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+                        autonomia = autonomia.texto
+            if idade >= 8 and idade <= 12:
+                if resposta.nivel2 != 0:
+                    somaautonomia = somaautonomia + resposta.nivel2
+                    if resposta.nivel2 <= 1:
+                        autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+                        autonomia = autonomia.texto
+            if idade >= 13 and idade <= 19:
+                if resposta.nivel3 != 0:
+                    somaautonomia = somaautonomia + resposta.nivel3
+                    if resposta.nivel3 <= 1:
+                        autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+                        autonomia = autonomia.texto
+            if idade >= 20 and idade <= 24:
+                if resposta.nivel4 != 0:
+                    somaautonomia = somaautonomia + resposta.nivel4
+                    if resposta.nivel4 <= 1:
+                        autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+                        autonomia = autonomia.texto
+            if idade >= 25 and idade <= 32:
+                if resposta.nivel5 != 0:
+                    somaautonomia = somaautonomia + resposta.nivel5
+                    if resposta.nivel5 <= 1:
+                        autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+                        autonomia = autonomia.texto
+            if idade >= 33:
+                if resposta.nivel6 != 0:
+                    somaautonomia = somaautonomia + resposta.nivel6
+                    if resposta.nivel6 <= 1:
+                        autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+                        autonomia = autonomia.texto
+
+        if pergunta.numero in perguntasassertiva:
+            nome = "assertividade"
+            if idade >= 0 and idade <= 3:
+                if resposta.nivel0 != 0:
+                    somaassertividade = somaassertividade + resposta.nivel0
+                    if resposta.nivel0 <= 1:
+                        assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >= 4 and idade <= 7:
+                if resposta.nivel1 != 0:
+                    somaassertividade = somaassertividade + resposta.nivel1
+                    if resposta.nivel1 <= 1:
+                        assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+                        assertividade = assertividade.texto
+            if idade >= 8 and idade <= 12:
+                if resposta.nivel2 != 0:
+                    somaassertividade = somaassertividade + resposta.nivel2
+                    if resposta.nivel2 <= 1:
+                        assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+                        assertividade = assertividade.texto
+            if idade >= 13 and idade <= 19:
+                if resposta.nivel3 != 0:
+                    somaassertividade = somaassertividade + resposta.nivel3
+                    if resposta.nivel3 <= 1:
+                        assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+                        assertividade = assertividade.texto
+            if idade >= 20 and idade <= 24:
+                if resposta.nivel4 != 0:
+                    somaassertividade = somaassertividade + resposta.nivel4
+                    if resposta.nivel4 <= 1:
+                        assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+                        assertividade = assertividade.texto
+            if idade >= 25 and idade <= 32:
+                if resposta.nivel5 != 0:
+                    somaassertividade = somaassertividade + resposta.nivel5
+                    if resposta.nivel5 <= 1:
+                        assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+                        assertividade = assertividade.texto
+            if idade >= 33:
+                if resposta.nivel6 != 0:
+                    somaassertividade = somaassertividade + resposta.nivel6
+                    if resposta.nivel6 <= 1:
+                        assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+                        assertividade = assertividade.texto
+
+        if pergunta.numero in perguntasautoEstima:
+            nome = "autoestima"
+            if idade >= 0 and idade <= 3:
+                if resposta.nivel0 != 0:
+                    somaautoestima = somaautoestima + resposta.nivel0
+                    if resposta.nivel0 <= 1:
+                        autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+            if idade >= 4 and idade <= 7:
+                if resposta.nivel1 != 0:
+                    somaautoestima = somaautoestima + resposta.nivel1
+                    if resposta.nivel1 <= 1:
+                        autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+                        autoEstima = autoEstima.texto
+            if idade >= 8 and idade <= 12:
+                if resposta.nivel2 != 0:
+                    somaautoestima = somaautoestima + resposta.nivel2
+                    if resposta.nivel2 <= 1:
+                        autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+                        autoEstima = autoEstima.texto
+            if idade >= 13 and idade <= 19:
+                if resposta.nivel3 != 0:
+                    somaautoestima = somaautoestima + resposta.nivel3
+                    if resposta.nivel3 <= 1:
+                        autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+                        autoEstima = autoEstima.texto
+            if idade >= 20 and idade <= 24:
+                if resposta.nivel4 != 0:
+                    somaautoestima = somaautoestima + resposta.nivel4
+                    if resposta.nivel4 <= 1:
+                        autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+                        autoEstima = autoEstima.texto
+            if idade >= 25 and idade <= 32:
+                if resposta.nivel5 != 0:
+                    somaautoestima = somaautoestima + resposta.nivel5
+                    if resposta.nivel5 <= 1:
+                        autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+                        autoEstima = autoEstima.texto
+            if idade >= 33:
+                if resposta.nivel6 != 0:
+                    somaautoestima = somaautoestima + resposta.nivel6
+                    if resposta.nivel6 <= 1:
+                        autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+                        autoEstima = autoEstima.texto
+
+    if somarelacionamento / len(perguntasrelacionamento) < 3:
+        nome = "relacionamento"
+        if idade >= 0 and idade <= 3:
+            relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+        if idade >= 4 and idade <= 7:
+            relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+        if idade >= 8 and idade <= 12:
+            relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+        if idade >= 13 and idade <= 19:
+            relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+        if idade >= 20 and idade <= 24:
+            relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+        if idade >= 25 and idade <= 32:
+            relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+        if idade >= 33:
+            relacionamento = Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+        relacionamento = relacionamento.texto
+
+    if somadiferenciacao / len(perguntasdiferenciacao) < 3:
+        nome = "diferenciacao"
+        if idade >= 0 and idade <= 3:
+            diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+        if idade >= 4 and idade <= 7:
+            diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+        if idade >= 8 and idade <= 12:
+            diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+        if idade >= 13 and idade <= 19:
+            diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+        if idade >= 20 and idade <= 24:
+            diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+        if idade >= 25 and idade <= 32:
+            diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+        if idade >= 33:
+            diferenciacao = Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+        diferenciacao = diferenciacao.texto
+
+    if somaautonomia / len(perguntasautonomia) < 3:
+        nome = "autonomia"
+        if idade >= 0 and idade <= 3:
+            autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+        if idade >= 4 and idade <= 7:
+            autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+        if idade >= 8 and idade <= 12:
+            autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+        if idade >= 13 and idade <= 19:
+            autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+        if idade >= 20 and idade <= 24:
+            autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+        if idade >= 25 and idade <= 32:
+            autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+        if idade >= 33:
+            autonomia = Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+        autonomia = autonomia.texto
+
+    if somaassertividade / len(perguntasassertiva) < 3:
+        nome = "assertividade"
+        if idade >= 0 and idade <= 3:
+            assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+        if idade >= 4 and idade <= 7:
+            assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+        if idade >= 8 and idade <= 12:
+            assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+        if idade >= 13 and idade <= 19:
+            assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+        if idade >= 20 and idade <= 24:
+            assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+        if idade >= 25 and idade <= 32:
+            assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+        if idade >= 33:
+            assertividade = Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+        assertividade = assertividade.texto
+
+    if somaautoestima / len(perguntasautoEstima) < 3:
+        nome = "autoestima"
+        if idade >= 0 and idade <= 3:
+            autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel0")
+        if idade >= 4 and idade <= 7:
+            autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel1")
+        if idade >= 8 and idade <= 12:
+            autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel2")
+        if idade >= 13 and idade <= 19:
+            autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel3")
+        if idade >= 20 and idade <= 24:
+            autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel4")
+        if idade >= 25 and idade <= 32:
+            autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel5")
+        if idade >= 33:
+            autoEstima = Recomendacao.objects.get(nome=nome, intervalo="nivel6")
+        autoEstima = autoEstima.texto
+
+    p.showPage()
+    p.setFont('Helvetica', 16)
+    p.setFillColorRGB(0, 0, 1)
+    p.drawString(250, 800, paciente.nome)
+    p.drawString(200, 770, "Recomendaçao Seletiva")
+
+    alturap = 740
+    p.setFillColorRGB(0, 0, 0)
+    p.setFont("Helvetica", 12)
+
+    if not (relacionamento == ""):
+        texto=relacionamento
+        texto=texto.replace("\n"," ")
+        p.drawString(10, alturap, "Relacionamento:")
+        if len(texto) > 100:
+            string = texto
+            depois = string[80:len(string)].split(" ", 1)[1]
+            antes = string[80:len(string)].split(" ", 1)[0]
+            alturap = alturap - 40
+            p.setFillColorRGB(0, 0, 0)
+            p.setFont("Helvetica", 12)
+            p.drawString(10, alturap, string[0:80] + antes)
+            while len(depois) > 100:
+                string = depois
+                depois = string[80:len(string)].split(" ", 1)[1]
+                antes = string[80:len(string)].split(" ", 1)[0]
+                p.setFillColorRGB(0, 0, 0)
+                p.setFont("Helvetica", 12)
+                p.drawString(10, alturap - 15, string[0:80] + antes)
+                alturap = alturap - 15
+                if alturap <= 60:
+                    p.showPage()
+                    alturap = 740
+                    p.setFillColorRGB(0, 0, 1)
+                    p.setFont("Helvetica", 16)
+                    p.drawString(250, 800, paciente.nome)
+                    p.drawString(200, 770, "Recomendaçao Seletiva")
+            p.setFillColorRGB(0, 0, 0)
+            p.setFont("Helvetica", 12)
+            p.drawString(10, alturap - 15, depois)
+
+        else:
+            p.setFillColorRGB(0, 0, 0)
+            p.drawString(10, alturap - 40, texto)
+
+        alturap=alturap-70
+
+        if not (diferenciacao == ""):
+            texto = diferenciacao
+            texto = texto.replace("\n", " ")
+            p.drawString(10, alturap, "Diferenciação:")
+            if len(texto) > 100:
+                string = texto
+                depois = string[80:len(string)].split(" ", 1)[1]
+                antes = string[80:len(string)].split(" ", 1)[0]
+                alturap = alturap - 40
+                p.setFillColorRGB(0, 0, 0)
+                p.setFont("Helvetica", 12)
+                p.drawString(10, alturap, string[0:80] + antes)
+                while len(depois) > 100:
+                    string = depois
+                    depois = string[80:len(string)].split(" ", 1)[1]
+                    antes = string[80:len(string)].split(" ", 1)[0]
+                    p.setFillColorRGB(0, 0, 0)
+                    p.setFont("Helvetica", 12)
+                    p.drawString(10, alturap - 15, string[0:80] + antes)
+                    alturap = alturap - 15
+                    if alturap <= 60:
+                        p.showPage()
+                        alturap = 740
+                        p.setFillColorRGB(0, 0, 1)
+                        p.setFont("Helvetica", 16)
+                        p.drawString(250, 800, paciente.nome)
+                        p.drawString(200, 770, "Recomendaçao Seletiva")
+                p.setFillColorRGB(0, 0, 0)
+                p.setFont("Helvetica", 12)
+                p.drawString(10, alturap - 15, depois)
+
+            else:
+                p.setFillColorRGB(0, 0, 0)
+                p.drawString(10, alturap - 40, texto)
+
+            alturap = alturap - 70
+
+            if not (autonomia == ""):
+                texto = autonomia
+                texto = texto.replace("\n", " ")
+                p.drawString(10, alturap, "Autonomia:")
+                if len(texto) > 100:
+                    string = texto
+                    depois = string[80:len(string)].split(" ", 1)[1]
+                    antes = string[80:len(string)].split(" ", 1)[0]
+                    alturap = alturap - 40
+                    p.setFillColorRGB(0, 0, 0)
+                    p.setFont("Helvetica", 12)
+                    p.drawString(10, alturap, string[0:80] + antes)
+                    while len(depois) > 100:
+                        string = depois
+                        depois = string[80:len(string)].split(" ", 1)[1]
+                        antes = string[80:len(string)].split(" ", 1)[0]
+                        p.setFillColorRGB(0, 0, 0)
+                        p.setFont("Helvetica", 12)
+                        p.drawString(10, alturap - 15, string[0:80] + antes)
+                        alturap = alturap - 15
+                        if alturap <= 60:
+                            p.showPage()
+                            alturap = 740
+                            p.setFillColorRGB(0, 0, 1)
+                            p.setFont("Helvetica", 16)
+                            p.drawString(250, 800, paciente.nome)
+                            p.drawString(200, 770, "Recomendaçao Seletiva")
+                    p.setFillColorRGB(0, 0, 0)
+                    p.setFont("Helvetica", 12)
+                    p.drawString(10, alturap - 15, depois)
+
+                else:
+                    p.setFillColorRGB(0, 0, 0)
+                    p.drawString(10, alturap - 40, texto)
+
+                alturap = alturap - 70
+
+                if not (assertividade == ""):
+                    texto = assertividade
+                    texto = texto.replace("\n", " ")
+                    p.drawString(10, alturap, "Assertividade:")
+                    if len(texto) > 100:
+                        string = texto
+                        depois = string[80:len(string)].split(" ", 1)[1]
+                        antes = string[80:len(string)].split(" ", 1)[0]
+                        alturap = alturap - 40
+                        p.setFillColorRGB(0, 0, 0)
+                        p.setFont("Helvetica", 12)
+                        p.drawString(10, alturap, string[0:80] + antes)
+                        while len(depois) > 100:
+                            string = depois
+                            depois = string[80:len(string)].split(" ", 1)[1]
+                            antes = string[80:len(string)].split(" ", 1)[0]
+                            p.setFillColorRGB(0, 0, 0)
+                            p.setFont("Helvetica", 12)
+                            p.drawString(10, alturap - 15, string[0:80] + antes)
+                            alturap = alturap - 15
+                            if alturap <= 60:
+                                p.showPage()
+                                alturap = 740
+                                p.setFillColorRGB(0, 0, 1)
+                                p.setFont("Helvetica", 16)
+                                p.drawString(250, 800, paciente.nome)
+                                p.drawString(200, 770, "Recomendaçao Seletiva")
+                        p.setFillColorRGB(0, 0, 0)
+                        p.setFont("Helvetica", 12)
+                        p.drawString(10, alturap - 15, depois)
+
+                    else:
+                        p.setFillColorRGB(0, 0, 0)
+                        p.drawString(10, alturap - 40, texto)
+
+                    alturap = alturap - 70
+
+                    if not (autoEstima == ""):
+                        texto = autoEstima
+                        texto = texto.replace("\n", " ")
+                        p.drawString(10, alturap, "Autoestima:")
+                        if len(texto) > 100:
+                            string = texto
+                            depois = string[80:len(string)].split(" ", 1)[1]
+                            antes = string[80:len(string)].split(" ", 1)[0]
+                            alturap = alturap - 40
+                            p.setFillColorRGB(0, 0, 0)
+                            p.setFont("Helvetica", 12)
+                            p.drawString(10, alturap, string[0:80] + antes)
+                            while len(depois) > 100:
+                                string = depois
+                                depois = string[80:len(string)].split(" ", 1)[1]
+                                antes = string[80:len(string)].split(" ", 1)[0]
+                                p.setFillColorRGB(0, 0, 0)
+                                p.setFont("Helvetica", 12)
+                                p.drawString(10, alturap - 15, string[0:80] + antes)
+                                alturap = alturap - 15
+                                if alturap <= 60:
+                                    p.showPage()
+                                    alturap = 740
+                                    p.setFillColorRGB(0, 0, 1)
+                                    p.setFont("Helvetica", 16)
+                                    p.drawString(250, 800, paciente.nome)
+                                    p.drawString(200, 770, "Recomendaçao Seletiva")
+                            p.setFillColorRGB(0, 0, 0)
+                            p.setFont("Helvetica", 12)
+                            p.drawString(10, alturap - 15, depois)
+
+                        else:
+                            p.setFillColorRGB(0, 0, 0)
+                            p.drawString(10, alturap - 40, texto)
     #Interventivas
     if Interventiva.objects.filter(paciente_id=paciente.id,anamnesia_id=analise_id).exists():
         perguntas=PerguntaInterventiva.objects.all().order_by("numero")

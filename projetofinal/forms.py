@@ -109,7 +109,9 @@ class UserCreationForm(forms.ModelForm):
         return user
 
 class CadastroPaciente(UserCreationForm):
-
+    error_messages = {
+        'cpf': _("CPF inválido")
+    }
     class Meta():
         model = User
         fields=['username','password1','password2']
@@ -133,9 +135,9 @@ class CadastroPaciente(UserCreationForm):
     )
     cpf = forms.CharField(label="CPF",
                           error_messages={'required':'Este campo é obrigatório'},
-                          help_text="999.999.999-99",
+                          help_text="xxx.xxx.xxx-xx",
                           )
-    telefone = forms.CharField(label="Telefone",required=False,help_text="(DDD)9999-9999")
+    telefone = forms.CharField(label="Telefone",required=False,help_text="(DDD)xxxx-xxxx")
     sexo = forms.ChoiceField(
         label="Sexo",
         choices = (
@@ -159,7 +161,42 @@ class CadastroPaciente(UserCreationForm):
         required=False
 
     )
+    def clean_cpf(self):
+        cpf = self.cleaned_data.get("cpf")
 
+        if not len(cpf) == 14:
+            raise forms.ValidationError(
+                self.error_messages['cpf'],
+                code='cpf',
+            )
+        if not(cpf[3] == "." and cpf[7] == "." and cpf[11] == "-"):
+            raise forms.ValidationError(
+                self.error_messages['cpf'],
+                code='cpf',
+            )
+        soma=0
+        lista_mult=[10,9,8,7,6,5,4,3,2]
+        lista_cpf=[cpf[0],cpf[1],cpf[2],cpf[4],cpf[5],cpf[6],cpf[8],cpf[9],cpf[10]]
+        for mult,item in zip(lista_mult,lista_cpf):
+            soma=soma+mult*int(item)
+        if int(soma%11)<2:
+            dv1=0
+        else:
+            dv1=11-int(soma%11)
+        lista_cpf.append(dv1)
+        lista_mult.insert(0,11)
+        soma=0
+        for mult,item in zip(lista_mult,lista_cpf):
+            soma=soma+mult*int(item)
+        if int(soma%11)<2:
+            dv2=0
+        else:
+            dv2=11-int(soma%11)
+        if not(cpf[12] == str(dv1) and cpf[13] == str(dv2)):
+            raise forms.ValidationError(
+                self.error_messages['cpf'],
+                code='cpf',
+            )
 
 class CadastroConjuge(forms.Form):
     nomeConjuge = forms.CharField(required=False,label="Primeiro nome do Cônjuge")
@@ -859,7 +896,6 @@ class RelacionamentoPais(forms.Form):
             filhas=1
         if paciente_sexo == "Masculino":
             filhos=1
-        print(step)
         self.fields[step+"relacao"] = forms.ChoiceField(
             label="Qual é/era o relacionamento dos seus pais:",
             choices = (

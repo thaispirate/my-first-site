@@ -1015,10 +1015,12 @@ class ConsultandoAnalise(SessionWizardView):
                 analise = Anamnesia.objects.get(id=analise_id)
             except Anamnesia.DoesNotExist:
                 raise Http404("Atendimento não existe")
-
+        lista_form=[]
         for key,value in self.form_list.items():
             if value != ConsultarAreaAfetiva:
-                self.form_list.pop(key)
+                lista_form.append(key)
+        for item in lista_form:
+            self.form_list.pop(item)
 
         relacionamentos = Relacionamento.objects.filter(anamnesia_id = analise_id)
         for relacionamento in relacionamentos:
