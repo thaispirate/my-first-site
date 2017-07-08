@@ -1874,7 +1874,7 @@ def Relatorio(request,paciente_id,analise_id):
     if criativo > criativoMax:
         acima_criativo = Recomendacao.objects.get(nome='intervalo_criativo', intervalo="acima")
         texto = texto + acima_criativo.texto
-    print(texto)
+    texto = texto.replace("\n", " ")
     if len(texto) > 100:
         string = texto
         depois = string[80:len(string)].split(" ", 1)[1]
