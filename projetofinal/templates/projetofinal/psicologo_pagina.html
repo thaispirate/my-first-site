@@ -98,12 +98,13 @@
 
 
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnycWatbGyK6ldFqErjFtko1yeMclNUOA&amp;"></script>
-
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByaqavkgr42tEm1f2XSUUPMIhMtb0XMpI&callback=initMap">
+    </script>
   <!-- $('#myProgressbar').progressbar(20) -->
 <script>
 mapa = {{ view.mapa|safe }};
-function initialize() {
+function initMap() {
         var position = new google.maps.LatLng(mapa['latitude'],mapa['longitude']);
         var mapOptions = {
             center: position,
@@ -123,7 +124,6 @@ function initialize() {
         });
 
         }
-google.maps.event.addDomListener(window, 'load', initialize);
 </script>
       <!-- Bootstrap core JavaScript
     ================================================== -->

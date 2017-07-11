@@ -4,8 +4,18 @@
 {% load i18n %}
 
     {% block content %}
-    <div class="main">
-        <h2>Atendimento finalizado! </h2>
+    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12"  align="center">
+        <br>
+        <h4><strong>A etapa de orientação psicológica pelo sistema Meet Yourself está finalizada.</strong></h4>
+        <h4><strong>Sugerimos que você dê prosseguimento ao seu aprimoramento buscando ajuda com um profissional Psicólogo. </strong></h4>
+        <h4><strong>Temos uma lista de recomendações destes profissionais que podem ser contatados por você.</strong></h4>
+        <h4><strong>Faça uma busca por Psicólogos clicando no botão a seguir. </strong></h4><br>
+        <img src="{% static 'image/contato.jpg' %}" class="img-responsive" alt="Responsive image"/>
+        <br><br>
+    <a type="submit" href="/buscar_psicologo/{{user.id}}" class="btn btn-default">Buscar Psicólogo</a>
+
     </div>
+
+
     {% endblock %}
 

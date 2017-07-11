@@ -1230,9 +1230,10 @@ def Relatorio(request,paciente_id,analise_id):
     p.setFont('Helvetica', 16)
     p.setFillColorRGB(0, 0, 1)
     p.drawString(250, 800, paciente.nome)
-    p.drawString(200, 770, "Recomendaçao Área Afetiva")
+    p.drawString(190, 770, "Recomendaçao Área Afetiva")
+    p.drawString(220, 740, "(Valores entre 0 e 4)")
 
-    alturap = 740
+    alturap = 700
     p.setFillColorRGB(0, 0, 0)
     p.setFont("Helvetica", 12)
     p.drawString(10, alturap,"Afetivo-Relacional: "+ str("%.2f" % afetivoRelacional))
