@@ -1,0 +1,160 @@
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/html">
+  <head>
+      {{ wizard.form.media }}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Meet Yourself</title>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/projetofinal.css' %}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+     <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="/home/{{user.id}}/">Familiacomvida</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+            </div>
+         <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
+            Olá, {{user.first_name|capfirst}}
+          </form>
+          </div>
+          </div>
+     </nav>
+
+    <nav class="navbar navbar-inverse sidebar" role="navigation">
+        <div class="container-fluid">
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                <div class="desktop-hide">
+                    Olá, {{user.first_name|capfirst}}
+                </div>
+                    <li><a href="/home/{{user.id}}/">Início<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                    <li class=><a href="/cadastro/editar/{{ user.id }}">Editar Cadastro<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+                    <!--<li><a href="/atualizar_chave/{{user.id}}">Atualizar Chave<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-wrench"></span></a></li>-->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Atendimento<span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-edit"></span></a>
+                        <ul class="dropdown-menu forAnimate" role="menu">
+                            {%if view.paciente.retornos == 0%}
+                            <li><a href="/analise/resumo/{{ user.id }}/areaafetiva">Iniciar</a></li>
+                            {%endif%}
+                            {%if view.paciente.tempo >= 0%}
+                            <li><a href="/analise/prosseguir/{{user.id}}">Prosseguir</a></li>
+                            {%endif%}
+                            <li><a href="/analise/consultar/{{user.id}}">Consultar</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/analise/recomendacao/{{user.id}}">Recomendações<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list-alt"></span></a></li>
+                    <li><a href="/buscar_psicologo/{{user.id}}">Buscar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-search"></span></a></li>
+                    <li class="active"><a href="/habilitar_psicologo/{{user.id}}">Habilitar Psicólogo<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-ok-circle"></span></a></li>
+                    <li ><a href="/sair">Sair<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-remove-circle"></span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main">
+            <!-- Content Here -->
+    <div class="container">
+	        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4 class="text-center">
+                        Paciente</h4>
+                </div>
+                <div class="panel-body text-center">
+                    <p class="lead">
+                        <strong>{{view.paciente.nome}}</strong></p>
+                </div>
+                <ul class="list-group list-group-flush text-center">
+                    <li class="list-group-item"><i class="icon-ok text-danger"></i><strong>CPF: </strong>{{view.paciente.cpf}}</li>
+                    <li class="list-group-item"><i class="icon-ok text-danger"></i><strong>EMAIL: </strong>{{view.paciente.email}}</li>
+                    <li class="list-group-item"><i class="icon-ok text-danger"></i><strong>TELEFONE: </strong>{{view.paciente.telefone}}</li>
+                </ul>
+                <div class="panel-footer">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4 class="text-center">
+                        Psicólogo</h4>
+                </div>
+                <div class="panel-body text-center">
+                    <p class="lead">
+                        <strong>{{view.psicologo.nome}}</strong></p>
+                </div>
+                <ul class="list-group list-group-flush text-center">
+                    <li class="list-group-item"><i class="icon-ok text-danger"></i><strong>CRP: </strong>{{view.psicologo.crp}}</li>
+                    <li class="list-group-item"><i class="icon-ok text-danger"></i><strong>EMAIL: </strong>{{view.psicologo.email}}</li>
+                    <li class="list-group-item"><i class="icon-ok text-danger"></i><strong>TELEFONE: </strong>{{view.psicologo.telefone}}</li>
+                </ul>
+                <div class="panel-footer">
+                </div>
+            </div>
+        </div>
+        <br>
+   <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12"  align="center">
+
+   <form action="" method="post" onsubmit="return checkForm(this);">{% csrf_token %}
+    <div class="container">
+    <table>
+    {{ wizard.management_form }}
+    {% if wizard.form.forms %}
+        {{ wizard.form.management_form }}
+        {% for form in wizard.form.forms %}
+        <label for="fancy-checkbox-default" class="[ btn btn-default active ]">
+          {{form}}
+        </label>
+        {% endfor %}
+    {% else %}
+        <label for="fancy-checkbox-default" class="[ btn btn-default active ]">
+        {% crispy wizard.form %}
+        </label>
+    {% endif %}
+    </table>
+    <br><br>
+    <button type="submit" name="submit" class="btn btn-default" value="{% trans "submit" %}">Enviar</button>
+    </div>
+    </div>
+    </form>
+   </div>
+
+    </div>
+    </div>
+
+      <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'assets/javascript/ajaxgoogleapis.js' %}"></script>
+    <script src="{% static 'assets/javascript/jquery.js' %}"></script>
+    <script src="{% static 'assets/javascript/bootstrap.js' %}"></script>
+    <script src="{% static 'assets/javascript/progressbar.js' %}"></script>
+
+  </body>
+</html>
+

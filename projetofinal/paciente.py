@@ -1,13 +1,18 @@
 import datetime
 import math
+import socket
 from datetime import datetime, timedelta
 import json
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.models import User, Group
 from .forms import CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,\
-    CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna,EdicaoPaciente,AtualizarChave, HabilitarPsicologo, BuscarPsicologo
+    CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna,EdicaoPaciente,AtualizarChave,\
+    HabilitarPsicologoBusca, HabilitarPsicologoForm, BuscarPsicologo
 from .models import Paciente, Chave, User,Familia, Psicologo, Anamnesia,Municipio, Estado
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 from formtools.wizard.views import SessionWizardView
 from django.http import Http404, HttpResponseRedirect, HttpResponse, FileResponse
@@ -361,13 +366,13 @@ class ChaveAtualizada(TemplateView):
 
         return paciente
 
-class HabilitarPsicologo(SessionWizardView):
-    template_name = "projetofinal/psicologo.html"
-    form_list = [HabilitarPsicologo]
+class HabilitarPsicologoBusca(SessionWizardView):
+    template_name = "projetofinal/habilitar_psicologo_busca.html"
+    form_list = [HabilitarPsicologoBusca]
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(HabilitarPsicologo, self).dispatch(*args, **kwargs)
+        return super(HabilitarPsicologoBusca, self).dispatch(*args, **kwargs)
 
     def paciente(self):
         if 'paciente_id' in self.kwargs:
@@ -381,9 +386,53 @@ class HabilitarPsicologo(SessionWizardView):
         paciente_id = self.kwargs['paciente_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         psicologo = Psicologo.objects.get(crp = crp)
-        paciente.psicologo=psicologo
-        paciente.habilitado=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        paciente.save()
+        return HttpResponseRedirect('/habilitar_psicologo/'+paciente_id+'/'+str(psicologo.id))
+
+class HabilitarPsicologo(SessionWizardView):
+    template_name = "projetofinal/habilitar_psicologo.html"
+    form_list=[HabilitarPsicologoForm]
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(HabilitarPsicologo, self).dispatch(*args, **kwargs)
+
+    def get_form(self, step=None, data=None, files=None):
+        if 'psicologo_id' in self.kwargs:
+            psicologo_id = self.kwargs['psicologo_id']
+        print(psicologo_id)
+        form = HabilitarPsicologoForm(psicologo_id=psicologo_id, data=data)
+        return form
+
+    def paciente(self):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        return paciente
+
+    def psicologo(self):
+        if 'psicologo_id' in self.kwargs:
+            psicologo_id = self.kwargs['psicologo_id']
+        psicolgo = Psicologo.objects.get(id=psicologo_id)
+        return psicolgo
+
+    def done(self, form_list, form_dict, **kwargs):
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        if 'psicologo_id' in self.kwargs:
+            psicologo_id = self.kwargs['psicologo_id']
+        psicolgo = Psicologo.objects.get(id=psicologo_id)
+        agora = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+        ip=socket.gethostbyname(socket.gethostname())
+
+        html_content = render_to_string('projetofinal/habilitar_psicologo_email.html',{'psicologo':psicolgo,'paciente':paciente,'ip':ip,'data':agora})
+        text_content = strip_tags(html_content)
+        send_mail(
+            'Autorização de acesso aos dados',
+            text_content,
+            'thais.potc@gmail.com',
+            [paciente.email,psicolgo.email],
+        )
         return HttpResponseRedirect('/habilitado/'+paciente_id)
 
 class PsicologoHabilitado(TemplateView):

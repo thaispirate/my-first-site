@@ -59,7 +59,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("username",)
+        fields = ("username", "password1", "password2")
 
     def clean_username(self):
         # Since User.username is unique, this check is redundant,
@@ -110,19 +110,14 @@ class UserCreationForm(forms.ModelForm):
 
 class CadastroPaciente(UserCreationForm):
     error_messages = {
+        'duplicate_username': _("Já existe um usuário com este email."),
+        'password_mismatch': _("As senhas precisam ser iguais"),
+        'chave_acesso': _("Chave de acesso inválida"),
         'cpf': _("CPF inválido")
     }
     class Meta():
         model = User
         fields=['username','password1','password2']
-        error_messages = {
-            'password1': {
-                'required': "Please enter your first password",
-            },
-             'password2': {
-                 'required': "Please enter your second password.",
-            },
-         }
 
 
     nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório',})
@@ -197,7 +192,7 @@ class CadastroPaciente(UserCreationForm):
                 self.error_messages['cpf'],
                 code='cpf',
             )
-
+        return cpf
 class CadastroConjuge(forms.Form):
     nomeConjuge = forms.CharField(required=False,label="Primeiro nome do Cônjuge")
     nascimentoConjuge = forms.DateField(
@@ -425,6 +420,47 @@ class CadastroAvoMaterna(forms.Form):
     )
 
 class EdicaoPaciente(forms.Form):
+    error_messages = {
+        'cpf': _("CPF inválido")
+    }
+
+    def clean_cpf(self):
+        cpf = self.cleaned_data.get("cpf")
+
+        if not len(cpf) == 14:
+            raise forms.ValidationError(
+                self.error_messages['cpf'],
+                code='cpf',
+            )
+        if not (cpf[3] == "." and cpf[7] == "." and cpf[11] == "-"):
+            raise forms.ValidationError(
+                self.error_messages['cpf'],
+                code='cpf',
+            )
+        soma = 0
+        lista_mult = [10, 9, 8, 7, 6, 5, 4, 3, 2]
+        lista_cpf = [cpf[0], cpf[1], cpf[2], cpf[4], cpf[5], cpf[6], cpf[8], cpf[9], cpf[10]]
+        for mult, item in zip(lista_mult, lista_cpf):
+            soma = soma + mult * int(item)
+        if int(soma % 11) < 2:
+            dv1 = 0
+        else:
+            dv1 = 11 - int(soma % 11)
+        lista_cpf.append(dv1)
+        lista_mult.insert(0, 11)
+        soma = 0
+        for mult, item in zip(lista_mult, lista_cpf):
+            soma = soma + mult * int(item)
+        if int(soma % 11) < 2:
+            dv2 = 0
+        else:
+            dv2 = 11 - int(soma % 11)
+        if not (cpf[12] == str(dv1) and cpf[13] == str(dv2)):
+            raise forms.ValidationError(
+                self.error_messages['cpf'],
+                code='cpf',
+            )
+        return cpf
 
     def __init__(self,*args,**kwargs):
         paciente_id = kwargs.pop('paciente_id', None)
@@ -440,7 +476,15 @@ class EdicaoPaciente(forms.Form):
             required=False,
             error_messages={'invalid':'Esta data não é valida'}
         )
-
+        self.fields['cpf'] = forms.CharField(label="CPF",
+                              required=False,
+                              help_text="xxx.xxx.xxx-xx",
+                              initial=paciente.cpf
+                              )
+        self.fields['telefone'] = forms.CharField(label="Telefone",
+                                        required=False,
+                                        help_text="(DDD)xxxx-xxxx",
+                                        initial=paciente.telefone)
         self.fields['sexo'] = forms.ChoiceField(
             label="Sexo",
             choices = (
@@ -689,7 +733,7 @@ class AtualizarChave(forms.Form):
             )
         return chave
 
-class HabilitarPsicologo(forms.Form):
+class HabilitarPsicologoBusca(forms.Form):
     error_messages = {
         'codigo_invalido': _("CRP não encontrado"),
     }
@@ -706,6 +750,18 @@ class HabilitarPsicologo(forms.Form):
             )
 
         return crp
+
+class HabilitarPsicologoForm(forms.Form):
+    def __init__(self,*args,**kwargs):
+        psicologo_id = kwargs.pop('psicologo_id', None)
+        super(HabilitarPsicologoForm, self).__init__(*args,**kwargs)
+        psicologo = Psicologo.objects.get(id=psicologo_id)
+
+        self.fields['termos']= forms.BooleanField(label="Concordo em ceder os dados desta avaliação para o profissional com registro no CRP:"+psicologo.crp+".<br />"
+                                                        " A orientação psicológica se encerra neste momento e o tratamento psicológico será conduzido sob a responsabilidade do referido psicólogo",
+                               required=True,
+                                error_messages={'required':"Você precisa concordar com os termos acima."},
+                                widget=forms.CheckboxInput(attrs={'name':"fancy-checkbox-default", 'id': "fancy-checkbox-default"}))
 
 
 class BuscarPsicologo(ModelForm):
