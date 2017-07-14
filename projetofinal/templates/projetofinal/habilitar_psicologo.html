@@ -127,15 +127,10 @@
     {% if wizard.form.forms %}
         {{ wizard.form.management_form }}
         {% for form in wizard.form.forms %}
-        <label for="fancy-checkbox-default" class="[ btn btn-default active ]">
           {{form}}
-        </label>
         {% endfor %}
     {% else %}
-        <label for="fancy-checkbox-primary" class="[ btn btn-default active ]">
         {% crispy wizard.form %}
-        </label>
-
     {% endif %}
     </table>
     <br><br>

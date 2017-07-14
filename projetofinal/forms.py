@@ -753,11 +753,12 @@ class HabilitarPsicologoBusca(forms.Form):
 class HabilitarPsicologoForm(forms.Form):
     def __init__(self,*args,**kwargs):
         psicologo_id = kwargs.pop('psicologo_id', None)
+        paciente_id = kwargs.pop('paciente_id', None)
         super(HabilitarPsicologoForm, self).__init__(*args,**kwargs)
         psicologo = Psicologo.objects.get(id=psicologo_id)
-
-        self.fields['termos']= forms.BooleanField(label="Concordo em ceder os dados desta avaliação para o profissional com registro no CRP:"+psicologo.crp+".<br />"
-                                                        " A orientação psicológica se encerra neste momento e o tratamento psicológico será conduzido sob a responsabilidade do referido psicólogo",
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        self.fields['termos']= forms.BooleanField(label="Eu, "+paciente.nome+", concordo em ceder meus dados disponíveis na plataforma MeetYourself para o profissional com registro no CRP: "+psicologo.crp+".<br />"
+                                                        " A orientação psicológica se encerra neste momento e o tratamento psicológico será conduzido sob a responsabilidade do referido psicólogo.",
                                required=True,
                                 error_messages={'required':"Você precisa concordar com os termos acima."},
                                 widget=forms.CheckboxInput(attrs={'name':"fancy-checkbox-default", 'id': "fancy-checkbox-default"}))

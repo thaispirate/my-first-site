@@ -400,8 +400,9 @@ class HabilitarPsicologo(SessionWizardView):
     def get_form(self, step=None, data=None, files=None):
         if 'psicologo_id' in self.kwargs:
             psicologo_id = self.kwargs['psicologo_id']
-        print(psicologo_id)
-        form = HabilitarPsicologoForm(psicologo_id=psicologo_id, data=data)
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        form = HabilitarPsicologoForm(psicologo_id=psicologo_id,paciente_id=paciente_id, data=data)
         return form
 
     def paciente(self):
@@ -519,6 +520,9 @@ class PsicologoPagina(TemplateView):
         if 'psicologo_id' in self.kwargs:
             psicologo_id = self.kwargs['psicologo_id']
         psicologo= Psicologo.objects.get(id=psicologo_id)
+        if str(psicologo.numero) in psicologo.endereco:
+            psicologo.endereco=psicologo.endereco.replace(str(psicologo.numero),"")
+            psicologo.save()
         return psicologo
 
     def mapa(self):
