@@ -1,6 +1,5 @@
 import datetime
 import math
-import socket
 from datetime import datetime, timedelta
 import json
 from django.shortcuts import render
@@ -44,6 +43,18 @@ from django.contrib.auth import logout
 from geopy.geocoders import Nominatim
 from geopy.geocoders import GoogleV3
 
+import socket
+import fcntl
+import struct
+import netifaces as ni
+from ipware.ip import get_real_ip
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 # Create your views here.
 
 #Views Paciente
@@ -423,8 +434,9 @@ class HabilitarPsicologo(SessionWizardView):
             psicologo_id = self.kwargs['psicologo_id']
         psicolgo = Psicologo.objects.get(id=psicologo_id)
         agora = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-        ip=socket.gethostbyname(socket.gethostname())
-
+        ip = get_real_ip(self.request)
+        ip=self.request.META.get('HTTP_X_FORWARDED_FOR')
+        print(ip)
         html_content = render_to_string('projetofinal/habilitar_psicologo_email.html',{'psicologo':psicolgo,'paciente':paciente,'ip':ip,'data':agora})
         text_content = strip_tags(html_content)
         send_mail(
