@@ -7,4 +7,5 @@ simplejson
 django-smart_selects==1.5.2
 geopy
 reportlab
+django-ipware
 

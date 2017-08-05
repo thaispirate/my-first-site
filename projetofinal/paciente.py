@@ -434,6 +434,14 @@ class HabilitarPsicologo(SessionWizardView):
             'thais.potc@gmail.com',
             [paciente.email,psicolgo.email],
         )
+        html_content = render_to_string('projetofinal/habilitar_psicologo_pagamento_email.html',{'psicologo':psicolgo,'paciente':paciente,'ip':ip,'data':agora})
+        text_content = strip_tags(html_content)
+        send_mail(
+            'MeetYourself: Orientação para pagamento',
+            text_content,
+            'thais.potc@gmail.com',
+            [psicolgo.email],
+        )
         return HttpResponseRedirect('/habilitado/'+paciente_id)
 
 class PsicologoHabilitado(TemplateView):
