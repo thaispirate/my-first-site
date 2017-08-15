@@ -36,8 +36,8 @@ class Psicologo(models.Model):
     usuario = models.OneToOneField(User)
     email = models.EmailField()
     nome = models.CharField(max_length=50,null=True)
-    telefone = models.PositiveIntegerField(null=True, blank=True)
-    celular = models.PositiveIntegerField(null=True, blank=True)
+    telefone = models.CharField(max_length=50,null=True, blank=True)
+    celular = models.CharField(max_length=50,null=True, blank=True)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE,null=True)
     municipio = ChainedForeignKey(
         Municipio,
