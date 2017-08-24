@@ -38,7 +38,7 @@ class UserCreationForm(forms.ModelForm):
         error_messages={
             'invalid': _("Este campo só deve conter letras,números e os seguintes caracteres "
                          "@/./+/-/_"),
-            'required': _("Este campo é obrigatório")
+            'required': _("Este campo é obrigatório"),
         })
     password1 = forms.CharField(label=_("Senha"),
         widget=forms.PasswordInput,
@@ -126,7 +126,7 @@ class CadastroPaciente(UserCreationForm):
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
     )
     cpf = forms.CharField(label="CPF",
                           error_messages={'required':'Este campo é obrigatório'},
@@ -201,7 +201,7 @@ class CadastroConjuge(forms.Form):
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
 
     )
 
@@ -235,7 +235,7 @@ class CadastroPai(forms.Form):
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
         required=False,
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
 
 
     )
@@ -269,7 +269,7 @@ class CadastroMae(forms.Form):
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
         required=False,
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
 
     )
     falecimentoMae = forms.DateField(
@@ -302,7 +302,7 @@ class CadastroAvoPaterno(forms.Form):
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
         required=False,
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
 
     )
     falecimentoAvoPaterno = forms.DateField(
@@ -342,7 +342,7 @@ class CadastroAvoPaterna(forms.Form):
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
     )
     escolaridadeAvoPaterna = forms.ChoiceField(
         label="Escolaridade da Avó Paterna",
@@ -365,7 +365,7 @@ class CadastroAvoMaterno(forms.Form):
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
         required=False,
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
     )
     falecimentoAvoMaterno = forms.DateField(
         label="Data de falecimento do Avô Materno",
@@ -396,7 +396,7 @@ class CadastroAvoMaterna(forms.Form):
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
         required=False,
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
     )
     falecimentoAvoMaterna = forms.DateField(
         label="Data de falecimento da Avó Materna",
@@ -473,7 +473,7 @@ class EdicaoPaciente(forms.Form):
             help_text= "DD/MM/AAAA",
             initial=paciente.nascimento,
             required=False,
-            error_messages={'invalid':'Esta data não é valida'}
+            error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
         )
         self.fields['cpf'] = forms.CharField(label="CPF",
                               required=False,
