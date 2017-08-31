@@ -123,11 +123,10 @@ LOGIN_REDIRECT_URL= '/login'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.webmail.familiacomvida.com.br'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'meetyourself@familiacomvida.com.br'
 EMAIL_HOST_PASSWORD = 'Mtys2017!'
-DEFAULT_FROM_EMAIL = 'meetyourself@familiacomvida.com.br'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
