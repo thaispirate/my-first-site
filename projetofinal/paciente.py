@@ -125,6 +125,7 @@ class CadastroWizard(SessionWizardView):
         paciente.nome = form_data[0]['nome']
         paciente.nascimento = form_data[0]['nascimento']
         paciente.cpf = form_data[0]['cpf']
+        print(form_data[0]['cpf'], form_data)
         paciente.telefone = form_data[0]['telefone']
         paciente.sexo = form_data[0]['sexo']
         paciente.escolaridade = form_data[0]['escolaridade']

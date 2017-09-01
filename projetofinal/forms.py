@@ -192,7 +192,7 @@ class CadastroPaciente(UserCreationForm):
                 self.error_messages['cpf'],
                 code='cpf',
             )
-
+        return cpf
 class CadastroConjuge(forms.Form):
     nomeConjuge = forms.CharField(required=False,label="Primeiro nome do Cônjuge")
     nascimentoConjuge = forms.DateField(
@@ -460,6 +460,7 @@ class EdicaoPaciente(forms.Form):
                 self.error_messages['cpf'],
                 code='cpf',
             )
+        return cpf
 
     def __init__(self,*args,**kwargs):
         paciente_id = kwargs.pop('paciente_id', None)
