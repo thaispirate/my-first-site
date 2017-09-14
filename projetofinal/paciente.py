@@ -82,7 +82,7 @@ def LoginPaciente(request):
 
         user = authenticate(username=username, password=password)
         if user is not None:
-            if user.is_active and user.groups.filter(name='paciente').exists():
+            if user.is_active and (user.groups.filter(name='paciente').exists() or user.groups.filter(name='psicologo').exists()):
                 login(request, user)
                 state = "You're successfully logged in!"
                 paciente_id=str(user.id)
