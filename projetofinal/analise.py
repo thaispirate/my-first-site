@@ -225,25 +225,25 @@ class InserirAnalise(SessionWizardView):
             if minimo[0] == socioCultural:
                 anamnesia.areaAfetiva = "SocioCultural"
 
-            if paciente.retornos == 0:
-                inicio=anamnesia.inicio=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                anamnesia.retornos=1
-                anamnesia.save()
-                anamnesia = Anamnesia.objects.get(inicio=inicio)
-                self.initial_dict['anamnesia_id']=anamnesia.id
+            # if paciente.retornos == 0:
+            inicio=anamnesia.inicio=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            anamnesia.retornos=1
+            anamnesia.save()
+            anamnesia = Anamnesia.objects.get(inicio=inicio)
+            self.initial_dict['anamnesia_id']=anamnesia.id
 
-                for item in form.data:
-                    if item[0] == "0":
-                        pergunta = PerguntaAreaAfetiva.objects.get(numero=item.split("-")[1])
-                        resposta = RespostaAreaAfetiva.objects.get(pergunta_id=pergunta.id,letra=form.data[item])
-                        areaAfetiva = AreaAfetiva()
-                        areaAfetiva.paciente = paciente
-                        areaAfetiva.resposta = resposta
-                        areaAfetiva.anamnesia = anamnesia
-                        areaAfetiva.save()
-                paciente = Paciente.objects.get(usuario_id=paciente_id)
-                paciente.retornos = 1
-                paciente.save()
+            for item in form.data:
+                if item[0] == "0":
+                    pergunta = PerguntaAreaAfetiva.objects.get(numero=item.split("-")[1])
+                    resposta = RespostaAreaAfetiva.objects.get(pergunta_id=pergunta.id,letra=form.data[item])
+                    areaAfetiva = AreaAfetiva()
+                    areaAfetiva.paciente = paciente
+                    areaAfetiva.resposta = resposta
+                    areaAfetiva.anamnesia = anamnesia
+                    areaAfetiva.save()
+            paciente = Paciente.objects.get(usuario_id=paciente_id)
+            paciente.retornos = 1
+            paciente.save()
         if Anamnesia.objects.filter(paciente_id=paciente.id).exists():
             anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id).last()
             agora=datetime.now()
