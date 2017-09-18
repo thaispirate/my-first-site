@@ -121,22 +121,22 @@ LOGIN_REDIRECT_URL= '/login'
 # EMAIL_HOST_PASSWORD = ''
 # DEFAULT_FROM_EMAIL = 'webmaster@localhost.com'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-EMAIL_USE_TLS = False
-EMAIL_HOST = 'mail.familiacomvida.com.br'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'meetyourself@familiacomvida.com.br'
-EMAIL_HOST_PASSWORD = 'Mtys2017!'
-DEFAULT_FROM_EMAIL = 'meetyourself@familiacomvida.com.br'
-SERVER_EMAIL = 'mail.familiacomvida.com.br'
-
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'mail.winhostbr.com'
-# EMAIL_PORT = 465
+#
+# EMAIL_USE_TLS = False
+# EMAIL_HOST = 'mail.familiacomvida.com.br'
+# EMAIL_PORT = 587
 # EMAIL_HOST_USER = 'meetyourself@familiacomvida.com.br'
 # EMAIL_HOST_PASSWORD = 'Mtys2017!'
 # DEFAULT_FROM_EMAIL = 'meetyourself@familiacomvida.com.br'
-# SERVER_EMAIL = 'mail.winhostbr.com'
+# SERVER_EMAIL = 'mail.familiacomvida.com.br'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'meetyourself.familiacomvidac@gmail.com'
+EMAIL_HOST_PASSWORD = 'Mtys2017!'
+DEFAULT_FROM_EMAIL = 'meetyourself.familiacomvidac@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 SMART_SELECTS_JQUERY_URL = True
