@@ -34,7 +34,7 @@ class UserCreationForm(forms.ModelForm):
         'password_mismatch': _("As senhas precisam ser iguais"),
         'chave_acesso': _("Chave de acesso inválida"),
     }
-    username = forms.EmailField(label=_("Email"),
+    username = forms.CharField(label=_("Nome de usuario"),
         error_messages={
             'invalid': _("Este campo só deve conter letras,números e os seguintes caracteres "
                          "@/./+/-/_"),
@@ -121,6 +121,11 @@ class CadastroPaciente(UserCreationForm):
 
 
     nome = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório',})
+    email = forms.EmailField(label="Email",error_messages={
+            'invalid': _("Este campo só deve conter letras,números e os seguintes caracteres "
+                         "@/./+/-/_"),
+            'required': _("Este campo é obrigatório"),
+        })
     nascimento = forms.DateField(
         label="Data de Nascimento(ou data aproximada)",
         input_formats=["%d/%m/%Y",],
@@ -467,6 +472,7 @@ class EdicaoPaciente(forms.Form):
         super(EdicaoPaciente, self).__init__(*args,**kwargs)
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         self.fields['nome'] = forms.CharField(label="Nome",error_messages={'required':'Este campo é obrigatório'},initial=paciente.nome)
+        self.fields['email'] = forms.EmailField(label="Email",error_messages={'required':'Este campo é obrigatório'},initial=paciente.email)
         self.fields['nascimento'] = forms.DateField(
             label="Data de Nascimento",
             input_formats=["%d/%m/%Y",],
@@ -652,7 +658,7 @@ class CadastroPsicologoForm(UserCreationForm):
 class CadastroPsicologoForm2(ModelForm):
     class Meta():
         model=Psicologo
-        fields=['nome','telefone','celular','estado','municipio','endereco','numero','complemento','bairro','crp']
+        fields=['nome','email','telefone','celular','estado','municipio','endereco','numero','complemento','bairro','crp']
     def __init__(self, *args, **kwargs):
         super(CadastroPsicologoForm2, self).__init__(*args, **kwargs)
 
@@ -676,7 +682,7 @@ class EdicaoPsicologo(ModelForm):
 
     class Meta():
         model=Psicologo
-        fields=['nome','telefone','celular','estado','municipio','endereco','numero','complemento','bairro','crp']
+        fields=['nome','email','telefone','celular','estado','municipio','endereco','numero','complemento','bairro','crp']
 
     def __init__(self,*args,**kwargs):
         psicologo_id = kwargs.pop('psicologo_id', None)
@@ -705,6 +711,7 @@ class EdicaoPsicologo(ModelForm):
         self.fields['numero'].initial=psicologo.numero
         self.fields['crp'].initial=psicologo.crp
         self.fields['nome'].initial=psicologo.nome
+        self.fields['email'].initial=psicologo.email
         self.fields['estado'].initial=psicologo.estado
         self.fields['municipio'].initial=psicologo.municipio
 

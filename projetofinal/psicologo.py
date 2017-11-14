@@ -84,7 +84,8 @@ class CadastroPsicologoWizard(SessionWizardView):
         user = User()
         user.username = form_data[0]['username']
         user.set_password(form_data[0]['password1'])
-        user.email = form_data[0]['username']
+        user.username = form_data[0]['username']
+        user.email = form_data[1]['email']
         user.first_name = form_data[1]['nome']
         user.save()
         #code= form_data[0]['code']
@@ -96,7 +97,7 @@ class CadastroPsicologoWizard(SessionWizardView):
         user.groups.add(group)
         psicologo = Psicologo()
         psicologo.usuario = user
-        psicologo.email = form_data[0]['username']
+        psicologo.email = form_data[1]['email']
         psicologo.nome = form_data[1]['nome']
         estado= form_data[1]['estado']
         estado = Estado.objects.get(estado=estado)
@@ -154,6 +155,7 @@ class EditarCadastroPsicologo(SessionWizardView):
         psicologo = Psicologo.objects.get(usuario_id=psicologo_id)
         form_data= [form.cleaned_data for form in form_list]
         psicologo.nome = form_data[0]['nome']
+        psicologo.email = form_data[0]['email']
         estado= form_data[0]['estado']
         estado = Estado.objects.get(estado=estado)
         psicologo.estado=estado

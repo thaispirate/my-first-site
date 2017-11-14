@@ -109,7 +109,8 @@ class CadastroWizard(SessionWizardView):
         user = User()
         user.username = form_data[0]['username']
         user.set_password(form_data[0]['password1'])
-        user.email = form_data[0]['username']
+        user.username = form_data[0]['username']
+        user.email = form_data[0]['email']
         user.first_name = form_data[0]['nome']
         user.save()
         #code= form_data[0]['code']
@@ -121,11 +122,10 @@ class CadastroWizard(SessionWizardView):
         user.groups.add(group)
         paciente = Paciente()
         paciente.usuario = user
-        paciente.email = form_data[0]['username']
+        paciente.email = form_data[0]['email']
         paciente.nome = form_data[0]['nome']
         paciente.nascimento = form_data[0]['nascimento']
         paciente.cpf = form_data[0]['cpf']
-        print(form_data[0]['cpf'], form_data)
         paciente.telefone = form_data[0]['telefone']
         paciente.sexo = form_data[0]['sexo']
         paciente.escolaridade = form_data[0]['escolaridade']
@@ -278,6 +278,7 @@ class EditarCadastro(SessionWizardView):
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         form_data= [form.cleaned_data for form in form_list]
         paciente.nome = form_data[0]['nome']
+        paciente.email = form_data[0]['email']
         paciente.nascimento = form_data[0]['nascimento']
         paciente.cpf = form_data[0]['cpf']
         paciente.telefone = form_data[0]['telefone']
