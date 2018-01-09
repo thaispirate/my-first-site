@@ -4,18 +4,11 @@
 {% load i18n %}
 
 {% block content %}
- <div class="container">
-            <!--{% if not view.anamnesia %}-->
-              <!--<h4>Você precisará de uma nova chave para realizar um novo atendimento.</h4>-->
-              <!--<h4>As recomendações para o atendimento já finalizado continuam disponíveis-->
-                  <!--no menu "Recomendações"</h4>-->
-            <!--{% else %}-->
-            <!--{%if view.paciente.tempo == 1%}-->
-            <!--<h4>Falta {{view.paciente.tempo}} dia para encerrarem seus créditos</h4>-->
-            <!--{%else%}-->
-            <!--<h4>Faltam {{view.paciente.tempo}} dias para encerrarem seus créditos</h4>-->
-            <!--{%endif%}-->
-             <div class="row">
+         <div class="container">
+           {% if not view.anamnesia %}
+              <h2>Não existem atendimentos</h2>
+            {% else %}
+           <div class="row">
           <div role="main" class="col-md-2">
           <form action="remover" method="POST" class="form-group">{% csrf_token %}
           <table class="table ">
@@ -23,10 +16,11 @@
                 <th></th>
                 <th>Atendimentos</th>
             </tr>
-              <td><input type="checkbox" id="selectAll"></td>
+            <td><input type="checkbox" id="selectAll"></td>
               <td>Selecionar todos</td>
             {% for analise in view.anamnesia %}
             <tr>
+
                 <td class="col-sm-1">
                       <label>
                         <input class="checkbox_delete" type="checkbox" name="analise" value="{{analise.id}}">
@@ -43,10 +37,10 @@
           </div>
           <aside role="complementary" class="col-md-10">
 
-            <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-         </aside>
+            <canvas id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></canvas>
+          </aside>
                {%if view.indiferenciacao == 1%}
-               <div id="radar" style="min-width: 100px;min-height: 100px;height: 500px; margin: 0 auto"></div>
+                <canvas id="radar" style="min-width: 100px;min-height: 100px;height: 500px; margin: 0 auto"></canvas>
                {%endif%}
           {% endif %}
        </div>
