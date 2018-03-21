@@ -22,14 +22,14 @@ from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.core import signing
 from django.core.mail import send_mail
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect, render_to_response
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template import loader
 from django.utils import timezone
 from django.views import generic
 from django.views.decorators.debug import sensitive_post_parameters
-import simplejson
+import json as simplejson
 from collections import OrderedDict
 try:
     from django.contrib.sites.shortcuts import get_current_site
@@ -91,7 +91,7 @@ def LoginPaciente(request):
                 state = 1
         else:
             state = 2
-    return render_to_response('projetofinal/login.html', {'state':state, 'username': username},context_instance=RequestContext(request))
+    return render('projetofinal/login.html', {'state':state, 'username': username})
 
 
 def LogoutView(request):
@@ -662,7 +662,7 @@ class Reset(SaltMixin, generic.FormView):
         return super(Reset, self).dispatch(request, *args, **kwargs)
 
     def invalid(self):
-        return self.render_to_response(self.get_context_data(invalid=True))
+        return self.render(self.get_context_data(invalid=True))
 
     def get_form_kwargs(self):
         kwargs = super(Reset, self).get_form_kwargs()

@@ -33,7 +33,7 @@ class Chave(models.Model):
         return self.chave
 
 class Psicologo(models.Model):
-    usuario = models.OneToOneField(User)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.EmailField()
     nome = models.CharField(max_length=50,null=True)
     telefone = models.CharField(max_length=50,null=True, blank=True)
@@ -46,6 +46,7 @@ class Psicologo(models.Model):
         show_all=False,
         auto_choose=True,
         sort=True,
+        on_delete=models.CASCADE,
         null=True)
     endereco = models.CharField(max_length=200,null=True)
     numero=models.PositiveIntegerField(null=True, blank=True)
@@ -58,7 +59,7 @@ class Psicologo(models.Model):
 
 
 class Paciente(models.Model):
-    usuario = models.OneToOneField(User)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.EmailField()
     nome = models.CharField(max_length=50,null=True)
     nascimento = models.DateField(null=True)

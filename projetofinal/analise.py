@@ -26,14 +26,14 @@ from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.core import signing
 from django.core.mail import send_mail
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect, render_to_response
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template import loader
 from django.utils import timezone
 from django.views import generic
 from django.views.decorators.debug import sensitive_post_parameters
-import simplejson
+import json as simplejson
 from collections import OrderedDict
 try:
     from django.contrib.sites.shortcuts import get_current_site
@@ -1577,7 +1577,7 @@ def RemoverAnalise(request, paciente_id):
         Seletiva.objects.filter(anamnesia_id=analise).delete()
         Interventiva.objects.filter(anamnesia_id=analise).delete()
     paciente = Paciente.objects.get(usuario_id=paciente_id)
-    return render(request,"projetofinal/analise/removida.html", {'paciente': paciente},context_instance=RequestContext(request))
+    return render(request,"projetofinal/analise/removida.html", {'paciente': paciente})
 
 class AnaliseRemovida(TemplateView):
     template_name = "projetofinal/analise/removida.html"

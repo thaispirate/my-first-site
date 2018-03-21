@@ -3,7 +3,6 @@ django-formtools==1.0
 django-password-reset==0.8.2
 django-jquery==1.12.2
 django-highcharts==0.1.7
-simplejson
 django-smart_selects==1.5.2
 geopy
 reportlab
