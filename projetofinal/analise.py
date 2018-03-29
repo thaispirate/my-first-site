@@ -299,6 +299,7 @@ class InserirAnaliseRelacionamento(SessionWizardView):
         self.form_list.update({'14':RelacionamentoConjugeAntes})
         self.form_list.update({'15':RelacionamentoPacienteDepois})
 
+        self.list = self.form_list
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
             try:
@@ -316,105 +317,105 @@ class InserirAnaliseRelacionamento(SessionWizardView):
         relacionamentos = Relacionamento.objects.filter(anamnesia_id = analise_id)
         for relacionamento in relacionamentos:
             if relacionamento.parente == "AvoMaterno":
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvosMaternos:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
                         self.initial_dict['passo'] = 3
 
                 if (relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
-                    for key, value in self.form_list.items():
+                    for key, value in self.form_list.copy().items():
                         if value == RelacionamentoAvoMaternoAntes:
-                            self.form_list.pop(key)
+                            del self.form_list[key]
                             self.initial_dict['passo'] = 4
 
             if relacionamento.parente == "AvoMaterna":
                 if(relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
-                    for key, value in self.form_list.items():
+                    for key, value in self.form_list.copy().items():
                         if value == RelacionamentoAvoMaternaAntes:
-                            self.form_list.pop(key)
+                            del self.form_list[key]
                             self.initial_dict['passo'] = 5
                 if(relacionamento.filhosDepois is None and (relacionamento.relacao == "Casados" or relacionamento.relacao == "Moram junto"))\
                         or ((relacionamento.relacao == "Separados" or relacionamento.relacao == "Divorciados") and relacionamento.filhosDepois is not None):
-                    for key, value in self.form_list.items():
+                    for key, value in self.form_list.copy().items():
                         if value == RelacionamentoAvosMaternosDepois:
-                            self.form_list.pop(key)
+                            del self.form_list[key]
                             self.initial_dict['passo'] = 6
 
             if relacionamento.parente == "AvoPaterno":
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvosPaternos:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
                         self.initial_dict['passo'] = 7
                 if (relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
-                    for key, value in self.form_list.items():
+                    for key, value in self.form_list.copy().items():
                         if value == RelacionamentoAvoPaternoAntes:
-                            self.form_list.pop(key)
+                            del self.form_list[key]
                             self.initial_dict['passo'] = 8
             if relacionamento.parente == "AvoPaterna":
                 if(relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
-                    for key, value in self.form_list.items():
+                    for key, value in self.form_list.copy().items():
                         if value == RelacionamentoAvoPaternaAntes:
-                            self.form_list.pop(key)
+                            del self.form_list[key]
                             self.initial_dict['passo'] = 9
                 if(relacionamento.filhosDepois is None and (relacionamento.relacao == "Casados" or relacionamento.relacao == "Moram junto"))\
                         or ((relacionamento.relacao == "Separados" or relacionamento.relacao == "Divorciados") and relacionamento.filhosDepois is not None):
-                    for key, value in self.form_list.items():
+                    for key, value in self.form_list.copy().items():
                         if value == RelacionamentoAvosPaternosDepois:
-                            self.form_list.pop(key)
+                            del self.form_list[key]
                             self.initial_dict['passo'] = 10
 
             if relacionamento.parente == "Pai":
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoPais:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
                         self.initial_dict['passo'] = 11
                 if (relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
-                    for key, value in self.form_list.items():
+                    for key, value in self.form_list.copy().items():
                         if value == RelacionamentoPaiAntes:
-                            self.form_list.pop(key)
+                            del self.form_list[key]
                             self.initial_dict['passo'] = 12
             if relacionamento.parente == "Mae":
                 if(relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
-                    for key, value in self.form_list.items():
+                    for key, value in self.form_list.copy().items():
                         if value == RelacionamentoMaeAntes:
-                            self.form_list.pop(key)
+                            del self.form_list[key]
                             self.initial_dict['passo'] = 13
                 if(relacionamento.filhosDepois is None and (relacionamento.relacao == "Casados" or relacionamento.relacao == "Moram junto"))\
                         or ((relacionamento.relacao == "Separados" or relacionamento.relacao == "Divorciados") and relacionamento.filhosDepois is not None):
-                    for key, value in self.form_list.items():
+                    for key, value in self.form_list.copy().items():
                         if value == RelacionamentoPaisDepois:
-                            self.form_list.pop(key)
+                            del self.form_list[key]
                             self.initial_dict['passo'] = 14
 
             if relacionamento.parente == "Paciente":
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoPaciente:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
                         self.initial_dict['passo'] = 15
                 if (relacionamento.filhosAntes is None and relacionamento.relacaoAntes == "Não")\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
-                    for key, value in self.form_list.items():
+                    for key, value in self.form_list.copy().items():
                         if value == RelacionamentoPacienteAntes:
-                            self.form_list.pop(key)
+                            del self.form_list[key]
                             self.initial_dict['passo'] = 16
             if relacionamento.parente == "Conjuge":
                 if(relacionamento.filhosAntes is None and (relacionamento.relacaoAntes == "Não" or relacionamento.relacaoAntes == "Não se aplica" ))\
                         or (relacionamento.relacaoAntes == "Sim" and relacionamento.filhosAntes is not None):
-                    for key, value in self.form_list.items():
+                    for key, value in self.form_list.copy().items():
                         if value == RelacionamentoConjugeAntes:
-                            self.form_list.pop(key)
+                            del self.form_list[key]
                             self.initial_dict['passo'] = 17
                 if(relacionamento.filhosDepois is None and (relacionamento.relacao == "Casado(a)" or relacionamento.relacao == "Mora junto" or relacionamento.relacao == "Solteiro(a)"))\
                         or ((relacionamento.relacao == "Separado(a)" or relacionamento.relacao == "Divorciado(a)") and relacionamento.filhosDepois is not None):
-                    for key, value in self.form_list.items():
+                    for key, value in self.form_list.copy().items():
                         if value == RelacionamentoPacienteDepois:
-                            self.form_list.pop(key)
+                            del self.form_list[key]
                             self.initial_dict['passo'] = 18
 
         return super(InserirAnaliseRelacionamento, self).dispatch(*args, **kwargs)
@@ -469,62 +470,62 @@ class InserirAnaliseRelacionamento(SessionWizardView):
         paciente_id = self.kwargs['paciente_id']
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         analise_id =  self.kwargs['analise_id']
-
+        self.list = self.form_list
         if form.data['inserir_analise_relacionamento-current_step'] == '0':
             if form.data['0-relacaoAvoMaternoAntes'] == "Não":
                 for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvoMaternoAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if form.data['0-relacaoAvoMaternaAntes'] == "Não":
                 for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvoMaternaAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if (form.data['0-relacao'] == "Casados") or (form.data['0-relacao'] == "Moram junto"):
                 for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvosMaternosDepois:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
         if form.data['inserir_analise_relacionamento-current_step'] == '4':
             if form.data['4-relacaoAvoPaternoAntes'] == "Não":
                 for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvoPaternoAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if form.data['4-relacaoAvoPaternaAntes'] == "Não":
                 for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvoPaternaAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if (form.data['4-relacao'] == "Casados") or (form.data['4-relacao'] == "Moram junto"):
                 for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvosPaternosDepois:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
         if form.data['inserir_analise_relacionamento-current_step'] == '8':
             if form.data['8-relacaoPaiAntes'] == "Não":
                 for key, value in self.form_list.copy().items():
                     if value == RelacionamentoPaiAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if form.data['8-relacaoMaeAntes'] == "Não":
                 for key, value in self.form_list.copy().items():
                     if value == RelacionamentoMaeAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if (form.data['8-relacao'] == "Casados") or (form.data['8-relacao'] == "Moram junto"):
                 for key, value in self.form_list.copy().items():
                     if value == RelacionamentoPaisDepois:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
         if form.data['inserir_analise_relacionamento-current_step'] == '12':
             for key, value in self.form_list.copy().items():
                 if value == RelacionamentoPais:
-                    self.form_list.pop(key)
+                    del self.form_list[key]
             if form.data['12-relacaoPacienteAntes'] == "Não":
                 for key, value in self.form_list.copy().items():
                     if value == RelacionamentoPacienteAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if form.data['12-relacaoConjugeAntes'] == "Não" or form.data['12-relacaoConjugeAntes'] == "Não se aplica":
                 for key, value in self.form_list.copy().items():
                     if value == RelacionamentoConjugeAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if (form.data['12-relacao'] == "Casado(a)") or (form.data['12-relacao'] == "Mora junto") or (form.data['12-relacao'] == "Solteiro(a)"):
                 for key, value in self.form_list.copy().items():
                     if value == RelacionamentoPacienteDepois:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
 
         steps =[]
         for i in range(0,16):
@@ -1090,17 +1091,17 @@ class ConsultandoAnalise(SessionWizardView):
                 form.fields[field].widget.attrs['disabled'] = True
                 form.fields[field].required = False
             if not relacionamento.filhosAntes:
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvoMaternoAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if not relacionamentoavo.filhosAntes:
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvoMaternaAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if not relacionamento.filhosDepois:
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvosMaternosDepois:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             return form
 
         if step == "2":
@@ -1146,17 +1147,17 @@ class ConsultandoAnalise(SessionWizardView):
                 form.fields[field].widget.attrs['disabled'] = True
                 form.fields[field].required = False
             if not relacionamento.filhosAntes:
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvoPaternoAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if not relacionamentoavo.filhosAntes:
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvoPaternaAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if not relacionamento.filhosDepois:
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoAvosPaternosDepois:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             return form
 
         if step == "6":
@@ -1201,17 +1202,17 @@ class ConsultandoAnalise(SessionWizardView):
                 form.fields[field].widget.attrs['disabled'] = True
                 form.fields[field].required = False
             if not relacionamento.filhosAntes:
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoPaiAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if not relacionamentomae.filhosAntes:
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoMaeAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if not relacionamento.filhosDepois:
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoPaisDepois:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             return form
 
         if step == "10":
@@ -1256,17 +1257,17 @@ class ConsultandoAnalise(SessionWizardView):
                 form.fields[field].widget.attrs['disabled'] = True
                 form.fields[field].required = False
             if not relacionamento.filhosAntes:
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoPacienteAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if not relacionamentoconjuge.filhosAntes:
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoConjugeAntes:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             if not relacionamento.filhosDepois:
-                for key, value in self.form_list.items():
+                for key, value in self.form_list.copy().items():
                     if value == RelacionamentoPacienteDepois:
-                        self.form_list.pop(key)
+                        del self.form_list[key]
             return form
 
         if step == "14":
@@ -1416,9 +1417,9 @@ class ProsseguirAnalise(TemplateView):
                     if resposta.padrao == "criativo":
                         criativo=criativo+1
 
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+                dados['paciente'] = [adaptativo]
+                dados['paciente'].append(reativo)
+                dados['paciente'].append(criativo)
 
 
         nascimento=str(paciente.nascimento)
@@ -1497,14 +1498,14 @@ class ProsseguirAnalise(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Limite Inferior Adaptativo'] = adaptativoMin
-        dados['Limite Inferior Reativo']=reativoMin
-        dados['Limite Inferior Criativo']=criativoMin
-        dados['Limite Superior Adaptativo'] = adaptativoMax
-        dados['Limite Superior Reativo']=reativoMax
-        dados['Limite Superior Criativo']=criativoMax
+        dados['limite inferior'] = [adaptativoMin]
+        dados['limite inferior'].append(reativoMin)
+        dados['limite inferior'].append(criativoMin)
+        dados['limite superior'] = [adaptativoMax]
+        dados['limite superior'].append(reativoMax)
+        dados['limite superior'].append(criativoMax)
 
-        grafico = simplejson.dumps(dados)
+        grafico = dados
         return grafico
 
     def pacienteNome(self):
