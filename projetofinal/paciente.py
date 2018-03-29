@@ -86,12 +86,12 @@ def LoginPaciente(request):
                 login(request, user)
                 state = "You're successfully logged in!"
                 paciente_id=str(user.id)
-                return HttpResponseRedirect('home/'+ paciente_id +'/')
+                return HttpResponseRedirect('/')
             else:
                 state = 1
         else:
             state = 2
-    return render('projetofinal/login.html', {'state':state, 'username': username})
+    return render(request,'projetofinal/login.html', {'state':state, 'username': username})
 
 
 def LogoutView(request):
