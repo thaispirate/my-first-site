@@ -26,10 +26,10 @@
 
 
 <script text="text/javascript">
-dadosRadar = {{ view.grafico|safe }};
+dados = {{ view.grafico|safe }};
+dadosRadar = {{ view.graficoRadar|safe }};
+show_radar = {{ view.indiferenciacao|safe }};
 paciente = {{ view.pacienteNome|safe }};
-
-
 </script>
 
 {% endblock %}

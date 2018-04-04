@@ -74,7 +74,7 @@ def LoginPsicologo(request):
                 state = 1
         else:
             state = 2
-    return render('projetofinal/psicologo/login.html', {'state':state, 'username': username})
+    return render(request, 'projetofinal/psicologo/login.html', {'state':state, 'username': username})
 
 class CadastroPsicologoWizard(SessionWizardView):
     template_name = "projetofinal/psicologo/cadastro.html"

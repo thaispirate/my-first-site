@@ -36,11 +36,11 @@
           </div>
           <aside role="complementary" class="col-md-10">
 
-            <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+            <canvas id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></canvas>
          </aside>
-               {%if view.indiferenciacao == 1%}
-               <div id="radar" style="min-width: 100px;min-height: 100px;height: 500px; margin: 0 auto"></div>
-               {%endif%}
+              <aside role="complementary" class="col-md-10">
+               <canvas id="radar" style="min-width: 100px;min-height: 100px;height: 500px; margin: 0 auto"></canvas>
+              </aside>
          {% endif %}
        </div>
        </div>
@@ -48,6 +48,7 @@
 <script text="text/javascript">
 dados = {{ view.grafico|safe }};
 dadosRadar = {{ view.graficoRadar|safe }};
+show_radar = {{ view.indiferenciacao|safe }};
 paciente = {{ view.pacienteNome|safe }};
 </script>
 

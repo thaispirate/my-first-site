@@ -856,15 +856,13 @@ class ConsultarAnalise(TemplateView):
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
             socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
+            dados['dados'] = [afetivoRelacional]
+            dados['dados'].append(produtividade)
+            dados['dados'].append(organico)
+            dados['dados'].append(espiritual)
+            dados['dados'].append(socioCultural)
 
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
-
-        grafico = simplejson.dumps(dados)
-        return grafico
+        return dados
 
     def graficoRadar(self):
         if 'paciente_id' in self.kwargs:
@@ -888,9 +886,9 @@ class ConsultarAnalise(TemplateView):
                     if resposta.padrao == "criativo":
                         criativo=criativo+1
 
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+                dados['paciente'] = [adaptativo]
+                dados['paciente'].append(reativo)
+                dados['paciente'].append(criativo)
 
         nascimento=str(paciente.nascimento)
         ano = int(nascimento.split("-")[0])
@@ -1392,8 +1390,7 @@ class ProsseguirAnalise(TemplateView):
             dados['dados'].append(espiritual)
             dados['dados'].append(socioCultural)
 
-        grafico = dados
-        return grafico
+        return dados
 
     def graficoRadar(self):
         if 'paciente_id' in self.kwargs:
@@ -1498,12 +1495,12 @@ class ProsseguirAnalise(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['limite inferior'] = [adaptativoMin]
-        dados['limite inferior'].append(reativoMin)
-        dados['limite inferior'].append(criativoMin)
-        dados['limite superior'] = [adaptativoMax]
-        dados['limite superior'].append(reativoMax)
-        dados['limite superior'].append(criativoMax)
+        dados['Limite Inferior Adaptativo'] = adaptativoMin
+        dados['Limite Inferior Reativo']=reativoMin
+        dados['Limite Inferior Criativo']=criativoMin
+        dados['Limite Superior Adaptativo'] = adaptativoMax
+        dados['Limite Superior Reativo']=reativoMax
+        dados['Limite Superior Criativo']=criativoMax
 
         grafico = dados
         return grafico
@@ -1638,15 +1635,13 @@ class Recomendacoes(TemplateView):
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
             socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
+            dados['dados'] = [afetivoRelacional]
+            dados['dados'].append(produtividade)
+            dados['dados'].append(organico)
+            dados['dados'].append(espiritual)
+            dados['dados'].append(socioCultural)
 
-
-        grafico = simplejson.dumps(dados)
-        return grafico
+        return dados
 
     def graficoRadar(self):
         if 'paciente_id' in self.kwargs:
@@ -1670,9 +1665,9 @@ class Recomendacoes(TemplateView):
                     if resposta.padrao == "criativo":
                         criativo=criativo+1
 
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+                dados['paciente'] = [adaptativo]
+                dados['paciente'].append(reativo)
+                dados['paciente'].append(criativo)
 
         nascimento=str(paciente.nascimento)
         ano = int(nascimento.split("-")[0])
@@ -1815,7 +1810,7 @@ class ConsultandoRecomendacoes(TemplateView):
         paciente = Paciente.objects.get(usuario_id=paciente_id)
         return paciente
 
-    def graficoAreaAfetiva(self):
+    def grafico(self):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
         if 'analise_id' in self.kwargs:
@@ -1835,15 +1830,13 @@ class ConsultandoRecomendacoes(TemplateView):
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
             socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
+            dados['dados'] = [afetivoRelacional]
+            dados['dados'].append(produtividade)
+            dados['dados'].append(organico)
+            dados['dados'].append(espiritual)
+            dados['dados'].append(socioCultural)
 
-
-        grafico = simplejson.dumps(dados)
-        return grafico
+        return dados
 
     def textoAreaAfetiva(self):
         if 'paciente_id' in self.kwargs:
@@ -1925,6 +1918,17 @@ class ConsultandoRecomendacoes(TemplateView):
             analise_id = self.kwargs['analise_id']
         indiferenciacao = GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise_id)
 
+        return indiferenciacao
+
+    def indiferenciacao_exists(self):
+        indiferenciacao=0
+        if 'paciente_id' in self.kwargs:
+            paciente_id = self.kwargs['paciente_id']
+        paciente = Paciente.objects.get(usuario_id=paciente_id)
+        anamnesia = Anamnesia.objects.filter(paciente_id=paciente.id)
+        for analise in anamnesia:
+            if GrauIndiferenciacaoPaciente.objects.filter(anamnesia_id=analise.id).exists():
+                indiferenciacao=1
         return indiferenciacao
 
     def media(self):
@@ -2016,7 +2020,7 @@ class ConsultandoRecomendacoes(TemplateView):
         }
         return dict
 
-    def graficoIndiferenciacao(self):
+    def graficoRadar(self):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
         if 'analise_id' in self.kwargs:
@@ -2039,9 +2043,9 @@ class ConsultandoRecomendacoes(TemplateView):
                 if resposta.padrao == "criativo":
                     criativo=criativo+1
 
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+                dados['paciente'] = [adaptativo]
+                dados['paciente'].append(reativo)
+                dados['paciente'].append(criativo)
 
         nascimento=str(paciente.nascimento)
         ano = int(nascimento.split("-")[0])
@@ -3206,15 +3210,13 @@ class RecomendacaoAreaAfetiva(TemplateView):
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
             socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
+            dados['dados'] = [afetivoRelacional]
+            dados['dados'].append(produtividade)
+            dados['dados'].append(organico)
+            dados['dados'].append(espiritual)
+            dados['dados'].append(socioCultural)
 
-
-        grafico = simplejson.dumps(dados)
-        return grafico
+        return dados
 
     def pacienteNome(self):
         if 'paciente_id' in self.kwargs:
@@ -3444,9 +3446,9 @@ class RecomendacaoIndiferenciacao(TemplateView):
                 if resposta.padrao == "criativo":
                     criativo=criativo+1
 
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+                dados['paciente'] = [adaptativo]
+                dados['paciente'].append(reativo)
+                dados['paciente'].append(criativo)
 
         nascimento=str(paciente.nascimento)
         ano = int(nascimento.split("-")[0])
