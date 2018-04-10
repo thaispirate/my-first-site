@@ -665,6 +665,7 @@ class CadastroPsicologoForm2(ModelForm):
         self.fields['complemento'].required = False
         self.fields['telefone'].required = False
         self.fields['celular'].required = False
+        self.fields['municipio'].required = False
         self.fields['numero'].required = True
         self.fields['bairro'].error_messages={'required':'Este campo é obrigatório'}
         self.fields['endereco'].error_messages={'required':'Este campo é obrigatório'}
