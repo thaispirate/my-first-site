@@ -69,7 +69,7 @@ def LoginPsicologo(request):
             if user.is_active and user.groups.filter(name='psicologo').exists():
                 login(request, user)
                 state = "You're successfully logged in!"
-                return HttpResponseRedirect('home')
+                return HttpResponseRedirect('/psicologo/home')
             else:
                 state = 1
         else:
@@ -102,9 +102,9 @@ class CadastroPsicologoWizard(SessionWizardView):
         estado= form_data[1]['estado']
         estado = Estado.objects.get(estado=estado)
         psicologo.estado=estado
-        municipio= form_data[1]['municipio']
-        municipio = Municipio.objects.get(municipio=municipio)
-        psicologo.municipio=municipio
+        # municipio= form_data[1]['municipio']
+        # municipio = Municipio.objects.get(municipio=municipio)
+        # psicologo.municipio=municipio
         psicologo.endereco = form_data[1]['endereco']
         psicologo.numero = form_data[1]['numero']
         psicologo.complemento = form_data[1]['complemento']
