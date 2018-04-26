@@ -114,6 +114,8 @@ LOGIN_REDIRECT_URL= '/login'
 
 #Password-reset send email configuration
 
+
+#para servidor local
 # EMAIL_USE_TLS = False
 # EMAIL_HOST = 'localhost'
 # EMAIL_PORT = 1025
@@ -130,6 +132,7 @@ LOGIN_REDIRECT_URL= '/login'
 # DEFAULT_FROM_EMAIL = 'meetyourself@familiacomvida.com.br'
 # SERVER_EMAIL = 'mail.familiacomvida.com.br'
 
+# quando subir pro pythonanywhere tem que estar descomentado
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 25
