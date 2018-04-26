@@ -34,7 +34,7 @@ class UserCreationForm(forms.ModelForm):
         'password_mismatch': _("As senhas precisam ser iguais"),
         'chave_acesso': _("Chave de acesso inválida"),
     }
-    username = forms.CharField(label=_("Nome de usuario"),
+    username = forms.CharField(label=_("Nome de usuário"),
         error_messages={
             'invalid': _("Este campo só deve conter letras,números e os seguintes caracteres "
                          "@/./+/-/_"),
@@ -131,7 +131,7 @@ class CadastroPaciente(UserCreationForm):
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
+        error_messages={'invalid':'Esta data não é válida','required':'Este campo é obrigatório'}
     )
     cpf = forms.CharField(label="CPF",
                           error_messages={'required':'Este campo é obrigatório'},
@@ -206,7 +206,7 @@ class CadastroConjuge(forms.Form):
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
+        error_messages={'invalid':'Esta data não é válida','required':'Este campo é obrigatório'}
 
     )
 
@@ -240,7 +240,7 @@ class CadastroPai(forms.Form):
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
         required=False,
-        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
+        error_messages={'invalid':'Esta data não é válida','required':'Este campo é obrigatório'}
 
 
     )
@@ -250,7 +250,7 @@ class CadastroPai(forms.Form):
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é válida'}
 
     )
     escolaridadePai = forms.ChoiceField(
@@ -274,7 +274,7 @@ class CadastroMae(forms.Form):
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
         required=False,
-        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
+        error_messages={'invalid':'Esta data não é válida','required':'Este campo é obrigatório'}
 
     )
     falecimentoMae = forms.DateField(
@@ -283,7 +283,7 @@ class CadastroMae(forms.Form):
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é válida'}
 
     )
     escolaridadeMae = forms.ChoiceField(
@@ -307,7 +307,7 @@ class CadastroAvoPaterno(forms.Form):
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
         required=False,
-        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
+        error_messages={'invalid':'Esta data não é válida','required':'Este campo é obrigatório'}
 
     )
     falecimentoAvoPaterno = forms.DateField(
@@ -316,7 +316,7 @@ class CadastroAvoPaterno(forms.Form):
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é válida'}
     )
     escolaridadeAvoPaterno = forms.ChoiceField(
         label="Escolaridade do Avô Paterno",
@@ -339,7 +339,7 @@ class CadastroAvoPaterna(forms.Form):
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
         required=False,
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é válida'}
     )
     falecimentoAvoPaterna = forms.DateField(
         label="Data de falecimento da Avó Paterna",
@@ -347,7 +347,7 @@ class CadastroAvoPaterna(forms.Form):
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
+        error_messages={'invalid':'Esta data não é válida','required':'Este campo é obrigatório'}
     )
     escolaridadeAvoPaterna = forms.ChoiceField(
         label="Escolaridade da Avó Paterna",
@@ -370,7 +370,7 @@ class CadastroAvoMaterno(forms.Form):
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
         required=False,
-        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
+        error_messages={'invalid':'Esta data não é válida','required':'Este campo é obrigatório'}
     )
     falecimentoAvoMaterno = forms.DateField(
         label="Data de falecimento do Avô Materno",
@@ -378,7 +378,7 @@ class CadastroAvoMaterno(forms.Form):
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é válida'}
     )
     escolaridadeAvoMaterno = forms.ChoiceField(
         label="Escolaridade do Avô Materno",
@@ -401,7 +401,7 @@ class CadastroAvoMaterna(forms.Form):
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
         required=False,
-        error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
+        error_messages={'invalid':'Esta data não é válida','required':'Este campo é obrigatório'}
     )
     falecimentoAvoMaterna = forms.DateField(
         label="Data de falecimento da Avó Materna",
@@ -409,7 +409,7 @@ class CadastroAvoMaterna(forms.Form):
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
         help_text= "DD/MM/AAAA",
-        error_messages={'invalid':'Esta data não é valida'}
+        error_messages={'invalid':'Esta data não é válida'}
     )
     escolaridadeAvoMaterna = forms.ChoiceField(
         label="Escolaridade da Avó Materna",
@@ -480,7 +480,7 @@ class EdicaoPaciente(forms.Form):
             help_text= "DD/MM/AAAA",
             initial=paciente.nascimento,
             required=False,
-            error_messages={'invalid':'Esta data não é valida','required':'Este campo é obrigatório'}
+            error_messages={'invalid':'Esta data não é válida','required':'Este campo é obrigatório'}
         )
         self.fields['cpf'] = forms.CharField(label="CPF",
                               required=False,
@@ -562,8 +562,8 @@ class PasswordRecoveryForm(forms.Form):
                                              False)
 
         if recovery_only_active_users and not user_is_active:
-            raise forms.ValidationError(_("Sorry, inactive users can't "
-                                        "recover their password."))
+            raise forms.ValidationError(_("Desculpe, usuários inativos não podem "
+                                        "recuperar suas senhas."))
 
         return username
 
@@ -648,10 +648,10 @@ class CadastroPsicologoForm(UserCreationForm):
         fields=['username','password1','password2']
         error_messages = {
             'password1': {
-                'required': "Please enter your first password",
+                'required': "Por favor, informe sua senha.",
             },
              'password2': {
-                 'required': "Please enter your second password.",
+                 'required': "Repita sua senha.",
             },
          }
 

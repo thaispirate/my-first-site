@@ -19,7 +19,7 @@ handler404="paciente.erro404"
 urlpatterns = [
     # Paciente
     path('', Home.as_view()),
-    path('/home/<paciente_id>/', Home.as_view()),
+    path('home/<paciente_id>/', Home.as_view()),
     path('sair/', paciente.LogoutView),
     path('erro404/', paciente.Erro404),
     path('cadastro/', CadastroWizard.as_view([CadastroPaciente,CadastroConjuge,CadastroPai,CadastroMae,CadastroAvoPaterno,CadastroAvoPaterna,CadastroAvoMaterno,CadastroAvoMaterna]), name="cadastro"),

@@ -115,7 +115,7 @@ LOGIN_REDIRECT_URL= '/login'
 #Password-reset send email configuration
 
 
-#para servidor local
+# Para servidor local - Início
 # EMAIL_USE_TLS = False
 # EMAIL_HOST = 'localhost'
 # EMAIL_PORT = 1025
@@ -131,8 +131,9 @@ LOGIN_REDIRECT_URL= '/login'
 # EMAIL_HOST_PASSWORD = 'Mtys2017!'
 # DEFAULT_FROM_EMAIL = 'meetyourself@familiacomvida.com.br'
 # SERVER_EMAIL = 'mail.familiacomvida.com.br'
+# Para servidor local - Fim
 
-# quando subir pro pythonanywhere tem que estar descomentado
+# Quando subir pro pythonanywhere tem que estar descomentado - Início
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 25
@@ -143,3 +144,4 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 SMART_SELECTS_JQUERY_URL = True
+# Quando subir pro pythonanywhere tem que estar descomentado - Fim
