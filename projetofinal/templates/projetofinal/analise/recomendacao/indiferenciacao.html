@@ -5,11 +5,11 @@
 
 {% block content %}
            <div class="panel panel-info">
-            <div class="panel-heading">Recomendações</div>
+            <div class="panel-heading">Recomendações Disponíveis</div>
                 <div class="panel-body">
 
-                <p>{{view.anamnesia.inicio|date:'d-m-Y H:i' }}</p>
-                <a href="/pdf/{{user.id}}/{{view.anamnesia.id}}" target="_blank">Genograma</a>
+                <p>Iniciado em {{view.anamnesia.inicio|date:'d-m-Y H:i' }}</p>
+                <a href="/pdf/{{user.id}}/{{view.anamnesia.id}}" target="_blank">Acessar o Genograma</a>
 
                <div id="radar" style="min-width: 100px;min-height: 100px;height: 500px; margin: 0 auto"></div>
               <hr class="featurette-divider">

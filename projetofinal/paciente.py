@@ -584,7 +584,7 @@ class Recover(SaltMixin, generic.FormView):
     case_sensitive = True
     form_class = PasswordRecoveryForm
     template_name = 'password_reset/recovery_form2.html'
-    success_url_name = '/password_reset_sent'
+    success_url_name = 'password_reset_sent'
     email_template_name = 'password_reset/recovery_email2.txt'
     email_subject_template_name = 'password_reset/recovery_email_subject2.txt'
     search_fields = ['username', 'email']
@@ -615,6 +615,7 @@ class Recover(SaltMixin, generic.FormView):
             'token': signing.dumps(self.user.pk, salt=self.salt),
             'secure': self.request.is_secure(),
         }
+        print(context)
         body = loader.render_to_string(self.email_template_name,
                                        context).strip()
         subject = loader.render_to_string(self.email_subject_template_name,
@@ -623,6 +624,7 @@ class Recover(SaltMixin, generic.FormView):
                   [self.user.email])
 
     def form_valid(self, form):
+
         self.user = form.cleaned_data['user']
         self.send_notification()
         if (
