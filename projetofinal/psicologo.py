@@ -252,11 +252,11 @@ class AnalisePaciente(TemplateView):
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
             socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
+            dados['dados'] = [afetivoRelacional]
+            dados['dados'].append(produtividade)
+            dados['dados'].append(organico)
+            dados['dados'].append(espiritual)
+            dados['dados'].append(socioCultural)
 
 
         grafico = simplejson.dumps(dados)
@@ -284,9 +284,9 @@ class AnalisePaciente(TemplateView):
                     if resposta.padrao == "criativo":
                         criativo=criativo+1
 
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+                dados['paciente'] = [adaptativo]
+                dados['paciente'].append(reativo)
+                dados['paciente'].append(criativo)
 
         nascimento=str(paciente.nascimento)
         ano = int(nascimento.split("-")[0])
@@ -364,12 +364,12 @@ class AnalisePaciente(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Limite Inferior Adaptativo'] = adaptativoMin
-        dados['Limite Inferior Reativo']=reativoMin
-        dados['Limite Inferior Criativo']=criativoMin
-        dados['Limite Superior Adaptativo'] = adaptativoMax
-        dados['Limite Superior Reativo']=reativoMax
-        dados['Limite Superior Criativo']=criativoMax
+        dados['limite inferior'] = [adaptativoMin]
+        dados['limite inferior'].append(reativoMin)
+        dados['limite inferior'].append(criativoMin)
+        dados['limite superior'] = [adaptativoMax]
+        dados['limite superior'].append(reativoMax)
+        dados['limite superior'].append(criativoMax)
 
         grafico = simplejson.dumps(dados)
         return grafico
@@ -783,11 +783,11 @@ class GenogramaPaciente(TemplateView):
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
             socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
+            dados['dados'] = [afetivoRelacional]
+            dados['dados'].append(produtividade)
+            dados['dados'].append(organico)
+            dados['dados'].append(espiritual)
+            dados['dados'].append(socioCultural)
 
 
         grafico = simplejson.dumps(dados)
@@ -815,9 +815,9 @@ class GenogramaPaciente(TemplateView):
                     if resposta.padrao == "criativo":
                         criativo=criativo+1
 
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+                dados['paciente'] = [adaptativo]
+                dados['paciente'].append(reativo)
+                dados['paciente'].append(criativo)
 
         nascimento=str(paciente.nascimento)
         ano = int(nascimento.split("-")[0])
@@ -895,12 +895,12 @@ class GenogramaPaciente(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Limite Inferior Adaptativo'] = adaptativoMin
-        dados['Limite Inferior Reativo']=reativoMin
-        dados['Limite Inferior Criativo']=criativoMin
-        dados['Limite Superior Adaptativo'] = adaptativoMax
-        dados['Limite Superior Reativo']=reativoMax
-        dados['Limite Superior Criativo']=criativoMax
+        dados['limite inferior'] = [adaptativoMin]
+        dados['limite inferior'].append(reativoMin)
+        dados['limite inferior'].append(criativoMin)
+        dados['limite superior'] = [adaptativoMax]
+        dados['limite superior'].append(reativoMax)
+        dados['limite superior'].append(criativoMax)
 
         grafico = simplejson.dumps(dados)
         return grafico
@@ -969,11 +969,11 @@ class RelatorioPaciente(TemplateView):
             organico=((A[7]+A[12]+A[14]+A[27]+A[29])/5)
             espiritual=((A[3]+A[11]+A[18]+A[24]+A[26])/5)
             socioCultural=((A[8]+A[10]+A[20]+A[22]+A[23])/5)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [afetivoRelacional]
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(produtividade)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(organico)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(espiritual)
-            dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(socioCultural)
+            dados['dados'] = [afetivoRelacional]
+            dados['dados'].append(produtividade)
+            dados['dados'].append(organico)
+            dados['dados'].append(espiritual)
+            dados['dados'].append(socioCultural)
 
 
         grafico = simplejson.dumps(dados)
@@ -1001,9 +1001,9 @@ class RelatorioPaciente(TemplateView):
                     if resposta.padrao == "criativo":
                         criativo=criativo+1
 
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))] = [adaptativo]
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(reativo)
-                dados[str(analise.inicio.strftime("%d/%m/%y %H:%M:%S"))].append(criativo)
+                dados['paciente'] = [adaptativo]
+                dados['paciente'].append(reativo)
+                dados['paciente'].append(criativo)
 
         nascimento=str(paciente.nascimento)
         ano = int(nascimento.split("-")[0])
@@ -1081,12 +1081,12 @@ class RelatorioPaciente(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Limite Inferior Adaptativo'] = adaptativoMin
-        dados['Limite Inferior Reativo']=reativoMin
-        dados['Limite Inferior Criativo']=criativoMin
-        dados['Limite Superior Adaptativo'] = adaptativoMax
-        dados['Limite Superior Reativo']=reativoMax
-        dados['Limite Superior Criativo']=criativoMax
+        dados['limite inferior'] = [adaptativoMin]
+        dados['limite inferior'].append(reativoMin)
+        dados['limite inferior'].append(criativoMin)
+        dados['limite superior'] = [adaptativoMax]
+        dados['limite superior'].append(reativoMax)
+        dados['limite superior'].append(criativoMax)
 
         grafico = simplejson.dumps(dados)
         return grafico

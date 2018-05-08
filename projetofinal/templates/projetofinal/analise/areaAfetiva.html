@@ -12,7 +12,7 @@
                 <p>{{view.anamnesia.inicio|date:'d-m-Y H:i' }}</p>
 
 
-              <div id="container" style="min-width: 250px; height: 400px; margin: 0 auto"></div>
+              <canvas id="container"></canvas>
                <hr class="featurette-divider">
               {{ view.texto }}
               <hr class="featurette-divider">
@@ -26,6 +26,7 @@
 <script text="text/javascript">
 dados = {{ view.grafico|safe }};
 paciente = {{ view.pacienteNome|safe }};
+show_radar = 0;
 </script>
 
 {% endblock %}

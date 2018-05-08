@@ -966,12 +966,12 @@ class ConsultarAnalise(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Limite Inferior Adaptativo'] = adaptativoMin
-        dados['Limite Inferior Reativo']=reativoMin
-        dados['Limite Inferior Criativo']=criativoMin
-        dados['Limite Superior Adaptativo'] = adaptativoMax
-        dados['Limite Superior Reativo']=reativoMax
-        dados['Limite Superior Criativo']=criativoMax
+        dados['limite inferior'] = [adaptativoMin]
+        dados['limite inferior'].append(reativoMin)
+        dados['limite inferior'].append(criativoMin)
+        dados['limite superior'] = [adaptativoMax]
+        dados['limite superior'].append(reativoMax)
+        dados['limite superior'].append(criativoMax)
 
         grafico = simplejson.dumps(dados)
         return grafico
@@ -1291,7 +1291,7 @@ class ConsultandoAnalise(SessionWizardView):
             relacionamento = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Paciente")
             relacionamentoconjuge = Relacionamento.objects.get(paciente_id=paciente.id,anamnesia_id=analise_id,parente="Conjuge")
             form = RelacionamentoPacienteDepois(data=data,initial = { "filhosPaciente":relacionamento.filhosDepois,
-                                                                          "filhasPaciente":relacionamento.filhasDepois,
+                                                                          "filhasPaciente": relacionamento.filhasDepois,
                                                                           "filhosConjuge": relacionamentoconjuge.filhosDepois,
                                                                           "filhasConjuge":relacionamentoconjuge.filhosDepois})
             for field in form.fields:
@@ -1495,12 +1495,12 @@ class ProsseguirAnalise(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Limite Inferior Adaptativo'] = adaptativoMin
-        dados['Limite Inferior Reativo']=reativoMin
-        dados['Limite Inferior Criativo']=criativoMin
-        dados['Limite Superior Adaptativo'] = adaptativoMax
-        dados['Limite Superior Reativo']=reativoMax
-        dados['Limite Superior Criativo']=criativoMax
+        dados['limite inferior'] = [adaptativoMin]
+        dados['limite inferior'].append(reativoMin)
+        dados['limite inferior'].append(criativoMin)
+        dados['limite superior'] = [adaptativoMax]
+        dados['limite superior'].append(reativoMax)
+        dados['limite superior'].append(criativoMax)
 
         grafico = dados
         return grafico
@@ -1745,12 +1745,12 @@ class Recomendacoes(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Limite Inferior Adaptativo'] = adaptativoMin
-        dados['Limite Inferior Reativo']=reativoMin
-        dados['Limite Inferior Criativo']=criativoMin
-        dados['Limite Superior Adaptativo'] = adaptativoMax
-        dados['Limite Superior Reativo']=reativoMax
-        dados['Limite Superior Criativo']=criativoMax
+        dados['limite inferior'] = [adaptativoMin]
+        dados['limite inferior'].append(reativoMin)
+        dados['limite inferior'].append(criativoMin)
+        dados['limite superior'] = [adaptativoMax]
+        dados['limite superior'].append(reativoMax)
+        dados['limite superior'].append(criativoMax)
 
         grafico = simplejson.dumps(dados)
         return grafico
@@ -2123,12 +2123,12 @@ class ConsultandoRecomendacoes(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Limite Inferior Adaptativo'] = adaptativoMin
-        dados['Limite Inferior Reativo']=reativoMin
-        dados['Limite Inferior Criativo']=criativoMin
-        dados['Limite Superior Adaptativo'] = adaptativoMax
-        dados['Limite Superior Reativo']=reativoMax
-        dados['Limite Superior Criativo']=criativoMax
+        dados['limite inferior'] = [adaptativoMin]
+        dados['limite inferior'].append(reativoMin)
+        dados['limite inferior'].append(criativoMin)
+        dados['limite superior'] = [adaptativoMax]
+        dados['limite superior'].append(reativoMax)
+        dados['limite superior'].append(criativoMax)
 
         grafico = simplejson.dumps(dados)
         return grafico
@@ -3423,7 +3423,7 @@ class RecomendacaoIndiferenciacao(TemplateView):
         return anamnesia
 
 
-    def grafico(self):
+    def graficoRadar(self):
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
         if 'analise_id' in self.kwargs:
@@ -3526,12 +3526,12 @@ class RecomendacaoIndiferenciacao(TemplateView):
             reativoMin=0
             reativoMax=2
 
-        dados['Limite Inferior Adaptativo'] = adaptativoMin
-        dados['Limite Inferior Reativo']=reativoMin
-        dados['Limite Inferior Criativo']=criativoMin
-        dados['Limite Superior Adaptativo'] = adaptativoMax
-        dados['Limite Superior Reativo']=reativoMax
-        dados['Limite Superior Criativo']=criativoMax
+        dados['limite inferior'] = [adaptativoMin]
+        dados['limite inferior'].append(reativoMin)
+        dados['limite inferior'].append(criativoMin)
+        dados['limite superior'] = [adaptativoMax]
+        dados['limite superior'].append(reativoMax)
+        dados['limite superior'].append(criativoMax)
 
         grafico = simplejson.dumps(dados)
         return grafico

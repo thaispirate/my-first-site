@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ca5a1301-4982-49aa-9407-4d7d63347a4a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/django-haystack" afterPath="$PROJECT_DIR$/src/django-haystack" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/analise.py" afterPath="$PROJECT_DIR$/projetofinal/analise.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projetofinal/psicologo.py" afterPath="$PROJECT_DIR$/projetofinal/psicologo.py" />
     </list>
     <ignored path="django.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -22,16 +24,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/base.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="40" column="43" lean-forward="false" selection-start-line="40" selection-start-column="43" selection-end-line="40" selection-end-column="43" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="administracao.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/administracao.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -69,35 +61,26 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="540">
               <caret line="36" column="29" lean-forward="false" selection-start-line="36" selection-start-column="29" selection-end-line="36" selection-end-column="29" />
-              <folding>
-                <marker date="1523321550574" expanded="true" signature="1580:2635" ph="..." />
-                <marker date="1523321550574" expanded="true" signature="1628:1853" ph="..." />
-                <marker date="1523321550574" expanded="false" signature="1747:1755" ph="..." />
-                <marker date="1523321550574" expanded="true" signature="1756:1840" ph="..." />
-                <marker date="1523321550574" expanded="true" signature="1865:2136" ph="..." />
-                <marker date="1523321550574" expanded="true" signature="2180:2624" ph="..." />
-                <marker date="1523321550574" expanded="true" signature="2661:2743" ph="..." />
-                <marker date="1523321550574" expanded="true" signature="3131:3334" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="psicologo.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/projetofinal/psicologo.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="585">
-              <caret line="76" column="27" lean-forward="false" selection-start-line="76" selection-start-column="27" selection-end-line="76" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="paciente.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="paciente.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projetofinal/paciente.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
+            <state relative-caret-position="-8674">
               <caret line="88" column="47" lean-forward="false" selection-start-line="88" selection-start-column="47" selection-end-line="88" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="analise.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/projetofinal/analise.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="1293" column="92" lean-forward="false" selection-start-line="1293" selection-start-column="92" selection-end-line="1293" selection-end-column="92" />
               <folding />
             </state>
           </provider>
@@ -119,7 +102,7 @@
             <state relative-caret-position="540">
               <caret line="36" column="37" lean-forward="false" selection-start-line="36" selection-start-column="37" selection-end-line="36" selection-end-column="37" />
               <folding>
-                <marker date="1523323682180" expanded="true" signature="3488:3496" ph="..." />
+                <marker date="1525736683441" expanded="true" signature="3488:3496" ph="..." />
               </folding>
             </state>
           </provider>
@@ -130,6 +113,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="psicologo.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/projetofinal/psicologo.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="975" column="48" lean-forward="false" selection-start-line="975" selection-start-column="48" selection-end-line="975" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -147,9 +140,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>django.</find>
-      <find>django.c</find>
-      <find>django.co</find>
       <find>django.cor</find>
       <find>django.core</find>
       <find>django.core.urlr</find>
@@ -177,6 +167,9 @@
       <find>highchar</find>
       <find>highchart</find>
       <find>highcharts</find>
+      <find>dados[str(analise.inicio.strftime(&quot;%d/%m/%y %H:%M:%S&quot;))] = [adaptativo]</find>
+      <find>dados['Limite Inferior Adaptativo'] = adaptativoMin</find>
+      <find>dados[str(analise.inicio.strftime(&quot;%d/%m/%y %H:%M:%S&quot;))] = [afetivoRelacional]</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -225,7 +218,6 @@
         <option value="$PROJECT_DIR$/src/django-haystack/test_haystack/solr_tests/test_admin.py" />
         <option value="$PROJECT_DIR$/mysite/requirements.txt" />
         <option value="$PROJECT_DIR$/projetofinal/urls.py" />
-        <option value="$PROJECT_DIR$/projetofinal/paciente.py" />
         <option value="$PROJECT_DIR$/projetofinal/static/assets/javascript/grafico.js" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/login.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/prosseguir.html" />
@@ -236,15 +228,16 @@
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/home.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/base.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/areaAfetiva.html" />
-        <option value="$PROJECT_DIR$/projetofinal/analise.py" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/consultando.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/resumo/base.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/paciente/analise.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/administracao.html" />
-        <option value="$PROJECT_DIR$/projetofinal/psicologo.py" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/login.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/cadastro.html" />
         <option value="$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastro.html" />
+        <option value="$PROJECT_DIR$/projetofinal/paciente.py" />
+        <option value="$PROJECT_DIR$/projetofinal/psicologo.py" />
+        <option value="$PROJECT_DIR$/projetofinal/analise.py" />
       </list>
     </option>
   </component>
@@ -287,20 +280,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Default">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="django">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -546,6 +525,20 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope">
+        <subPane subId="Default">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="django">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -719,10 +712,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="30" width="1366" height="738" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19692533" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19692533" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32662538" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270142" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.328594" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -736,7 +731,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3270142" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -757,7 +751,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="34" />
+      <option name="time" value="35" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -979,13 +973,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/analise.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="469">
-          <caret line="1931" column="30" lean-forward="false" selection-start-line="1931" selection-start-column="30" selection-end-line="1931" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/analise/recomendacao/consultando.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="385">
@@ -1043,19 +1030,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
           <caret line="40" column="43" lean-forward="false" selection-start-line="40" selection-start-column="43" selection-end-line="40" selection-end-column="43" />
-          <folding />
+          <folding>
+            <marker date="1523922214441" expanded="true" signature="1736:1814" ph="..." />
+            <marker date="1523922214441" expanded="true" signature="1736:1831" ph="..." />
+            <marker date="1523922214441" expanded="true" signature="1995:2048" ph="..." />
+            <marker date="1523922214441" expanded="true" signature="2179:2261" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1080,16 +1064,8 @@
         <state relative-caret-position="540">
           <caret line="36" column="37" lean-forward="false" selection-start-line="36" selection-start-column="37" selection-end-line="36" selection-end-column="37" />
           <folding>
-            <marker date="1523323682180" expanded="true" signature="3488:3496" ph="..." />
+            <marker date="1525736683441" expanded="true" signature="3488:3496" ph="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/psicologo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="76" column="27" lean-forward="false" selection-start-line="76" selection-start-column="27" selection-end-line="76" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1103,23 +1079,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastro.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="29" lean-forward="false" selection-start-line="36" selection-start-column="29" selection-end-line="36" selection-end-column="29" />
-          <folding>
-            <marker date="1523321550574" expanded="true" signature="1580:2635" ph="..." />
-            <marker date="1523321550574" expanded="true" signature="1628:1853" ph="..." />
-            <marker date="1523321550574" expanded="false" signature="1747:1755" ph="..." />
-            <marker date="1523321550574" expanded="true" signature="1756:1840" ph="..." />
-            <marker date="1523321550574" expanded="true" signature="1865:2136" ph="..." />
-            <marker date="1523321550574" expanded="true" signature="2180:2624" ph="..." />
-            <marker date="1523321550574" expanded="true" signature="2661:2743" ph="..." />
-            <marker date="1523321550574" expanded="true" signature="3131:3334" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -1128,10 +1087,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/psicologo/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/projetofinal/paciente.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
+        <state relative-caret-position="-8674">
           <caret line="88" column="47" lean-forward="false" selection-start-line="88" selection-start-column="47" selection-end-line="88" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/templates/projetofinal/cadastro.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="36" column="29" lean-forward="false" selection-start-line="36" selection-start-column="29" selection-end-line="36" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/psicologo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="975" column="48" lean-forward="false" selection-start-line="975" selection-start-column="48" selection-end-line="975" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projetofinal/analise.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="1293" column="92" lean-forward="false" selection-start-line="1293" selection-start-column="92" selection-end-line="1293" selection-end-column="92" />
           <folding />
         </state>
       </provider>
