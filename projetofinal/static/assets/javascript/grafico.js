@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    if (show_radar != 1){
+    if (dados != ""){
         var ctx = document.getElementById("container")
         var coluna = {
             type: 'bar',

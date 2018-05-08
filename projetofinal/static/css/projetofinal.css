@@ -29,6 +29,9 @@ body {
 
 }
 
+canvas{
+  margin-top: 50px !important
+}
 .QuestionsTitle {
   color: red;
   font-size: 30px;
