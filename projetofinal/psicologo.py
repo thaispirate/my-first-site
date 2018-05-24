@@ -259,8 +259,7 @@ class AnalisePaciente(TemplateView):
             dados['dados'].append(socioCultural)
 
 
-        grafico = simplejson.dumps(dados)
-        return grafico
+        return dados
 
     def graficoRadar(self):
         if 'paciente_id' in self.kwargs:
@@ -402,6 +401,7 @@ class ConsultandoAnalisePaciente(SessionWizardView):
         return paciente
 
     def get_form(self, step=None, data=None, files=None):
+        print("thais")
         form = super(ConsultandoAnalisePaciente, self).get_form(step, data, files)
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']

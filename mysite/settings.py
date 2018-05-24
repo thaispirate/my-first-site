@@ -116,13 +116,13 @@ LOGIN_REDIRECT_URL= '/login'
 
 
 # Para servidor local - Início
-# EMAIL_USE_TLS = False
-# EMAIL_HOST = 'localhost'
-# EMAIL_PORT = 1025
-# EMAIL_HOST_USER = ''
-# EMAIL_HOST_PASSWORD = ''
-# DEFAULT_FROM_EMAIL = 'webmaster@localhost.com'
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_USE_TLS = False
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+DEFAULT_FROM_EMAIL = 'webmaster@localhost.com'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #
 # EMAIL_USE_TLS = False
 # EMAIL_HOST = 'mail.familiacomvida.com.br'
@@ -134,13 +134,13 @@ LOGIN_REDIRECT_URL= '/login'
 # Para servidor local - Fim
 
 # Quando subir pro pythonanywhere tem que estar descomentado - Início
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 25
-EMAIL_HOST_USER = 'meetyourself.familiacomvida@gmail.com'
-EMAIL_HOST_PASSWORD = 'Mtys2017!'
-DEFAULT_FROM_EMAIL = 'meetyourself.familiacomvida@gmail.com'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 25
+# EMAIL_HOST_USER = 'meetyourself.familiacomvida@gmail.com'
+# EMAIL_HOST_PASSWORD = 'Mtys2017!'
+# DEFAULT_FROM_EMAIL = 'meetyourself.familiacomvida@gmail.com'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 SMART_SELECTS_JQUERY_URL = True

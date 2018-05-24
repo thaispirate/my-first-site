@@ -21,7 +21,7 @@
 
 
       <script type="text/javascript" src="{% static 'assets/javascript/jquery-1.12.4.min.js' %}"></script>
-      <script type="text/javascript" src="{% static 'assets/javascript/exporting.js' %}"></script>
+      <script type="text/javascript" src="{% static 'assets/javascript/Chart.js' %}"></script>
       <script src="{% static 'assets/javascript/ajaxgoogleapis.js' %}"></script>
       <script text="text/javascript" src="{% static 'assets/javascript/jquery.js' %}"></script>
       <script src="{% static 'assets/javascript/bootstrap.js' %}"></script>
@@ -91,10 +91,10 @@
           </div>
           <aside role="complementary" class="col-md-10">
 
-            <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+            <canvas id="container"></canvas>
           </aside>
                {%if view.indiferenciacao == 1%}
-               <div id="radar" style="min-width: 100px;min-height: 100px;height: 500px; margin: 0 auto"></div>
+               <canvas id="radar"></canvas>
                {%endif%}
            {% endif %}
        </div>
@@ -108,6 +108,7 @@
 <script text="text/javascript">
 dados = {{ view.grafico|safe }};
 dadosRadar = {{ view.graficoRadar|safe }};
+show_radar = {{ view.indiferenciacao|safe }}
 paciente = {{ view.pacienteGrafico|safe }};
 </script>
 

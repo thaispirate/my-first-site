@@ -1564,7 +1564,7 @@ def ProsseguindoAnalise(request,paciente_id,analise_id):
 
 @login_required()
 def RemoverAnalise(request, paciente_id):
-
+    print("Thais")
     if request.POST:
         analises = request.POST.getlist("analise")
     for analise in analises:
@@ -1575,6 +1575,7 @@ def RemoverAnalise(request, paciente_id):
         Seletiva.objects.filter(anamnesia_id=analise).delete()
         Interventiva.objects.filter(anamnesia_id=analise).delete()
     paciente = Paciente.objects.get(usuario_id=paciente_id)
+
     return render(request,"projetofinal/analise/removida.html", {'paciente': paciente})
 
 class AnaliseRemovida(TemplateView):
