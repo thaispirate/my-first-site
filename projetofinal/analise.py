@@ -1564,7 +1564,6 @@ def ProsseguindoAnalise(request,paciente_id,analise_id):
 
 @login_required()
 def RemoverAnalise(request, paciente_id):
-    print("Thais")
     if request.POST:
         analises = request.POST.getlist("analise")
     for analise in analises:

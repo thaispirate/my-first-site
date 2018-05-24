@@ -401,7 +401,6 @@ class ConsultandoAnalisePaciente(SessionWizardView):
         return paciente
 
     def get_form(self, step=None, data=None, files=None):
-        print("thais")
         form = super(ConsultandoAnalisePaciente, self).get_form(step, data, files)
         if 'paciente_id' in self.kwargs:
             paciente_id = self.kwargs['paciente_id']
