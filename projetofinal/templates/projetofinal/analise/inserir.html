@@ -28,7 +28,9 @@
     </div>
     </form>
 
-    <script>
+
+
+<script>
 value = {{ view.passos }}/21*100;
 $('#myProgressbar').progressbar(value);
 
@@ -37,6 +39,8 @@ $('#myProgressbar').progressbar(value);
     form.submit.disabled = true;
     return true;
   }
-    </script>
+dados = "";
+show_radar = 0;
+</script>
   <!-- $('#myProgressbar').progressbar(20) -->
 {% endblock %}
