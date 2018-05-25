@@ -29,6 +29,10 @@ body {
 
 }
 
+.finalizada{
+  width: 300px
+}
+
 canvas{
   margin-top: 50px !important
 }
