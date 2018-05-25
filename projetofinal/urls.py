@@ -47,7 +47,7 @@ urlpatterns = [
     path('analise/resumo/<paciente_id>/<analise_id>/seletiva/', ResumoSeletiva.as_view()),
     path('analise/resumo/<paciente_id>/<analise_id>/tarefas/', ResumoTarefas.as_view()),
     path('analise/resumo/<paciente_id>/<analise_id>/exercicios/', ResumoExercicios.as_view()),
-    path('analise/resumo/(<paciente_id>/<analise_id>/interventiva/', ResumoInterventiva.as_view()),
+    path('analise/resumo/<paciente_id>/<analise_id>/interventiva/', ResumoInterventiva.as_view()),
     path('analise/inserir/<paciente_id>/', InserirAnalise.as_view()),
     path('analise/inserir/<paciente_id>/<analise_id>/recomendacao/areaafetiva/', RecomendacaoAreaAfetiva.as_view(template_name="projetofinal/analise/areaAfetiva.html")),
     path('analise/inserir/<paciente_id>/<analise_id>/relacionamentos/', InserirAnaliseRelacionamento.as_view()),
