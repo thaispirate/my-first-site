@@ -1,6 +1,6 @@
 {% load i18n %}{% blocktrans %}Prezado(a) {{ username }},{% endblocktrans %}
 
-{% blocktrans with domain=site.domain %}Você -- ou alguém se passando por você -- pediu uma nova senha em {{ domain }}.{% endblocktrans %}
+{% blocktrans with domain=site.domain %}Recebemos uma solicitação pedindo uma nova senha para sua conta do Meet Yourself {{ domain }}.{% endblocktrans %}
 
 {% trans "Você pode escolher uma nova senha através desse link:" %}
 

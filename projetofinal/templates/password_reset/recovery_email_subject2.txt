@@ -1,1 +1,1 @@
-{% load i18n %}{% blocktrans with domain=site.domain %}Recuperação da senha em {{ domain }}{% endblocktrans %}
+{% load i18n %}{% blocktrans with domain=site.domain %}Meet Yourself: Recuperação da senha em {{ domain }}{% endblocktrans %}
