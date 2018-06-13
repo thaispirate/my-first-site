@@ -3694,7 +3694,7 @@ class RecomendacaoIndiferenciacao(TemplateView):
 def pdf_view(request, paciente_id,analise_id):
     paciente_id=paciente_id
     analise_id=analise_id
-    return FileResponse(open("/home/thaispirate/genograma-"+paciente_id+"-"+analise_id+".pdf", 'rb'), content_type='application/pdf')
+    return FileResponse(open("/home/familiacomvida/genograma-"+paciente_id+"-"+analise_id+".pdf", 'rb'), content_type='application/pdf')
 
 
 class RecomendacaoSeletiva(TemplateView):
