@@ -245,7 +245,7 @@ class CadastroPai(forms.Form):
 
     )
     falecimentoPai = forms.DateField(
-        label="Data de falecimento do Pai",
+        label="Data de Falecimento do Pai",
         required=False,
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
@@ -278,7 +278,7 @@ class CadastroMae(forms.Form):
 
     )
     falecimentoMae = forms.DateField(
-        label="Data de falecimento da Mãe",
+        label="Data de Falecimento da Mãe",
         required=False,
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
@@ -311,7 +311,7 @@ class CadastroAvoPaterno(forms.Form):
 
     )
     falecimentoAvoPaterno = forms.DateField(
-        label="Data de falecimento do Avô Paterno",
+        label="Data de Falecimento do Avô Paterno",
         required=False,
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
@@ -342,7 +342,7 @@ class CadastroAvoPaterna(forms.Form):
         error_messages={'invalid':'Esta data não é válida'}
     )
     falecimentoAvoPaterna = forms.DateField(
-        label="Data de falecimento da Avó Paterna",
+        label="Data de Falecimento da Avó Paterna",
         required=False,
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
@@ -373,7 +373,7 @@ class CadastroAvoMaterno(forms.Form):
         error_messages={'invalid':'Esta data não é válida','required':'Este campo é obrigatório'}
     )
     falecimentoAvoMaterno = forms.DateField(
-        label="Data de falecimento do Avô Materno",
+        label="Data de Falecimento do Avô Materno",
         required=False,
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
@@ -404,7 +404,7 @@ class CadastroAvoMaterna(forms.Form):
         error_messages={'invalid':'Esta data não é válida','required':'Este campo é obrigatório'}
     )
     falecimentoAvoMaterna = forms.DateField(
-        label="Data de falecimento da Avó Materna",
+        label="Data de Falecimento da Avó Materna",
         required=False,
         input_formats=["%d/%m/%Y",],
         widget=forms.DateInput(format='%d/%m/%Y'),
